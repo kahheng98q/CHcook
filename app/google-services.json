@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1075307792110",
+    "firebase_url": "https://chcook-30453.firebaseio.com",
+    "project_id": "chcook-30453",
+    "storage_bucket": "chcook-30453.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075307792110:android:44054b8852a9d7411795ff",
+        "android_client_info": {
+          "package_name": "com.example.chcook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075307792110-hk1q97o5e8n2t4p6avtk6sca1nfg697b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chcook",
+            "certificate_hash": "b4256f1077161ecfc00e78f19735e898dc934089"
+          }
+        },
+        {
+          "client_id": "1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdUrhK77L6Ac6aPoX8Idmo1RmKAMKaCWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
