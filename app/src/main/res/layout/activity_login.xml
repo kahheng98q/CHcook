@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EC32E9"
+    android:background="@drawable/foodlogin"
     tools:context=".Login">
 
     <EditText
@@ -16,17 +16,19 @@
         android:layout_marginTop="120dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:background="#ffff"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLogin" />
 
     <TextView
         android:id="@+id/txtTitle"
-        android:layout_width="139dp"
-        android:layout_height="41dp"
+        android:layout_width="196dp"
+        android:layout_height="57dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="52dp"
@@ -34,7 +36,11 @@
         android:layout_marginRight="8dp"
         android:text="CHCooK"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:textIsSelectable="false"
+        android:textSize="50sp"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,20 +55,27 @@
         android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:background="#ffff"
         android:ems="10"
         android:hint="EmailAdress"
-        android:inputType="textPassword"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/txtLogin"
+
+        />
 
     <TextView
         android:id="@+id/txtLogin"
-        android:layout_width="78dp"
-        android:layout_height="27dp"
+        android:layout_width="152dp"
+        android:layout_height="40dp"
         android:layout_marginTop="32dp"
         android:text="Login"
         android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:textSize="24sp"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,6 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Register here"
+        android:textColor="#ffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"

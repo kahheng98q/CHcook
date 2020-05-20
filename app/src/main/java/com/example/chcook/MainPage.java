@@ -23,12 +23,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.w3c.dom.Text;
+
 public class MainPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
-TextView textView;
+
 
 
     @Override
@@ -47,8 +49,12 @@ TextView textView;
         toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        textView=findViewById(R.id.username);
-        textView.setText(firebaseAuth.getCurrentUser().getDisplayName());
+       View header=navigationView.getHeaderView(0);
+       TextView username=header.findViewById(R.id.username);
+       username.setText(firebaseAuth.getCurrentUser().getDisplayName());
+        TextView email=header.findViewById(R.id.email);
+        email.setText(firebaseAuth.getCurrentUser().getEmail());
+        navigationView.setNavigationItemSelectedListener(this);
 
 
 
@@ -78,7 +84,7 @@ TextView textView;
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(MainPage.this,item.getTitle(),Toast.LENGTH_SHORT).show();
+
         switch (item.getItemId()){
             case R.id.profile:
                 Toast.makeText(MainPage.this,"Profile",Toast.LENGTH_SHORT).show();
