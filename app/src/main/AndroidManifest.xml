@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.chcook">
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
+
     <application
 
         android:allowBackup="true"
