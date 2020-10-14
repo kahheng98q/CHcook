@@ -2,14 +2,16 @@ package com.example.chcook;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.chcook.YangJie.StaffLoginAndManagement.StaffLogin;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,14 +21,12 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class Login extends AppCompatActivity {
     public static final int Google_Sign_In_Code = 10005;
@@ -34,6 +34,9 @@ public class Login extends AppCompatActivity {
     GoogleSignInOptions gso;
     GoogleSignInClient signInClient;
     private FirebaseAuth firebaseAuth;
+    private FloatingActionButton StaffLoginPage;
+
+
 //    GoogleSignInAccount signInAccount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class Login extends AppCompatActivity {
         signInButton=findViewById(R.id.sign_in_button);
 
         firebaseAuth=FirebaseAuth.getInstance();
+        StaffLoginPage = findViewById(R.id.staffPageBtn);
 
         gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com")
@@ -71,6 +75,30 @@ public class Login extends AppCompatActivity {
 }
 
         );
+        StaffLoginPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                builder.setTitle("Staff Login");
+                builder.setMessage("Are you sure want to login as staff?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), StaffLogin.class);
+                        startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
     }
 
     @Override
