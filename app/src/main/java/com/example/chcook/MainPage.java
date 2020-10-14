@@ -8,32 +8,30 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.multidex.MultiDex;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.chcook.Domain.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,7 +44,8 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     FirebaseAuth firebaseAuth;
-
+    TabLayout tabLayout;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +63,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 //// We can also chain the two calls together
 //        postsRef.push().setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
 ////set navigation
+        progressBar=findViewById(R.id.progressBar);
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar1);
         toolbar2= findViewById(R.id.toolbar2);
@@ -74,6 +74,8 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawerOpen, R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+
 // load default fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -97,12 +99,47 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         Log.d("tag","onCreate "+firebaseAuth.getCurrentUser().getPhotoUrl().toString());
 // set navigation listener
         navigationView.setNavigationItemSelectedListener(this);
+        tabLayout=findViewById(R.id.tabLayout);
+        if(toolbar2.getVisibility()==View.VISIBLE) {
 
+        }
+//        Toast.makeText(MainPage.this, toolbar2.getVisibility(), Toast.LENGTH_SHORT).show();
+            settablayout();
 
 //        Log.d("tag","onCreate "+firebaseAuth.getCurrentUser().getEmail()+firebaseAuth.getCurrentUser().getDisplayName());
 
     }
+//
+public void settablayout() {
 
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            if (tab.getText().equals("Video")) {
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.myNavHostFragment, new VideoManagement());
+                fragmentTransaction.commit();
+            } else {
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.myNavHostFragment, new StepManagement());
+                fragmentTransaction.commit();
+            }
+
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
+    });
+}
     //Logout
     public void Logout() {
         FirebaseAuth.getInstance().signOut();
@@ -127,23 +164,44 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawer(GravityCompat.START);
         toolbar2.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         switch (item.getItemId()) {
             case R.id.profile:
-                Toast.makeText(MainPage.this, "Profile", Toast.LENGTH_SHORT).show();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
+//                fragmentTransaction.replace(R.id.myNavHostFragment, new PlayVideo());
+//                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
+                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
+                fragmentTransaction.commit();
+                progressBar.setVisibility(View.GONE);
                 break;
             case R.id.myVideos:
                 toolbar2.setVisibility(View.VISIBLE);
-//                toolbar.inflateMenu(R.menu.manage_menu);
+                toolbar.inflateMenu(R.menu.manage_menu);
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                progressBar.setVisibility(View.GONE);
+              if(tabLayout.getSelectedTabPosition()==0)
+              {
+                  fragmentTransaction.replace(R.id.myNavHostFragment, new VideoManagement());
+              }else {
+                  fragmentTransaction.replace(R.id.myNavHostFragment, new StepManagement());
+
+              }
+                fragmentTransaction.commit();
                 break;
             case R.id.premium:
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid());
+//                ref.add
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        progressBar.setVisibility(View.GONE);
                         User user = dataSnapshot.getValue(User.class);
 //
-                        if(user==null||user.getType()!="Premium"){
+                        if(user==null||!user.getType().equals("Premium")){
                             startActivity(new Intent(getApplicationContext(),Pay.class));
                             Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
                         }
@@ -152,6 +210,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                             fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.myNavHostFragment, new premium());
                             fragmentTransaction.commit();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
 
@@ -159,7 +218,8 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                })
+                ;
 
 //                    FirebaseDatabase database = FirebaseDatabase.getInstance();
 //                    final DatabaseReference users = database.getReference("Users");
@@ -168,10 +228,28 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 
                 break;
 
+            case R.id.history:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.myNavHostFragment, new History());
+                fragmentTransaction.commit();
+                progressBar.setVisibility(View.GONE);
+                break;
+
+            case R.id.favorite:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.myNavHostFragment, new AddToFavorite());
+                fragmentTransaction.commit();
+                progressBar.setVisibility(View.GONE);
+                break;
+
             case R.id.Logout:
                 Logout();
                 break;
         }
         return false;
     }
+
+
 }

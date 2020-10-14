@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.braintreepayments.cardform.view.CardForm;
-import com.google.android.gms.common.internal.DialogRedirect;
+import com.example.chcook.Domain.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

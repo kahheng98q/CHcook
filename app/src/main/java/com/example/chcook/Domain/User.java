@@ -1,4 +1,4 @@
-package com.example.chcook;
+package com.example.chcook.Domain;
 
 public class User {
     private String favorite;
