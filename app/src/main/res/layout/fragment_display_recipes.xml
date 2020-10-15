@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KahHeng.EndUser.Home">
+    tools:context=".KahHeng.EndUser.DisplayRecipes">
 
     <!-- TODO: Update blank fragment layout -->
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeRecyclerView"
+        android:id="@+id/RecipeRecyclevView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+        />
 </FrameLayout>

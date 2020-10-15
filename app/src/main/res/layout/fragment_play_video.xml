@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".KahHeng.EndUser.PlayVideo">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/videoImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Favorite"
+            app:layout_constraintStart_toEndOf="@+id/txtRating"
+            app:layout_constraintTop_toBottomOf="@+id/btnFavorite" />
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="APP"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videoImage" />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Date"
+            app:layout_constraintStart_toEndOf="@+id/txtView"
+            app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+        <TextView
+            android:id="@+id/txtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="View"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+        <ImageButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:drawable/btn_star"
+            android:src="@android:drawable/ic_input_add"
+            app:layout_constraintStart_toEndOf="@+id/txtRate"
+            app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+        <TextView
+            android:id="@+id/txtRate"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="8.2"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtView" />
+
+        <TextView
+            android:id="@+id/txtRating"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Review"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtRate" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <ImageView
+            android:id="@+id/userHead"
+            android:layout_width="62dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/txtUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/userHead"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userHead" />
+
+        <ImageButton
+            android:id="@+id/btnReport"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_report_black_24dp"
+            app:layout_constraintStart_toEndOf="@+id/btnFavorite"
+            app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+        <TextView
+            android:id="@+id/txtReportText"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Report"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/btnReport" />
+
+        <TextView
+            android:id="@+id/txtDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -1,9 +1,8 @@
-package com.example.chcook
+package com.example.chcook.KahHeng.EndUser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.example.chcook.R
 
 class MainActivity : AppCompatActivity() {
 

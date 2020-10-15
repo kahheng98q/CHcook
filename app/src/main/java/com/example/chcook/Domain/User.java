@@ -1,10 +1,11 @@
-package com.example.chcook;
+package com.example.chcook.Domain;
 
 public class User {
     private String favorite;
     private String gmail;
     private String history;
     private String like;
+
     private String video;
     private String type;
 

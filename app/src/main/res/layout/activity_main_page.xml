@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c2"
-    tools:context=".MainPage"
+    tools:context=".KahHeng.EndUser.MainPage"
     tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +50,7 @@
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Picture" />
+                        android:text="Recipe" />
 
                 </com.google.android.material.tabs.TabLayout>
             </androidx.appcompat.widget.Toolbar>

@@ -1,4 +1,4 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.chcook.R;
 import com.example.chcook.YangJie.StaffLoginAndManagement.StaffLogin;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

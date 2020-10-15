@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/video"
-        android:title="Video"
+        android:title="Add Video"
         android:orderInCategory="100"
         app:showAsAction="never"/>
     <item
         android:id="@+id/step"
-        android:title="Picture"
+        android:title="Add Recipe"
         android:orderInCategory="100"
         app:showAsAction="never"/>
 </menu>

@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StepManagement">
+    tools:context=".KahHeng.EndUser.StepManagement">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Step" />
+        android:scrollbars="vertical"
+        />
 
 </FrameLayout>
