@@ -14,17 +14,17 @@
         android:theme="@style/AppTheme">
         <activity android:name=".YangJie.StaffLoginAndManagement.StaffRegistration"></activity>
         <activity android:name=".YangJie.StaffLoginAndManagement.StaffLogin" />
-        <activity android:name=".Pay" />
-        <activity android:name=".MainPage" />
-        <activity android:name=".Register" />
-        <activity android:name=".Login">
+        <activity android:name=".KahHeng.EndUser.Pay" />
+        <activity android:name=".KahHeng.EndUser.MainPage" />
+        <activity android:name=".KahHeng.EndUser.Register" />
+        <activity android:name=".KahHeng.EndUser.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".KahHeng.EndUser.MainActivity" />
     </application>
 
 </manifest>

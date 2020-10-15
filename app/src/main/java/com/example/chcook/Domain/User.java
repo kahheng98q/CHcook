@@ -5,6 +5,7 @@ public class User {
     private String gmail;
     private String history;
     private String like;
+
     private String video;
     private String type;
 

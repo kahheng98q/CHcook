@@ -1,8 +1,10 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.chcook.R;
 
 public class Register extends AppCompatActivity {
 

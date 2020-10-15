@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c2"
-    tools:context=".MainPage"
+    tools:context=".KahHeng.EndUser.MainPage"
     tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout

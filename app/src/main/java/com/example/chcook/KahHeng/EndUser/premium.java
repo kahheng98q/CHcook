@@ -1,4 +1,4 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
 
 import android.Manifest;
@@ -22,6 +22,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.example.chcook.R;
 
 import java.util.ArrayList;
 import java.util.Locale;

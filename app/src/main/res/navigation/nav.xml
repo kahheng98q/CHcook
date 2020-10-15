@@ -6,7 +6,7 @@
     app:startDestination="@id/home">
     <fragment
         android:id="@+id/home"
-        android:name="com.example.chcook.Home"
+        android:name="com.example.chcook.KahHeng.EndUser.Home"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/premium"
-        android:name="com.example.chcook.premium"
+        android:name="com.example.chcook.KahHeng.EndUser.premium"
         android:label="fragment_premium"
         tools:layout="@layout/fragment_premium" />
 </navigation>

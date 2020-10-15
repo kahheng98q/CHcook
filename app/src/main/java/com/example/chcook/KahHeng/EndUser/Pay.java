@@ -1,4 +1,4 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,9 +13,13 @@ import android.widget.Toast;
 
 import com.braintreepayments.cardform.view.CardForm;
 import com.example.chcook.Domain.User;
+import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Pay extends AppCompatActivity {
     CardForm cardForm;
@@ -57,11 +61,20 @@ public class Pay extends AppCompatActivity {
                             dialog.dismiss();
                             Toast.makeText(Pay.this, "Now you are premium user.", Toast.LENGTH_SHORT).show();
                             final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                            final DatabaseReference users = database.getReference("Users");
+//                            users.orderByChild(firebaseAuth.getCurrentUser().getEmail());
                             DatabaseReference ref = database.getReference("Users");
 
-                            DatabaseReference postsRef = ref.child(firebaseAuth.getCurrentUser().getUid());
 
-                            postsRef.setValue(new User("Premium"));
+                            Map<String, Object> premiumUpdates = new HashMap<>();
+                            premiumUpdates.put("type", "premium");
+                            ref.orderByChild("Gmail").equalTo(firebaseAuth.getCurrentUser().getEmail());
+
+//                            DatabaseReference ref = database.getReference("Users");
+
+//                            DatabaseReference postsRef = ref.orderByChild(firebaseAuth.getCurrentUser().getEmail());
+
+//                            users.setValue(new User("Premium"));
                             startActivity(new Intent(getApplicationContext(),MainPage.class));
                         }
                     });

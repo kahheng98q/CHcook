@@ -1,4 +1,4 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
 
 import android.content.Intent;
@@ -22,9 +22,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.chcook.Domain.User;
+import com.example.chcook.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -46,6 +50,8 @@ public class UploadVideo extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private VideoView vv;
     private MediaController mc;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
     public static final int Google_Sign_In_Code = 10005;
 
     public UploadVideo() {
@@ -58,7 +64,7 @@ public class UploadVideo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view=inflater.inflate(R.layout.fragment_upload_video, container, false);
-        String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        firebaseAuth= FirebaseAuth.getInstance();
         StorageReference storageReference= FirebaseStorage.getInstance().getReference();
         select=view.findViewById(R.id.button);
         up=view.findViewById(R.id.button2);
@@ -89,7 +95,13 @@ public class UploadVideo extends Fragment {
             }
         });
         vv.start();
-        videoRef=storageReference.child("/video/"+uid+"userdemo2.mp4");
+
+        String email=firebaseAuth.getCurrentUser().getEmail();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference users = database.getReference("Users");
+        users.orderByChild(email);
+
+        videoRef=storageReference.child("/video/"+email+"/"+email+".mp4");
 
         up.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +126,7 @@ public class UploadVideo extends Fragment {
                     Toast.makeText(getActivity(), "Sucess", Toast.LENGTH_SHORT).show();
                     fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.myNavHostFragment, new StepManagement());
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
                     fragmentTransaction.commit();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -124,12 +136,13 @@ public class UploadVideo extends Fragment {
                 }
             });
         }else{
-            Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please Select Video", Toast.LENGTH_SHORT).show();
         }
 
 
     }
-    public void uploadvideo(){
+
+    private void uploadvideo(){
         Intent intent=new Intent();
         intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);

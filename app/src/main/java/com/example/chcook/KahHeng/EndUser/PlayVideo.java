@@ -1,4 +1,4 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
 
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
+import com.example.chcook.R;
 
 import java.util.ArrayList;
 

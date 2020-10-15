@@ -1,36 +1,53 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chcook.DA.Adapter;
 import com.example.chcook.Domain.Videos;
+import com.example.chcook.R;
 
 import java.util.ArrayList;
 
-public class DisplayRecipes extends Fragment {
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class VideoManagement extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
-    public DisplayRecipes() {
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+
+    public VideoManagement() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view =inflater.inflate(R.layout.fragment_display_recipes, container, false);
+        view= inflater.inflate(R.layout.fragment_video_management, container, false);
+
         ArrayList<Videos> videos =new ArrayList<>();
         videos.add(new Videos("1","Fried Rice","3K","01/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FChicken%20rice.PNG?alt=media&token=d21f8eed-8c2a-4cd7-84a0-e022f5e2facc","Heng"));
         videos.add(new Videos("2","Chicken Rice","3K","02/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Ffried%20rice.PNG?alt=media&token=305ca511-81ed-4f56-a931-83a481a9aada","Heng"));
@@ -38,15 +55,47 @@ public class DisplayRecipes extends Fragment {
         videos.add(new Videos("4","Mee Sedap","3K","04/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Fmee.PNG?alt=media&token=75394ace-33e3-41c6-9a52-5f78bbed65dd","Heng"));
         videos.add(new Videos("5","Salt chicken","3K","05/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FSalt%20chicken.PNG?alt=media&token=e16af538-c3fe-4fb8-aedd-d3871ff632ec","Heng"));
 
-        recyclerView=view.findViewById(R.id.RecipeRecyclevView);
+        recyclerView=view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         adapter=new Adapter(getContext(),videos);
         layoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        getActivity().setTitle("Recipe");
+
         return view;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu( Menu menu, MenuInflater inflater) {
+
+        getActivity().getMenuInflater().inflate(R.menu.manage_menu,menu);
 
 
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item) {
+//        MenuItem AddVideoItem=menu.findItem(R.id.video);
+//        MenuItem AddStepItem=menu.findItem(R.id.step);
+        switch (item.getItemId()) {
+            case R.id.step:
+                Log.d("test","step");
+                break;
+            case R.id.video:
+
+                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
+                fragmentTransaction.commit();
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

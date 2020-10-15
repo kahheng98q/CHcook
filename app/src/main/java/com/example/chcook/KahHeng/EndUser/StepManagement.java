@@ -1,18 +1,24 @@
-package com.example.chcook;
+package com.example.chcook.KahHeng.EndUser;
 
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chcook.DA.Adapter;
 import com.example.chcook.Domain.Videos;
+import com.example.chcook.R;
 
 import java.util.ArrayList;
 
@@ -20,12 +26,13 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VideoManagement extends Fragment {
+public class StepManagement extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
-    public VideoManagement() {
+
+    public StepManagement() {
         // Required empty public constructor
     }
 
@@ -34,8 +41,8 @@ public class VideoManagement extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_video_management, container, false);
 
+        view= inflater.inflate(R.layout.fragment_step_management, container, false);
         ArrayList<Videos> videos =new ArrayList<>();
         videos.add(new Videos("1","Fried Rice","3K","01/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FChicken%20rice.PNG?alt=media&token=d21f8eed-8c2a-4cd7-84a0-e022f5e2facc","Heng"));
         videos.add(new Videos("2","Chicken Rice","3K","02/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Ffried%20rice.PNG?alt=media&token=305ca511-81ed-4f56-a931-83a481a9aada","Heng"));
@@ -51,6 +58,22 @@ public class VideoManagement extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu( Menu menu, MenuInflater inflater) {
+
+        getActivity().getMenuInflater().inflate(R.menu.manage_menu,menu);
+        MenuItem AddVideoItem=menu.findItem(R.id.video);
+        MenuItem AddStepItem=menu.findItem(R.id.step);
+
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }
