@@ -1,22 +1,23 @@
 package com.example.chcook.Domain;
 
 public class User {
-    private String favorite;
-    private String gmail;
-    private String history;
-    private String like;
-
-    private String video;
-    private String type;
+    private String favorite="";
+    private String email="";
+    private String history="";
+    private String like="";
+    private String video="";
+    private String type="";
 
     public User() {
     }
+
     public User(String type) {
         this.type=type;
     }
-    public User(String favorite, String gmail, String history, String like, String video,String type) {
+
+    public User(String favorite, String email, String history, String like, String video,String type) {
         this.favorite = favorite;
-        this.gmail = gmail;
+        this.email = email;
         this.history = history;
         this.like = like;
         this.video = video;
@@ -37,11 +38,11 @@ public class User {
     public String getFavorite() {
         return favorite;
     }
-    public String getGmail() {
-        return gmail;
+    public String getEmail() {
+        return email;
     }
-    public void setGmail(String gmail) {
-        this.gmail = gmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
     public String getVideo() {
         return video;

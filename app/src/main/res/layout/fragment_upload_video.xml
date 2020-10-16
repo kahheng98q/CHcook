@@ -31,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@+id/progressBar1" />
 
         <EditText
-            android:id="@+id/name2"
+            android:id="@+id/desc"
             android:layout_width="335dp"
             android:layout_height="47dp"
             android:layout_marginStart="8dp"
@@ -58,7 +58,7 @@
             android:layout_marginTop="32dp"
             android:text="select"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name2" />
+            app:layout_constraintTop_toBottomOf="@+id/desc" />
 
         <Button
             android:id="@+id/button2"
@@ -72,7 +72,7 @@
             android:text="Upload"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/name2" />
+            app:layout_constraintTop_toBottomOf="@+id/desc" />
 
         <VideoView
             android:id="@+id/videoImage"

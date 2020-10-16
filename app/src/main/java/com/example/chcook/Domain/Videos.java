@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import java.net.URI;
 
 public class Videos {
+
     private String videoID;
     private String name;
     private String desc;
@@ -14,14 +15,14 @@ public class Videos {
     private String image;
     private String user;
 
-//    public Videos(String videoID, String name, String desc, String view, String video, String date) {
-//        this.videoID = videoID;
-//        this.name = name;
-//        this.desc = desc;
-//        this.view = view;
-//        this.video = video;
-//        this.date = date;
-//    }
+    public Videos() {
+    }
+    public Videos(String videoID,String name, String video, String date) {
+        this.videoID = videoID;
+        this.name = name;
+        this.video = video;
+        this.date = date;
+    }
 
     public Videos(String videoID, String name, String view, String date, String image,String user) {
         this.videoID = videoID;

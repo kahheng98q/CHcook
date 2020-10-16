@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,9 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Pay extends AppCompatActivity {
-    CardForm cardForm;
-    Button btnPay;
-    AlertDialog.Builder alertBuilder;
+    private CardForm cardForm;
+    private Button btnPay;
+    private AlertDialog.Builder alertBuilder;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -47,6 +48,7 @@ public class Pay extends AppCompatActivity {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (cardForm.isValid()) {
                     alertBuilder = new AlertDialog.Builder(Pay.this);
                     alertBuilder.setTitle("Confirm before purchase");
@@ -60,21 +62,14 @@ public class Pay extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             Toast.makeText(Pay.this, "Now you are premium user.", Toast.LENGTH_SHORT).show();
+                            String uid=firebaseAuth.getCurrentUser().getUid();
                             final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                            final DatabaseReference users = database.getReference("Users");
-//                            users.orderByChild(firebaseAuth.getCurrentUser().getEmail());
-                            DatabaseReference ref = database.getReference("Users");
-
+                            DatabaseReference ref = database.getReference("Users").child(uid);
 
                             Map<String, Object> premiumUpdates = new HashMap<>();
-                            premiumUpdates.put("type", "premium");
-                            ref.orderByChild("Gmail").equalTo(firebaseAuth.getCurrentUser().getEmail());
+                            premiumUpdates.put("type", "Premium");
+                            ref.updateChildren(premiumUpdates);
 
-//                            DatabaseReference ref = database.getReference("Users");
-
-//                            DatabaseReference postsRef = ref.orderByChild(firebaseAuth.getCurrentUser().getEmail());
-
-//                            users.setValue(new User("Premium"));
                             startActivity(new Intent(getApplicationContext(),MainPage.class));
                         }
                     });

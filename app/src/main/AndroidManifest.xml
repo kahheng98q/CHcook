@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".YangJie.StaffLoginAndManagement.StaffRegistration"></activity>
+        <activity android:name=".KahHeng.EndUser.EditVideo"></activity>
+        <activity android:name=".YangJie.StaffLoginAndManagement.StaffRegistration" />
         <activity android:name=".YangJie.StaffLoginAndManagement.StaffLogin" />
         <activity android:name=".KahHeng.EndUser.Pay" />
         <activity android:name=".KahHeng.EndUser.MainPage" />
