@@ -17,14 +17,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.chcook.DA.HomeAdapter;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -35,7 +44,10 @@ public class Home extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
-
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+    private ArrayList<Videos> videos;
+    private ProgressBar progressBar;
     public Home() {
         // Required empty public constructor
     }
@@ -47,12 +59,53 @@ public class Home extends Fragment {
         ArrayAdapter<String> ad;
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_home, container, false);
-        ArrayList<Videos> videos =new ArrayList<>();
-        videos.add(new Videos("1","Fried Rice","3K","01/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FChicken%20rice.PNG?alt=media&token=d21f8eed-8c2a-4cd7-84a0-e022f5e2facc","Heng"));
-        videos.add(new Videos("2","Chicken Rice","3K","02/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Ffried%20rice.PNG?alt=media&token=305ca511-81ed-4f56-a931-83a481a9aada","Heng"));
-        videos.add(new Videos("3","Fried noodle","3K","03/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FSpagetti.PNG?alt=media&token=f8ec1058-0478-4594-bb56-0921cbc6dff8","Heng"));
-        videos.add(new Videos("4","Mee Sedap","3K","04/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Fmee.PNG?alt=media&token=75394ace-33e3-41c6-9a52-5f78bbed65dd","Heng"));
-        videos.add(new Videos("5","Salt chicken","3K","05/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FSalt%20chicken.PNG?alt=media&token=e16af538-c3fe-4fb8-aedd-d3871ff632ec","Heng"));
+        database = FirebaseDatabase.getInstance();
+        videos =new ArrayList<>();
+        progressBar=view.findViewById(R.id.progressBarHome);
+        progressBar.setVisibility(View.VISIBLE);
+
+        DatabaseReference videoref = database.getReference("Videos");
+        videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                progressBar.setVisibility(View.VISIBLE);
+//                System.out.println(dataSnapshot.getKey());
+                if(dataSnapshot.exists()){
+                    String name= dataSnapshot.child("name").getValue(String.class);
+                    String url= dataSnapshot.child("URL").getValue(String.class);
+                    String desc= dataSnapshot.child("description").getValue(String.class);
+                    Long date= dataSnapshot.child("Uploaddate").getValue(Long.class);
+//                Log.d("test", dataSnapshot.getKey());
+                    Long formatedDate = Long.valueOf(date);
+                    videos.add(new Videos(dataSnapshot.getKey(),name, url, getDate(formatedDate)));
+
+                    adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         recyclerView=view.findViewById(R.id.homeRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -92,5 +145,12 @@ public class Home extends Fragment {
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
+    }
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("dd-MM-yyyy HH:mm", cal).toString();
+        return date;
     }
 }

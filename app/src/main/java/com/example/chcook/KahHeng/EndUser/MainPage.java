@@ -34,6 +34,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,8 +57,15 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         setContentView(R.layout.activity_main_page);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        String uid=firebaseAuth.getCurrentUser().getUid();
+        String currentemail=firebaseAuth.getCurrentUser().getEmail();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("server/saving-data/fireblog");
+        DatabaseReference ref = database.getReference("Users").child(uid);
+        Map<String, Object> addemail = new HashMap<>();
+        addemail.put("email", currentemail);
+
+        ref.updateChildren(addemail);
+//        ref.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
 //
 //        DatabaseReference postsRef = ref.child("Users");
 //
@@ -63,7 +73,8 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 //        newPostRef.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
 //
 //// We can also chain the two calls together
-//        postsRef.push().setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
+
+//        ref.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null,null));
 ////set navigation
         progressBar = findViewById(R.id.progressBar);
         drawerLayout = findViewById(R.id.drawer);
@@ -98,7 +109,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 
         username.setText(firebaseAuth.getCurrentUser().getDisplayName());
         email.setText(firebaseAuth.getCurrentUser().getEmail());
-        Log.d("tag", "onCreate " + firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+//        Log.d("tag", "onCreate " + firebaseAuth.getCurrentUser().getPhotoUrl().toString());
 // set navigation listener
 //        toolbar.inflateMenu(R.menu.manage_menu);
         navigationView.setNavigationItemSelectedListener(this);
@@ -199,22 +210,20 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                     fragmentTransaction.replace(R.id.myNavHostFragment, new VideoManagement());
                 } else {
                     fragmentTransaction.replace(R.id.myNavHostFragment, new StepManagement());
-
                 }
                 fragmentTransaction.commit();
                 break;
             case R.id.premium:
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid());
 //                DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid());
-                DatabaseReference ref = database.getReference("Users");
-                ref.orderByChild("Gmail").equalTo(firebaseAuth.getCurrentUser().getEmail()).
-                        addListenerForSingleValueEvent(new ValueEventListener() {
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 progressBar.setVisibility(View.GONE);
-                                User user = dataSnapshot.getValue(User.class);
-//
-                                if (user == null || !user.getType().equals("Premium")) {
+//                                User user = dataSnapshot.getValue(User.class);
+                               String type= dataSnapshot.child("type").getValue(String.class);
+                                if (type==null ||!type.equals("Premium")) {
                                     startActivity(new Intent(getApplicationContext(), Pay.class));
                                     Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -230,8 +239,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                             }
-                        })
-                ;
+                        });
 
 //                    FirebaseDatabase database = FirebaseDatabase.getInstance();
 //                    final DatabaseReference users = database.getReference("Users");
