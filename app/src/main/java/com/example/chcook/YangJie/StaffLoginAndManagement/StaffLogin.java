@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.chcook.Login;
+import com.example.chcook.KahHeng.EndUser.Login;
 import com.example.chcook.R;
 
 import com.example.chcook.YangJie.StaffMainPage;
