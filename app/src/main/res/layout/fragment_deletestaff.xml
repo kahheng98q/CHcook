@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Spinner
+        android:id="@+id/spinnerStaffName"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/checkStaffImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerStaffName"
+        app:layout_constraintStart_toStartOf="@+id/spinnerStaffName"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerStaffName"
+        android:src="@drawable/prof_staff"/>
+
+    <TextView
+        android:id="@+id/checkEmail"
+        android:layout_width="246dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="20dp"
+        android:text="Email:"
+        app:layout_constraintBottom_toTopOf="@+id/checkStaffName"
+        app:layout_constraintEnd_toEndOf="@+id/checkStaffImage"
+        app:layout_constraintStart_toStartOf="@+id/checkStaffImage"
+        app:layout_constraintTop_toBottomOf="@+id/checkStaffImage"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <TextView
+        android:id="@+id/checkStaffName"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginBottom="32dp"
+        android:text="Name:"
+        app:layout_constraintBottom_toTopOf="@+id/checkStaffStatus"
+        app:layout_constraintEnd_toEndOf="@+id/checkEmail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/checkEmail"
+        app:layout_constraintTop_toBottomOf="@+id/checkEmail" />
+
+    <TextView
+        android:id="@+id/checkStaffStatus"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="328dp"
+        android:text="Status:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/checkStaffName"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/checkStaffName" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkStaffStatus"
+        app:layout_constraintVertical_bias="0.076"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btnDismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dismiss the staff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerReason" />
+
+    <Spinner
+        android:id="@+id/spinnerReason"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/txtId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnDismiss"
+        app:layout_constraintStart_toStartOf="@+id/btnDismiss"
+        app:layout_constraintTop_toBottomOf="@+id/btnDismiss" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
