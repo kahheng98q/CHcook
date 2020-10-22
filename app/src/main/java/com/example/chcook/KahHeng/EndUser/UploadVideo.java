@@ -102,12 +102,14 @@ public class UploadVideo extends Fragment {
         vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                mp.start();
                 mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                     @Override
                     public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
                         mc = new MediaController(getActivity());
                         vv.setMediaController(mc);
                         mc.setAnchorView(vv);
+                        mp.start();
                     }
                 });
             }
@@ -168,6 +170,7 @@ public class UploadVideo extends Fragment {
                                     addURL.put("URL", downloadUrl);
                                     addURL.put("name",name);
                                     addURL.put("description",desc);
+                                    addURL.put("view",0);
                                     addURL.put("Uploaddate",getCurrentTimeStamp());
 //                                    addURL.put("id",videoid);
                                     ref.updateChildren(addid);

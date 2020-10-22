@@ -59,11 +59,16 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         firebaseAuth = FirebaseAuth.getInstance();
         String uid=firebaseAuth.getCurrentUser().getUid();
         String currentemail=firebaseAuth.getCurrentUser().getEmail();
+        String name= firebaseAuth.getCurrentUser().getDisplayName();
+        String image= firebaseAuth.getCurrentUser().getPhotoUrl().toString();
+
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Users").child(uid);
         Map<String, Object> addemail = new HashMap<>();
-        addemail.put("email", currentemail);
-
+        addemail.put("Email", currentemail);
+        addemail.put("Name", name);
+        addemail.put("Image",image);
         ref.updateChildren(addemail);
 //        ref.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
 //
@@ -223,6 +228,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                                 progressBar.setVisibility(View.GONE);
 //                                User user = dataSnapshot.getValue(User.class);
                                String type= dataSnapshot.child("type").getValue(String.class);
+                                Log.d("test", "AAAAAAAAA");
                                 if (type==null ||!type.equals("Premium")) {
                                     startActivity(new Intent(getApplicationContext(), Pay.class));
                                     Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();

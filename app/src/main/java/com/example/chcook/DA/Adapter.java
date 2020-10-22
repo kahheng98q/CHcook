@@ -56,7 +56,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RViewHolder holder, int position) {
         final Videos video = videos.get(position);
-        if (!video.getVideo().equals("")) {
+        if (!video.getVideo().isEmpty()||!video.getVideo().equals("")) {
             Glide.with(context)
                     .asBitmap()
                     .load(video.getVideo())

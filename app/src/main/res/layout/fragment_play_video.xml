@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/textViewFav"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -107,7 +107,7 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewFav" />
 
         <ImageView
             android:id="@+id/userHead"
@@ -160,7 +160,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:text="Report"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintStart_toEndOf="@+id/textViewFav"
             app:layout_constraintTop_toBottomOf="@+id/btnReport" />
 
         <TextView
