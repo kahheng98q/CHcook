@@ -1,97 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <group android:checkableBehavior="single">
-            <item
-                android:id="@+id/nav_home"
-                android:icon="@drawable/ic_home_black_24dp"
-                android:title="Home" />
+<!--    <group android:checkableBehavior="single">-->
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home" />
 
 
-        </group>
-        <group android:checkableBehavior="single">
-            <item android:title="Staff Account">
-                <menu>
-                    <item
-                        android:id="@+id/nav_add_staff"
-                        android:icon="@drawable/add_staff_24dp"
-                        android:title="Add New Staff"></item>
-                    <item
-                        android:id="@+id/nav_update_staff"
-                        android:icon="@drawable/update_staff_24dp"
-                        android:title="Update Staff"></item>
-                    <item
-                        android:id="@+id/nav_delete_staff"
-                        android:icon="@drawable/delete_staff_24dp"
-                        android:title="Delete Staff"></item>
-                </menu>
-            </item>
+        <item android:title="Staff Account">
+            <menu>
+                <item
+                    android:id="@+id/nav_add_staff"
+                    android:icon="@drawable/add_staff_24dp"
+                    android:title="Add New Staff"></item>
+                <item
+                    android:id="@+id/nav_update_staff"
+                    android:icon="@drawable/update_staff_24dp"
+                    android:title="Update Staff"></item>
+                <item
+                    android:id="@+id/nav_delete_staff"
+                    android:icon="@drawable/delete_staff_24dp"
+                    android:title="Delete Staff"></item>
+            </menu>
+        </item>
 
-        </group>
-        <group android:checkableBehavior="single">
-            <item android:title="Banning user and video">
-                <menu>
-                    <item
-                        android:id="@+id/nav_ban_user"
-                        android:icon="@drawable/ban_user_24dp"
-                        android:title="Ban User"></item>
-                    <item
-                        android:id="@+id/nav_ban_video"
-                        android:icon="@drawable/ban_video_24dp"
-                        android:title="Ban Video"></item>
-                </menu>
 
-            </item>
-        </group>
-        <group android:checkableBehavior="single">
-            <item android:title="Manage Payment">
-                <menu>
-                    <item
-                        android:id="@+id/nav_display_income"
-                        android:icon="@drawable/income_status_24dp"
-                        android:title="Income Status"></item>
-                    <item
-                        android:id="@+id/nav_upd_price"
-                        android:icon="@drawable/update_price_24dp"
-                        android:title="Update Price"></item>
-                </menu>
-            </item>
-        </group>
-        <group android:checkableBehavior="single">
-            <item android:title="Report Generate">
-                <menu>
-                    <item
-                        android:id="@+id/nav_report_rate"
-                        android:icon="@drawable/rate_24dp"
-                        android:title="Video Rating Report"></item>
-                    <item
-                        android:id="@+id/nav_report_view"
-                        android:icon="@drawable/view_24dp"
-                        android:title="Video View Report"></item>
-                    <item
-                        android:id="@+id/nav_report_type"
-                        android:icon="@drawable/type_24dp"
-                        android:title="Video Type Report"></item>
+        <item android:title="Banning user and video">
+            <menu>
+                <item
+                    android:id="@+id/nav_ban_user"
+                    android:icon="@drawable/ban_user_24dp"
+                    android:title="Ban User"></item>
+                <item
+                    android:id="@+id/nav_ban_video"
+                    android:icon="@drawable/ban_video_24dp"
+                    android:title="Ban Video"></item>
+            </menu>
 
-                </menu>
-            </item>
-        </group>
+        </item>
 
-        <group android:checkableBehavior="single">
-            <item android:title="Profile">
-                <menu>
-                    <item
-                        android:id="@+id/nav_personal_acc"
-                        android:icon="@drawable/personal_acc_24dp"
-                        android:title="Manage My Account"></item>
-                    <item
-                        android:id="@+id/nav_logout"
-                        android:icon="@drawable/log_out_24dp"
-                        android:title="Log Out" />
-                </menu>
-            </item>
 
-        </group>
+        <item android:title="Manage Payment">
+            <menu>
+                <item
+                    android:id="@+id/nav_display_income"
+                    android:icon="@drawable/income_status_24dp"
+                    android:title="Income Status"></item>
+                <item
+                    android:id="@+id/nav_upd_price"
+                    android:icon="@drawable/update_price_24dp"
+                    android:title="Update Price"></item>
+            </menu>
+        </item>
+
+
+        <item android:title="Report Generate">
+            <menu>
+                <item
+                    android:id="@+id/nav_report_rate"
+                    android:icon="@drawable/rate_24dp"
+                    android:title="Video Rating Report"></item>
+                <item
+                    android:id="@+id/nav_report_view"
+                    android:icon="@drawable/view_24dp"
+                    android:title="Video View Report"></item>
+                <item
+                    android:id="@+id/nav_report_type"
+                    android:icon="@drawable/type_24dp"
+                    android:title="Video Type Report"></item>
+
+            </menu>
+        </item>
+
+        <item android:title="Profile">
+            <menu>
+                <item
+                    android:id="@+id/nav_personal_acc"
+                    android:icon="@drawable/personal_acc_24dp"
+                    android:title="Manage My Account"></item>
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/log_out_24dp"
+                    android:title="Log Out" />
+            </menu>
+        </item>
+
+<!--    </group>-->
 
 
 </menu>
