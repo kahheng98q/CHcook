@@ -67,34 +67,29 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
         Glide.with(this)
                 .load(staff.getPhotoUrl().toString())
                 .into(prfStaff);
-//        prfStaff.setImageURI(staff.getPhotoUrl());
-//        getUserProfile(usernameS,emailS);
 
-
-        //load default fragment
-        fragmentManager =getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container_staff,new MainFragment_staff());
-        fragmentTransaction.commit();
+        Bundle extras = getIntent().getExtras();
+        String page="";
+        if(extras!=null){
+             page=extras.getString("page");
+        }
+        if(page.equals("banVideo")){
+            fragmentManager =getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.container_staff,new Fragment_banvideo());
+            fragmentTransaction.commit();
+        }else{
+            fragmentManager =getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.container_staff,new MainFragment_staff());
+            fragmentTransaction.commit();
+        }
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_add_staff);
+//        navigationView.setCheckedItem(R.id.nav_add_staff);
     }
 
-    private void getUserProfile(TextView name,TextView email) {
-        FirebaseUser staff = FirebaseAuth.getInstance().getCurrentUser();
-        if(staff!=null){
-
-            String un =staff.getDisplayName();
-            String e = staff.getEmail();
-//            url = staff.getPhotoUrl();
-            name.setText("123");
-            email.setText("456");
-            Toast.makeText(this,username,Toast.LENGTH_SHORT).show();
-
-        }
-    }
 
     public void onBackPressed() {
 
@@ -129,6 +124,18 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 fragmentManager =getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_staff,new Fragment_deleteStaff());
+                fragmentTransaction.commit();
+                break;
+            case R.id.nav_ban_video:
+                fragmentManager =getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_staff,new Fragment_banvideo());
+                fragmentTransaction.commit();
+                break;
+            case R.id.nav_upd_price:
+                fragmentManager =getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_staff,new Fragment_updatePrice());
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_personal_acc:

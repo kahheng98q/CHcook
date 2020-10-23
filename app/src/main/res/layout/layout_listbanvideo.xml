@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:id="@+id/banVideoParent_Layout">
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/banVideoImgCover"
+        android:src="@drawable/hh"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/banVideoTxtVideoName"
+        android:text="VideoName"
+        android:layout_toRightOf="@+id/banVideoImgCover"
+        android:layout_marginLeft="20dp"
+        android:textSize="20sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="Date"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/banVideoTxtVideoName"
+        android:id="@+id/banVideoTxtVideoUploadTime"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="txtReporter"
+        android:id="@+id/banVideoTxtReporter"
+        android:layout_toRightOf="@+id/banVideoImgCover"
+        android:layout_below="@+id/banVideoTxtVideoName"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reason"
+        android:id="@+id/banVideoTxtReason"
+        android:layout_toRightOf="@+id/banVideoImgCover"
+        android:layout_below="@+id/banVideoTxtReporter"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:id="@+id/banVideoTxtVideoStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/banVideoTxtVideoUploadTime"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/banVideoTxtReporter"
+        android:text="Status" />
+
+
+</RelativeLayout>

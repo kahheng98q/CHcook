@@ -15,8 +15,11 @@ public class Videos {
     private String image;
     private String user;
 
+
     public Videos() {
     }
+
+
     public Videos(String videoID,String name, String video, String date) {
         this.videoID = videoID;
         this.name = name;
@@ -41,7 +44,6 @@ public class Videos {
         this.user=user;
         this.desc=desc;
     }
-
 
     public String getVideoID() {
         return videoID;
