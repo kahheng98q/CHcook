@@ -1,6 +1,7 @@
 package com.example.chcook.KahHeng.EndUser;
 
 
+import android.graphics.Path;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -69,6 +70,7 @@ public class Home extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 progressBar.setVisibility(View.VISIBLE);
+//                Log.d("test", dataSnapshot.getKey());
 //                System.out.println(dataSnapshot.getKey());
                 if(dataSnapshot.exists()){
                     String name= dataSnapshot.child("name").getValue(String.class);
@@ -134,13 +136,14 @@ public class Home extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.i("onQueryTextChange", query);
+//                Log.i("onQueryTextChange", query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.i("onQueryTextChange", newText);
+//                Log.i("onQueryTextChange", newText);
+
                 return false;
             }
         });

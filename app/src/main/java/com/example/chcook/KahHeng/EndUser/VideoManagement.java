@@ -99,8 +99,7 @@ public class VideoManagement extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        })
-        ;
+        });
         recyclerView = view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         adapter = new Adapter(getContext(), videos);

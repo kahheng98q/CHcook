@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -24,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +36,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -44,19 +49,22 @@ public class PlayVideo extends Fragment {
     private FirebaseDatabase database;
     private View view;
     private VideoView imageView;
-//    private ImageView imageView;
+    //    private ImageView imageView;
     private ImageView userPro;
     private TextView txtView;
     private TextView txtDate;
     private TextView txtName;
     private TextView txtUser;
     private TextView txtdesc;
+    private Button btnFav;
+    private Button btnReport;
     private String url;
     private String head;
     private String key;
     private ArrayList<Videos> videos = new ArrayList<>();
     private MediaController mc;
     private ProgressBar progressBar;
+
     public PlayVideo() {
         // Required empty public constructor
     }
@@ -78,7 +86,10 @@ public class PlayVideo extends Fragment {
         txtUser = view.findViewById(R.id.txtUsername);
         txtdesc = view.findViewById(R.id.txtDesc);
         userPro = view.findViewById(R.id.userHead);
-        progressBar=view.findViewById(R.id.progressBarPlay);
+        btnFav=view.findViewById(R.id.btnFavorite);
+        btnReport=view.findViewById(R.id.btnReport);
+
+        progressBar = view.findViewById(R.id.progressBarPlay);
         progressBar.setVisibility(View.VISIBLE);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -86,6 +97,7 @@ public class PlayVideo extends Fragment {
         }
 //        head="https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Fhead.PNG?alt=media&token=23f78178-340a-49dd-8ad7-06ca772bd577";
         getVideoInform(key);
+        setUser(key);
 //        setVideo();
         imageView.start();
         imageView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -120,7 +132,12 @@ public class PlayVideo extends Fragment {
             }
         });
 
+        btnFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
 
         return view;
     }
@@ -139,14 +156,20 @@ public class PlayVideo extends Fragment {
 //        txtUser.setText(videos.get(0).getUser());
     }
 
+    private void addview() {
+
+    }
+
     private void getVideoInform(final String key) {
-        DatabaseReference videoRef = database.getReference().child("Videos").child(key);
+        final DatabaseReference videoRef = database.getReference().child("Videos").child(key);
+        setHistory(key);
+
         videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Long time = 0L;
-                    Log.d("test", "step");
+
                     if (dataSnapshot.exists()) {
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -164,6 +187,14 @@ public class PlayVideo extends Fragment {
                                 time = Long.valueOf(child.getValue().toString());
                                 txtDate.setText(getDate(time));
                             }
+                            if (child.getKey().equals("view")) {
+                                int view = 0;
+                                view = Integer.valueOf(child.getValue().toString()) + 1;
+                                txtView.setText("" + view + "View");
+                                Map<String, Object> addView = new HashMap<>();
+                                addView.put("view", view);
+                                videoRef.updateChildren(addView);
+                            }
                         }
                     }
 
@@ -177,12 +208,126 @@ public class PlayVideo extends Fragment {
         })
         ;
     }
+
     private String getDate(Long timeStamp) {
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.setTimeInMillis(timeStamp * 1000);
         android.text.format.DateFormat df = new android.text.format.DateFormat();
         String date = df.format("dd-MM-yyyy hh:mm", cal).toString();
         return date;
+    }
+
+    private long getCurrentTimeStamp() {
+        long timestamp = System.currentTimeMillis() / 1000;
+        return timestamp;
+    }
+
+    private void setHistory(String key) {
+        String uid = firebaseAuth.getCurrentUser().getUid();
+
+        DatabaseReference ref = database.getReference("Users").child(uid).child("history");
+        String Hisid = ref.push().getKey();
+        DatabaseReference videoref = database.getReference("History").child(Hisid);
+        Map<String, Object> addid = new HashMap<>();
+        addid.put(Hisid, "true");
+//                                    videoid
+        Map<String, Object> addHis = new HashMap<>();
+        addHis.put("date", getCurrentTimeStamp());
+        addHis.put("video", key);
+        ref.updateChildren(addid);
+        videoref.updateChildren(addHis);
+    }
+
+    private void setUser(final String key) {
+        DatabaseReference ref = database.getReference().child("Users");
+        ref.orderByChild("video").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                    if (child.getKey().equals("video")) {
+                        Map<String, Boolean> videoMap = (Map<String, Boolean>) child.getValue();
+
+                        for (String userVideoKey : videoMap.keySet()) {
+//                              Log.d("test", "message text:"+key);
+                            if (userVideoKey.equals(key)) {
+                                Log.d("test", "message text:" + dataSnapshot.getKey());
+                                setUserInfo(dataSnapshot.getKey());
+                                break;
+                            }
+                        }
+
+                    }
+
+                }
+//                dataSnapshot.getRef();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//                String Hisid=ref.push().getKey();
+//        DatabaseReference videoref = database.getReference("History").child(Hisid);
+//        Map<String, Object> addid = new HashMap<>();
+//        addid.put(Hisid, "true");
+////                                    videoid
+//        Map<String, Object> addHis = new HashMap<>();
+//        addHis.put("date",getCurrentTimeStamp());
+//        addHis.put("video",key);
+//        ref.updateChildren(addid);
+//        videoref.updateChildren(addHis);
+    }
+
+    private void setUserInfo(final String key) {
+        DatabaseReference userRef = database.getReference().child("Users").child(key);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    String url = "";
+                    String name = "";
+
+
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        if (child.getKey().equals("Image")) {
+                            Glide.with(getContext())
+                                    .asBitmap()
+                                    .load(child.getValue().toString())
+                                    .into(userPro);
+
+                        }
+                        if (child.getKey().equals("Name")) {
+                            name = child.getValue().toString();
+                            txtUser.setText(name);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
