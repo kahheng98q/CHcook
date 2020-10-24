@@ -1,15 +1,15 @@
-package com.example.chcook.Domain;
+package com.example.chcook.KahHeng.EndUser.Domain;
 
-public class History {
+public class Histories {
     private String historyId="";
     private String historyDate="";
     private Videos videos=new Videos();
 
-    public History(){
+    public Histories(){
 
     }
 
-    public History(String historyId, String historyDate, Videos videos) {
+    public Histories(String historyId, String historyDate, Videos videos) {
         this.historyId = historyId;
         this.historyDate = historyDate;
         this.videos = videos;
