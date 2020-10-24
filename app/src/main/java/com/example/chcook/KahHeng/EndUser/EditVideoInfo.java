@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditVideo extends AppCompatActivity {
+public class EditVideoInfo extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private ImageView imageView;
@@ -34,11 +32,11 @@ public class EditVideo extends AppCompatActivity {
     private EditText desctxt;
     private Button editBtn;
     private String key="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_video);
-//
+        setContentView(R.layout.activity_edit_video_info);
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         imageView = findViewById(R.id.editvideoImage);
@@ -71,7 +69,9 @@ public class EditVideo extends AppCompatActivity {
 
             }
         });
+
     }
+
     private void getVideoInform(final String key) {
         DatabaseReference videoRef = database.getReference().child("Videos").child(key);
         videoRef.addListenerForSingleValueEvent(new ValueEventListener() {

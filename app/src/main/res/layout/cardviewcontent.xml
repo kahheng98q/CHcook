@@ -52,7 +52,7 @@
 
             <TextView
                 android:id="@+id/textViewAddress"
-                android:layout_width="278dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewName"
                 android:layout_marginStart="26dp"
@@ -60,8 +60,20 @@
                 android:layout_marginTop="17dp"
                 android:layout_toEndOf="@+id/profilePic"
                 android:layout_toRightOf="@+id/profilePic"
-                android:text="txtEmail"
-               />
+                android:text="txtEmail" />
+
+            <ImageButton
+                android:id="@+id/btnMultiFunc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewAddress"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="-51dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/ic_more_vert_black_24dp" />
 
 
         </RelativeLayout>

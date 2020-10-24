@@ -41,7 +41,7 @@ public class DisplayRecipes extends Fragment {
 
         recyclerView=view.findViewById(R.id.RecipeRecyclevView);
         recyclerView.setHasFixedSize(true);
-        adapter=new Adapter(getContext(),videos);
+        adapter=new Adapter(getContext(),videos,"recipe",null);
         layoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

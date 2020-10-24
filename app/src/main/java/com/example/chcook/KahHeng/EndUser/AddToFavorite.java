@@ -25,7 +25,7 @@ public class AddToFavorite extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
-
+    private ArrayList<String> favList;
     public AddToFavorite() {
         // Required empty public constructor
     }
@@ -37,10 +37,10 @@ public class AddToFavorite extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_add_to_favorite, container, false);
         ArrayList<Videos> videos =new ArrayList<>();
-
+        favList=new ArrayList<>();
         recyclerView=view.findViewById(R.id.favoriteRecycleView);
         recyclerView.setHasFixedSize(true);
-        adapter=new Adapter(getContext(),videos);
+        adapter=new Adapter(getContext(),videos,"favorite",favList);
         layoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
