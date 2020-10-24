@@ -7,60 +7,60 @@
     android:layout_height="match_parent">
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerPrice"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        app:layout_constraintEnd_toEndOf="@+id/textView6"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintEnd_toEndOf="@+id/txtViewNewPrice"
+        app:layout_constraintStart_toStartOf="@+id/txtViewNewPrice"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewNewPrice" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="124dp"
-        android:text="Button"
+        android:text="Update"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPrice"
         app:layout_constraintHorizontal_bias="0.456"
-        app:layout_constraintStart_toStartOf="@+id/spinner"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintStart_toStartOf="@+id/spinnerPrice"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPrice" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Last Edited Date"
-        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="@+id/txtCurrentPrice"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintStart_toStartOf="@+id/txtCurrentPrice"
+        app:layout_constraintTop_toBottomOf="@+id/txtCurrentPrice" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txtEditor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Editor"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintEnd_toEndOf="@+id/txtDate"
+        app:layout_constraintStart_toStartOf="@+id/txtDate"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/txtViewNewPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
         android:text="New Price"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="@+id/txtEditor"
         app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintStart_toStartOf="@+id/txtEditor"
+        app:layout_constraintTop_toBottomOf="@+id/txtEditor" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/txtCurrentPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Current Price"

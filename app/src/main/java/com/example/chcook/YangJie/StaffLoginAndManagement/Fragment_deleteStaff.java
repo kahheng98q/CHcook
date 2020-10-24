@@ -70,8 +70,6 @@ public class Fragment_deleteStaff extends Fragment {
                        .orderByChild("StaffName")
                        .equalTo(username);
                query.addListenerForSingleValueEvent(valueEventListener);
-
-
             }
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
