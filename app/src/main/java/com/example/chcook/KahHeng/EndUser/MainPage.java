@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.Domain.User;
 import com.example.chcook.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -257,7 +256,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.history:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.myNavHostFragment, new History());
+                fragmentTransaction.replace(R.id.myNavHostFragment, new HistoryUI());
                 fragmentTransaction.commit();
                 progressBar.setVisibility(View.GONE);
                 break;

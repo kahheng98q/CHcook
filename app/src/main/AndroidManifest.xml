@@ -16,7 +16,7 @@
         <activity android:name=".YangJie.StaffMainPage"/>
         <activity android:name=".KahHeng.EndUser.Pay" />
         <activity android:name=".KahHeng.EndUser.MainPage" />
-        <activity android:name=".KahHeng.EndUser.Register" />
+        <activity android:name=".KahHeng.EndUser.Registration" />
         <activity android:name=".KahHeng.EndUser.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

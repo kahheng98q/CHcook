@@ -3,7 +3,6 @@ package com.example.chcook.KahHeng.EndUser;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,8 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chcook.DA.Adapter;
-import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.DA.Adapter;
+import com.example.chcook.KahHeng.EndUser.Domain.Videos;
 import com.example.chcook.R;
 
 import java.util.ArrayList;

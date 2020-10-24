@@ -1,16 +1,11 @@
-package com.example.chcook.DA;
+package com.example.chcook.KahHeng.EndUser.DA;
 
-import android.os.Bundle;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,16 +16,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.Domain.Videos;
-import com.example.chcook.KahHeng.EndUser.EditVideo;
-import com.example.chcook.KahHeng.EndUser.Pay;
+import com.example.chcook.KahHeng.EndUser.Domain.Videos;
 import com.example.chcook.KahHeng.EndUser.PlayVideo;
 import com.example.chcook.R;
 
 import java.util.ArrayList;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.RViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter <HomeAdapter.RViewHolder>{
     private ArrayList<Videos> videos;
     private Context context;
     public static class RViewHolder extends RecyclerView.ViewHolder{
@@ -49,9 +41,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.RViewHol
             videoLayout=itemView.findViewById(R.id.homepageLayout);
         }
     }
-    public HistoryAdapter(Context context, ArrayList<Videos> vd){
-        this.context=context;
-        this.videos=vd;
+    public HomeAdapter(Context context, ArrayList<Videos> vd){
+            this.context=context;
+            this.videos=vd;
     }
     @NonNull
     @Override
@@ -62,7 +54,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.RViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryAdapter.RViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RViewHolder holder, int position) {
         final Videos video=videos.get(position);
         if (!video.getVideo().equals("")){
             Glide.with(context)

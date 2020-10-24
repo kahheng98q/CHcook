@@ -1,8 +1,4 @@
-package com.example.chcook.Domain;
-
-import android.graphics.drawable.Drawable;
-
-import java.net.URI;
+package com.example.chcook.KahHeng.EndUser.Domain;
 
 public class Videos {
 

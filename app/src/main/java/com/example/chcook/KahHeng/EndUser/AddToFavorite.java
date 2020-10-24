@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.chcook.DA.Adapter;
-import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.DA.Adapter;
+import com.example.chcook.KahHeng.EndUser.Domain.Videos;
 import com.example.chcook.R;
 
 import java.util.ArrayList;

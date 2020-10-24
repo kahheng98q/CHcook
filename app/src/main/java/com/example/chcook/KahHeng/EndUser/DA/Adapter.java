@@ -1,4 +1,4 @@
-package com.example.chcook.DA;
+package com.example.chcook.KahHeng.EndUser.DA;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,11 +22,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.Domain.Videos;
 
-import com.example.chcook.KahHeng.EndUser.EditVideo;
 import com.example.chcook.KahHeng.EndUser.EditVideoInfo;
-import com.example.chcook.KahHeng.EndUser.Pay;
 import com.example.chcook.KahHeng.EndUser.PlayVideo;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -124,32 +121,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(context, v);
                 switch (type) {
-                    case "history":
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                switch (item.getItemId()) {
-                                    case R.id.itemHDelete:
-
-                                        String hiskey=adaptIds.get(position);
-//                                        deletehis(hiskey);
-                                        historyDA.deletehis(hiskey);
-
-                                        Toast.makeText(context, "Removed Video in History", Toast.LENGTH_SHORT).show();
-                                        adaptIds.remove(position);
-                                        videos.remove(position);
-                                        notifyItemChanged(position);
-
-                                        return true;
-                                    case R.id.itemFavorte:
-                                        return true;
-
-                                }
-                                return false;
-                            }
-                        });
-                        popupMenu.inflate(R.menu.his_menu);
-                        break;
                     case "video":
                         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
@@ -219,7 +190,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
             DatabaseReference userFavRef = database.getReference("Users").child(uid).child("Favorite").child(favkey);
             favRef.removeValue();
             userFavRef.removeValue();
-
             Toast.makeText(context, "Removed Video in Favorite List", Toast.LENGTH_SHORT).show();
         } else {
             Log.d("test", "message text:");
@@ -232,7 +202,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
 ////            Log.d("test", "message text:" + hiskey);
 //
 //            String uid = firebaseAuth.getCurrentUser().getUid();
-//            DatabaseReference favRef = database.getReference("History").child(hiskey);
+//            DatabaseReference favRef = database.getReference("Histories").child(hiskey);
 //            DatabaseReference userFavRef = database.getReference("Users").child(uid).child("history").child(hiskey);
 //
 //            favRef.removeValue();

@@ -1,7 +1,6 @@
 package com.example.chcook.KahHeng.EndUser;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,10 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.example.chcook.DA.Adapter;
-import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.DA.Adapter;
+import com.example.chcook.KahHeng.EndUser.Domain.Videos;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,12 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
-import kotlin.jvm.internal.LocalVariableReference;
 
 
 /**

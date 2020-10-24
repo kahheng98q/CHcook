@@ -29,8 +29,10 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.DA.HistoryDA;
-import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.DA.FavoriteDA;
+import com.example.chcook.KahHeng.EndUser.DA.HistoryDA;
+import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
+import com.example.chcook.KahHeng.EndUser.Domain.Videos;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -81,7 +83,8 @@ public class PlayVideo extends Fragment {
     private RadioButton rbReportTitle;
     private Button btnSendReport;
     private Button btnCancel;
-    private HistoryDA hisDA;
+    private HistoryDA historyDA;
+    private VideoDA videoDA=new VideoDA();
 
     public PlayVideo() {
         // Required empty public constructor
@@ -97,7 +100,7 @@ public class PlayVideo extends Fragment {
         view = inflater.inflate(R.layout.fragment_play_video, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        hisDA=new HistoryDA();
+        historyDA=new HistoryDA();
 //        videos.add(new Videos("1","Fried Rice","3K","01/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FChicken%20rice.PNG?alt=media&token=d21f8eed-8c2a-4cd7-84a0-e022f5e2facc","Heng","This is nice"));
         imageView = view.findViewById(R.id.videoImage);
         txtView = view.findViewById(R.id.txtView);
@@ -118,11 +121,37 @@ public class PlayVideo extends Fragment {
         if (bundle != null) {
             key = bundle.getString("key");
         }
+        videoDA=new VideoDA(key);
 //        head="https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Fhead.PNG?alt=media&token=23f78178-340a-49dd-8ad7-06ca772bd577";
-        getVideoInform(key);
+        videoDA.getVideoRealData(new VideoDA.Callvideo() {
+            @Override
+            public Videos onCallVideo(Videos video) {
+                txtdesc.setText(video.getDesc());
+                txtName.setText(video.getName());
+                imageView.setVideoURI(Uri.parse(video.getVideo()));
+                txtDate.setText(video.getDate());
+                txtView.setText(video.getView());
+
+                return video;
+            }
+        });
+
         setUser(key);
-        CheckFav();
-//        setVideo();
+        historyDA.setHistory(key);
+        final FavoriteDA favoriteDA=new FavoriteDA(key);
+        favoriteDA.CheckFav(new FavoriteDA.FavCheck() {
+            @Override
+            public Boolean onValidFav(Boolean addedList) {
+                Toast.makeText(getContext(), addedList.toString(), Toast.LENGTH_SHORT).show();
+                if(addedList==true){
+                    btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
+                    fav=addedList;
+                }
+
+                return addedList;
+            }
+        });
+
         imageView.start();
         imageView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -159,11 +188,20 @@ public class PlayVideo extends Fragment {
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Toast.makeText(getContext(), fav.toString(), Toast.LENGTH_SHORT).show();
                 if (fav == false) {
-                    setFavorite(key);
+//                    setFavorite(key);
+                    favoriteDA.setFavorite();
+                    btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
+                    fav=true;
+                    Toast.makeText(getContext(), "Add to favorite list", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    deleteFav();
+
+                    favoriteDA.deleteFav();
+                    btnFav.setBackgroundResource(R.drawable.ic_star_grey_24dp);
+                    fav=false;
+                    Toast.makeText(getContext(), "Removed from favorite list", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -196,127 +234,8 @@ public class PlayVideo extends Fragment {
         favRef.updateChildren(addFav);
         userRef.updateChildren(addFavID);
         fav = true;
-        btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
+
         Toast.makeText(getContext(), "Added Video in Favorite List", Toast.LENGTH_SHORT).show();
-    }
-
-    private void CheckFav() {
-        DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("Favorite");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        CheckVideo(child.getKey());
-                    }
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void CheckVideo(final String favKey) {
-        DatabaseReference Hisref = database.getReference("Favorite").child(favKey);
-        Hisref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                    Log.d("test", "step");
-
-//
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        if (child.getKey().equals("Video")) {
-                            if (child.getValue().equals(key)) {
-                                pfavKey = favKey;
-                                btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
-                                fav = true;
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void deleteFav() {
-        if (!pfavKey.isEmpty() || !pfavKey.equals("")) {
-            Log.d("test", "message text:" + pfavKey);
-            String uid = firebaseAuth.getCurrentUser().getUid();
-            DatabaseReference favRef = database.getReference("Favorite").child(pfavKey);
-            DatabaseReference userFavRef = database.getReference("Users").child(uid).child("Favorite").child(pfavKey);
-            favRef.removeValue();
-            userFavRef.removeValue();
-            fav = false;
-            btnFav.setBackgroundResource(R.drawable.ic_star_grey_24dp);
-            Toast.makeText(getContext(), "Removed Video in Favorite List", Toast.LENGTH_SHORT).show();
-        } else {
-            Log.d("test", "message text:");
-        }
-
-
-    }
-
-    //Set Video
-    private void getVideoInform(final String key) {
-        final DatabaseReference videoRef = database.getReference().child("Videos").child(key);
-        setHistory(key);
-
-        videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Long time = 0L;
-
-                    if (dataSnapshot.exists()) {
-
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (child.getKey().equals("URL")) {
-                                url = child.getValue().toString();
-                                imageView.setVideoURI(Uri.parse(url));
-                            }
-                            if (child.getKey().equals("name")) {
-                                txtName.setText(child.getValue().toString());
-                            }
-                            if (child.getKey().equals("description")) {
-                                txtdesc.setText(child.getValue().toString());
-                            }
-                            if (child.getKey().equals("Uploaddate")) {
-                                time = Long.valueOf(child.getValue().toString());
-                                txtDate.setText(getDate(time));
-                            }
-                            if (child.getKey().equals("view")) {
-                                int view = 0;
-                                view = Integer.valueOf(child.getValue().toString()) + 1;
-                                txtView.setText("" + view + "View");
-                                Map<String, Object> addView = new HashMap<>();
-                                addView.put("view", view);
-                                videoRef.updateChildren(addView);
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        })
-        ;
     }
 
     // Date Function
@@ -333,22 +252,7 @@ public class PlayVideo extends Fragment {
         return timestamp;
     }
 
-    //History
-    private void setHistory(String key) {
-        String uid = firebaseAuth.getCurrentUser().getUid();
-
-        DatabaseReference ref = database.getReference("Users").child(uid).child("history");
-        String Hisid = ref.push().getKey();
-        DatabaseReference videoref = database.getReference("History").child(Hisid);
-        Map<String, Object> addid = new HashMap<>();
-        addid.put(Hisid, "true");
-//                                    videoid
-        Map<String, Object> addHis = new HashMap<>();
-        addHis.put("date", getCurrentTimeStamp());
-        addHis.put("video", key);
-        ref.updateChildren(addid);
-        videoref.updateChildren(addHis);
-    }
+    //Histories
 
     //User
     private void setUser(final String key) {
@@ -488,4 +392,5 @@ public class PlayVideo extends Fragment {
         reportRef.updateChildren(addReport);
 
     }
+
 }

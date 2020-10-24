@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.chcook.R;
 
-public class Register extends AppCompatActivity {
+public class Registration extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

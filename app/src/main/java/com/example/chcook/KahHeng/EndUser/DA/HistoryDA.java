@@ -1,17 +1,10 @@
-package com.example.chcook.DA;
+package com.example.chcook.KahHeng.EndUser.DA;
 
-import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chcook.Domain.History;
-import com.example.chcook.Domain.Videos;
-import com.example.chcook.R;
+import com.example.chcook.KahHeng.EndUser.Domain.Histories;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,32 +21,24 @@ import java.util.Map;
 public class HistoryDA {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
-    private View view;
-    private ProgressBar progressBar;
-    private ArrayList<String> histories;
-    private Context context;
-    private Activity activity;
-    private ArrayList<Videos> videos;
+    private ArrayList<Histories> histories;
+//    private ArrayList<Videos> videos;
 
     public HistoryDA() {
+        connectFirebase();
+        histories=new ArrayList<>();
+    }
+    public void connectFirebase(){
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
     }
 
-    public HistoryDA(View view, Context context, Activity activity) {
-        firebaseAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        this.context=context;
-        this.view = view;
-        this.activity=activity;
+    public interface HisCallback{
+        ArrayList<Histories> onCallback(ArrayList<Histories> histories);
     }
 
-    public interface hisCallback{
-        ArrayList<History> onCallback(ArrayList<History> histories);
-    }
-
-    public void getHistoryRealData(){
-
+    public void getHistoryRealData(HisCallback hisCallback){
+        retrieveHistory(hisCallback);
     }
 
     public void setHistory(String key) {
@@ -61,7 +46,7 @@ public class HistoryDA {
 
         DatabaseReference ref = database.getReference("Users").child(uid).child("history");
         String Hisid = ref.push().getKey();
-        DatabaseReference videoref = database.getReference("History").child(Hisid);
+        DatabaseReference videoref = database.getReference("Histories").child(Hisid);
         Map<String, Object> addid = new HashMap<>();
         addid.put(Hisid, "true");
 //                                    videoid
@@ -75,10 +60,8 @@ public class HistoryDA {
     public void deletehis(String hiskey) {
 
         if (!hiskey.isEmpty() || !hiskey.equals("")) {
-//            Log.d("test", "message text:" + hiskey);
-
             String uid = firebaseAuth.getCurrentUser().getUid();
-            DatabaseReference favRef = database.getReference("History").child(hiskey);
+            DatabaseReference favRef = database.getReference("Histories").child(hiskey);
             DatabaseReference userFavRef = database.getReference("Users").child(uid).child("history").child(hiskey);
 
             favRef.removeValue();
@@ -87,31 +70,22 @@ public class HistoryDA {
         }
     }
 
-    private void retrieveHistory() {
-
-//        recyclerView = view.findViewById(R.id.HistoryRecyclevView);
-//        recyclerView.setHasFixedSize(true);
-//        adapter = new Adapter(context, videos, "history", histories);
-//        layoutManager = new LinearLayoutManager(activity);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
+    private void retrieveHistory(final HisCallback hisCallback) {
 
         DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("history");
-        progressBar = view.findViewById(R.id.progressBarHis);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        getHisDate(child.getKey());
-                        histories.add(child.getKey());
+                        getHisDate(child.getKey(),hisCallback);
+//                        histories.add(child.getKey());
                     }
 
 //                    adapter.notifyDataSetChanged();
                 }
-                progressBar.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.GONE);
             }
 
 
@@ -123,16 +97,16 @@ public class HistoryDA {
 
     }
 
-    private void getHisDate(final String key) {
+    private void getHisDate(final String key,final HisCallback hisCallback) {
 
-        DatabaseReference Hisref = database.getReference("History").child(key);
+        DatabaseReference Hisref = database.getReference("Histories").child(key);
         Hisref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
-                    Videos video = new Videos();
-
+                    Histories histories = new Histories();
+                    histories.setHistoryId(key);
 //                    String date = "";
                     String id = "";
                     Long time = 0L;
@@ -142,14 +116,15 @@ public class HistoryDA {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         if (child.getKey().equals("date")) {
                             time = Long.valueOf(child.getValue().toString());
-                            video.setDate(getDate(time));
+                            histories.setHistoryDate(getDate(time));
                         }
                         if (child.getKey().equals("video")) {
                             id = child.getValue().toString();
-                            video.setVideoID(id);
+                            histories.getVideos().setVideoID(id);
                         }
                     }
-//                    getVideoInform(video);
+                    getVideoInform(histories,hisCallback);
+
 //                        videos.add(new Videos(key,name, url, getDate(time)));
 //                    adapter.notifyDataSetChanged();
                 }
@@ -161,6 +136,42 @@ public class HistoryDA {
 
             }
         });
+    }
+
+    private void getVideoInform(final Histories HisVideo, final HisCallback hisCallback) {
+        DatabaseReference videoRef = database.getReference().child("Videos").child(HisVideo.getVideos().getVideoID());
+        videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Histories temV=HisVideo;
+                    String url = "";
+                    String name = "";
+                    Log.d("test", "step");
+
+//
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        if (child.getKey().equals("URL")) {
+                            url = child.getValue().toString();
+                            temV.getVideos().setVideo(url);
+                        }
+                        if (child.getKey().equals("name")) {
+                            name = child.getValue().toString();
+                            temV.getVideos().setName(name);
+                        }
+                    }
+                    histories.add(temV);
+                    hisCallback.onCallback(histories);
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        })
+        ;
+
     }
 
     private String getDate(Long timeStamp) {
