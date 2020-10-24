@@ -36,8 +36,9 @@ public class ShowBanVideo extends AppCompatActivity {
 
     private VideoView video;
     private String vid;
-    private Button ban,back;
+    private Button ban, back;
     private int tag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,17 +47,17 @@ public class ShowBanVideo extends AppCompatActivity {
         ban = findViewById(R.id.btnBan);
         back = findViewById(R.id.btnBack);
         Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            vid=extras.getString("videoId");
+        if (extras != null) {
+            vid = extras.getString("videoId");
         }
         ban.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builderR = new AlertDialog.Builder(ShowBanVideo.this);
-                if(tag==1){
+                if (tag == 1) {
                     builderR.setTitle("Recover this video");
                     builderR.setMessage("Are you sure want to recover?");
-                }else{
+                } else {
                     builderR.setTitle("Ban this video");
                     builderR.setMessage("Are you sure want to ban?");
                 }
@@ -68,16 +69,16 @@ public class ShowBanVideo extends AppCompatActivity {
 
                         HashMap hashMap = new HashMap();
 
-                        if(tag==1){
+                        if (tag == 1) {
                             hashMap.put("Banned", "no");
-                        }else{
+                        } else {
                             hashMap.put("Banned", "yes");
                         }
 
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
-                                Toast.makeText(ShowBanVideo.this,"Success",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ShowBanVideo.this, "Success", Toast.LENGTH_SHORT).show();
 //                                ban.setEnabled(false);
 
                             }
@@ -97,9 +98,29 @@ public class ShowBanVideo extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),StaffMainPage.class);
-                intent.putExtra("page","banVideo");
-                startActivity(intent);
+                AlertDialog.Builder builderR = new AlertDialog.Builder(ShowBanVideo.this);
+
+                builderR.setTitle("Back");
+                builderR.setMessage("Are you sure want to back?");
+
+
+                builderR.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), StaffMainPage.class);
+                        intent.putExtra("page", "banVideo");
+                        startActivity(intent);
+                    }
+                });
+                builderR.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialogR = builderR.create();
+                dialogR.show();
+
             }
         });
 
@@ -115,14 +136,14 @@ public class ShowBanVideo extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String url = dataSnapshot.child("URL").getValue(String.class);
                 String banned = dataSnapshot.child("Banned").getValue(String.class);
-                if(banned .equals("yes")){
+                if (banned.equals("yes")) {
                     ban.setText("approval");
                     ban.setTag(1);
-                }else{
+                } else {
                     ban.setText("Ban");
                     ban.setTag(2);
                 }
-                tag = (Integer)ban.getTag();
+                tag = (Integer) ban.getTag();
                 Uri uri = Uri.parse(url);
                 video.setVideoURI(uri);
                 video.start();

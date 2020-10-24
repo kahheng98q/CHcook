@@ -44,9 +44,6 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_main_page);
 
-
-//        TextView usernameS = findViewById(R.id.usernames_staff);
-//        TextView emailS=(TextView)findViewById(R.id.emails_staff);
         drawerLayout = findViewById(R.id.drawer_staff);
         navigationView = findViewById(R.id.nav_view_staff);
         toolbar = findViewById(R.id.toolbarStaff);
@@ -78,6 +75,11 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container_staff,new Fragment_banvideo());
             fragmentTransaction.commit();
+        }else if (page.equals("banUser")){
+            fragmentManager =getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.container_staff,new Fragment_banUser());
+            fragmentTransaction.commit();
         }else{
             fragmentManager =getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -103,18 +105,16 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        navigationView.setCheckedItem(item.getItemId());
+
         switch (item.getItemId()) {
 
             case R.id.nav_home:
-                //navigationView.setCheckedItem(R.id.nav_home);
                 fragmentManager =getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_staff,new MainFragment_staff());
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_add_staff:
-//                navigationView.setCheckedItem(R.id.nav_add_staff);
                 fragmentManager =getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_staff,new Fragment_addStaff());
@@ -124,6 +124,12 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 fragmentManager =getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_staff,new Fragment_deleteStaff());
+                fragmentTransaction.commit();
+                break;
+            case R.id.nav_ban_user:
+                fragmentManager =getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_staff,new Fragment_banUser());
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_ban_video:
