@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:id="@+id/banUserParent_Layout">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/banUserProfile"
+        android:src="@drawable/hh"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name - Banned"
+        android:layout_toRightOf="@+id/banUserProfile"
+        android:layout_marginLeft="25dp"
+        android:id="@+id/banUserName"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/banUserName"
+        android:layout_toRightOf="@+id/banUserProfile"
+        android:text="upload abc video"
+        android:id="@+id/banUserVideoName"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="reported by user"
+        android:layout_marginLeft="25dp"
+        android:id="@+id/banUserReporter"
+        android:layout_toRightOf="@+id/banUserProfile"
+        android:layout_below="@+id/banUserVideoName"/>
+
+</RelativeLayout>
