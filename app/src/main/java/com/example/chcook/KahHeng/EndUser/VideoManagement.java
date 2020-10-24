@@ -102,7 +102,7 @@ public class VideoManagement extends Fragment {
         });
         recyclerView = view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
-        adapter = new Adapter(getContext(), videos);
+        adapter = new Adapter(getContext(), videos,"video",null);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

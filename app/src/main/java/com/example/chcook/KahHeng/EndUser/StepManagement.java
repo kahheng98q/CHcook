@@ -46,7 +46,7 @@ public class StepManagement extends Fragment {
         ArrayList<Videos> videos =new ArrayList<>();
         recyclerView=view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
-        adapter=new Adapter(getContext(),videos);
+        adapter=new Adapter(getContext(),videos,"displayRecipe",null);
         layoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

@@ -52,6 +52,7 @@ public class History extends Fragment {
     private FirebaseDatabase database;
     private ArrayList<Videos> videos;
     private ProgressBar progressBar;
+    private ArrayList<String> histories;
 //    private Videos video;
 
     public History() {
@@ -67,11 +68,12 @@ public class History extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         videos = new ArrayList<>();
+        histories=new ArrayList<>();
         progressBar = view.findViewById(R.id.progressBarHis);
 
         database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("history");
-//                DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid());
+
         progressBar.setVisibility(View.VISIBLE);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -81,7 +83,7 @@ public class History extends Fragment {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         getHisDate(child.getKey());
 //                        getVideoInform(child.getKey());
-
+                        histories.add(child.getKey());
                     }
 
                     adapter.notifyDataSetChanged();
@@ -98,10 +100,12 @@ public class History extends Fragment {
 
         recyclerView = view.findViewById(R.id.HistoryRecyclevView);
         recyclerView.setHasFixedSize(true);
-        adapter = new Adapter(getContext(), videos);
+
+        adapter = new Adapter(getContext(), videos,"history",histories);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         getActivity().setTitle("History");
         return view;
     }
@@ -122,7 +126,6 @@ public class History extends Fragment {
                     Videos temV=HisVideo;
                     String url = "";
                     String name = "";
-//                    Long time = 0L;
                     Log.d("test", "step");
 
 //
@@ -148,17 +151,12 @@ public class History extends Fragment {
                 }
 
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         })
         ;
-    }
-
-    private void setFavorite(String key){
 
     }
 
@@ -170,56 +168,7 @@ public class History extends Fragment {
         return date;
     }
 
-//    private void getHisDate(final String key) {
-//        video = new Videos();
-//
-//        DatabaseReference Hisref = database.getReference("History");
-//        Hisref.orderByChild("date").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                progressBar.setVisibility(View.VISIBLE);
-//                Log.d("test", key);
-//                if (dataSnapshot.exists()) {
-//                    Long date = dataSnapshot.child("date").getValue(Long.class);
-//                    String videoKey=dataSnapshot.child("video").getValue(String.class);
-//                    video.setVideoID(videoKey);
-//
-////                Log.d("test", dataSnapshot.getKey());
-//                    Long formatedDate = Long.valueOf(date);
-//                    video.setDate(getDate(formatedDate));
-//                    videos.add(video);
-//
-////                    getVideoInform(videoKey);
-////                    adapter.notifyDataSetChanged();
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//    }
-
-    void getHisDate(final String key) {
+    private void getHisDate(final String key) {
 
         DatabaseReference Hisref = database.getReference("History").child(key);
         Hisref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -247,7 +196,8 @@ public class History extends Fragment {
                     }
                     getVideoInform(video);
 //                        videos.add(new Videos(key,name, url, getDate(time)));
-                    adapter.notifyDataSetChanged();
+//                    adapter.notifyDataSetChanged();
+
                 }
 
             }
