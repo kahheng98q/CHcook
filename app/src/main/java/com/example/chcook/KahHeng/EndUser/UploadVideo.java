@@ -87,8 +87,6 @@ public class UploadVideo extends Fragment {
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
-//                upload();
                 uploadvideo();
             }
         });
@@ -135,7 +133,6 @@ public class UploadVideo extends Fragment {
 
         if (videouri != null && !desc.isEmpty() && !name.isEmpty()) {
             UploadTask uploadTask = videoRef.putFile(videouri);
-
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -174,15 +171,6 @@ public class UploadVideo extends Fragment {
 
                             });
 
-//                            result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                                @Override
-//                                public void onSuccess(Uri uri) {
-////
-////
-////
-//
-//                                }
-//                            });
                         }
 
                     }
@@ -240,10 +228,6 @@ public class UploadVideo extends Fragment {
             if (resultCode == RESULT_OK && requestCode == 10005 && data != null) {
 //                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
                 videouri = data.getData();
-//                Glide.with(getActivity())
-//                        .load(videouri).
-//                        apply(options).
-//                        into(mThumb);
                 vv.setVideoURI(videouri);
             }
 

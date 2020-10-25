@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.chcook.KahHeng.EndUser.DA.recyclerViewAdapter_banVideo;
-import com.example.chcook.KahHeng.EndUser.Domain.Report;
+import com.example.chcook.DA.recyclerViewAdapter_banVideo;
+import com.example.chcook.Domain.Report;
 import com.example.chcook.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

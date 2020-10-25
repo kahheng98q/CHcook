@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.KahHeng.EndUser.Domain.Videos;
+import com.example.chcook.Domain.Videos;
 import com.example.chcook.KahHeng.EndUser.PlayVideo;
 import com.example.chcook.R;
 

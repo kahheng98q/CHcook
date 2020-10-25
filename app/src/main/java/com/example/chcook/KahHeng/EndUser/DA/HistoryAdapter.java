@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.KahHeng.EndUser.Domain.Histories;
+import com.example.chcook.Domain.Histories;
 
 import com.example.chcook.KahHeng.EndUser.PlayVideo;
 import com.example.chcook.R;
@@ -50,11 +50,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.RViewHol
 
         public RViewHolder(@NonNull View itemView) {
             super(itemView);
-//            imageView=itemView.findViewById(R.id.profilePic);
-//            textView1=itemView.findViewById(R.id.textViewName);
-//            textView2=itemView.findViewById(R.id.txtDate);
-//            videoLayout=itemView.findViewById(R.id.homepageLayout);
-//
             imageView = itemView.findViewById(R.id.profilePic);
             textView1 = itemView.findViewById(R.id.textViewName);
             textView2 = itemView.findViewById(R.id.textViewAddress);

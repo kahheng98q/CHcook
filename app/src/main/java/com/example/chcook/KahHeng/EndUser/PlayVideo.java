@@ -32,7 +32,7 @@ import com.bumptech.glide.Glide;
 import com.example.chcook.KahHeng.EndUser.DA.FavoriteDA;
 import com.example.chcook.KahHeng.EndUser.DA.HistoryDA;
 import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
-import com.example.chcook.KahHeng.EndUser.Domain.Videos;
+import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;

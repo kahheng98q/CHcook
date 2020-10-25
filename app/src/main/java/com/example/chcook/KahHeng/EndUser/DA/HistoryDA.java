@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.chcook.KahHeng.EndUser.Domain.Histories;
+import com.example.chcook.Domain.Histories;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -80,12 +80,12 @@ public class HistoryDA {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         getHisDate(child.getKey(),hisCallback);
-//                        histories.add(child.getKey());
                     }
 
-//                    adapter.notifyDataSetChanged();
+                }else {
+                    hisCallback.onCallback(new ArrayList<Histories>());
                 }
-//                progressBar.setVisibility(View.GONE);
+
             }
 
 

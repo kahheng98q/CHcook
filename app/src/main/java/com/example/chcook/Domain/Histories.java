@@ -1,4 +1,4 @@
-package com.example.chcook.KahHeng.EndUser.Domain;
+package com.example.chcook.Domain;
 
 public class Histories {
     private String historyId="";

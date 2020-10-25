@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 
 import com.example.chcook.KahHeng.EndUser.DA.HistoryAdapter;
 import com.example.chcook.KahHeng.EndUser.DA.HistoryDA;
-import com.example.chcook.KahHeng.EndUser.Domain.Histories;
+import com.example.chcook.Domain.Histories;
 import com.example.chcook.R;
 
 import java.util.ArrayList;
@@ -48,15 +48,16 @@ public class HistoryUI extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        tmpH= new ArrayList<>();
+        tmpH = new ArrayList<>();
         progressBar = view.findViewById(R.id.progressBarHis);
         historyDA = new HistoryDA();
         progressBar.setVisibility(View.VISIBLE);
+        recyclerView = view.findViewById(R.id.HistoryRecyclevView);
+
         historyDA.getHistoryRealData(new HistoryDA.HisCallback() {
             @Override
             public ArrayList<Histories> onCallback(ArrayList<Histories> histories) {
-                tmpH=histories;
-                recyclerView = view.findViewById(R.id.HistoryRecyclevView);
+                tmpH = histories;
                 recyclerView.setHasFixedSize(true);
                 adapter = new HistoryAdapter(getContext(), tmpH);
                 layoutManager = new LinearLayoutManager(getActivity());
@@ -74,10 +75,11 @@ public class HistoryUI extends Fragment {
         getActivity().setTitle("Histories");
         return view;
     }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.searchbar, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+//        getActivity().getMenuInflater().inflate(R.menu.searchbar, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
 
     }
 

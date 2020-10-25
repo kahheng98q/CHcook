@@ -20,7 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.example.chcook.KahHeng.EndUser.DA.HomeAdapter;
-import com.example.chcook.KahHeng.EndUser.Domain.Videos;
+import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;

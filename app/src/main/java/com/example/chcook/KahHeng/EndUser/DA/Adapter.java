@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chcook.KahHeng.EndUser.Domain.Videos;
+import com.example.chcook.Domain.Videos;
 
 import com.example.chcook.KahHeng.EndUser.EditVideoInfo;
 import com.example.chcook.KahHeng.EndUser.PlayVideo;
@@ -41,6 +41,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
     private FirebaseDatabase database;
     private ArrayList<String> adaptIds;
     private HistoryDA historyDA;
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         return false;
@@ -65,12 +66,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
         }
     }
 
-    public Adapter(Context context, ArrayList<Videos> vd, String type,ArrayList<String> adaptIds) {
+    public Adapter(Context context, ArrayList<Videos> vd, String type, ArrayList<String> adaptIds) {
         this.context = context;
         this.videos = vd;
         this.type = type;
-        this.adaptIds=adaptIds;
-        this.historyDA=new HistoryDA();
+        this.adaptIds = adaptIds;
+        this.historyDA = new HistoryDA();
         setInstance();
     }
 
@@ -150,7 +151,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
                             public boolean onMenuItemClick(MenuItem item) {
                                 switch (item.getItemId()) {
                                     case R.id.itemFDelete:
-                                        String favkey=adaptIds.get(position);
+                                        String favkey = adaptIds.get(position);
                                         deletefav(favkey);
                                         return true;
                                     default:
@@ -196,20 +197,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
         }
     }
 
-//    private void deletehis(String hiskey) {
-//
-//        if (!hiskey.isEmpty() || !hiskey.equals("")) {
-////            Log.d("test", "message text:" + hiskey);
-//
-//            String uid = firebaseAuth.getCurrentUser().getUid();
-//            DatabaseReference favRef = database.getReference("Histories").child(hiskey);
-//            DatabaseReference userFavRef = database.getReference("Users").child(uid).child("history").child(hiskey);
-//
-//            favRef.removeValue();
-//            userFavRef.removeValue();
-//
-//        }
-//    }
 
     private void deletevideo(String videokey) {
 
