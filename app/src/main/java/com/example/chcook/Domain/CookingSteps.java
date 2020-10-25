@@ -16,6 +16,12 @@ public class CookingSteps {
         this.recipes = recipes;
     }
 
+    public CookingSteps(String stepId, String imageUrl, String description) {
+        this.stepId = stepId;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
+
     public String getStepId() {
         return stepId;
     }

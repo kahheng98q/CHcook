@@ -1,7 +1,9 @@
 package com.example.chcook.KahHeng.EndUser.DA;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +26,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
 
+import com.example.chcook.KahHeng.EndUser.EditVideo;
 import com.example.chcook.KahHeng.EndUser.EditVideoInfo;
+import com.example.chcook.KahHeng.EndUser.Pay;
 import com.example.chcook.KahHeng.EndUser.PlayVideo;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +41,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
     private ArrayList<Videos> videos;
     private Context context;
     private String type;
+    private Activity activity;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private ArrayList<String> adaptIds;
@@ -66,11 +71,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
         }
     }
 
-    public Adapter(Context context, ArrayList<Videos> vd, String type, ArrayList<String> adaptIds) {
+    public Adapter(Context context, ArrayList<Videos> vd) {
         this.context = context;
         this.videos = vd;
-        this.type = type;
-        this.adaptIds = adaptIds;
         this.historyDA = new HistoryDA();
         setInstance();
     }
@@ -121,48 +124,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
             @Override
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(context, v);
-                switch (type) {
-                    case "video":
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                switch (item.getItemId()) {
-                                    case R.id.itemVDelete:
 
-                                        return true;
-                                    case R.id.itemVEdit:
-                                        Intent intent = new Intent(context, EditVideoInfo.class);
-                                        intent.putExtra("Key", video.getVideoID());
-                                        context.startActivity(intent);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.itemVDelete:
+                                return true;
+                            case R.id.itemVEdit:
+                                Intent intent = new Intent(context, EditVideoInfo.class);
+                                intent.putExtra("Key", video.getVideoID());
+                                context.startActivity(intent);
 //                                        Toast.makeText(context, video.getVideoID(), Toast.LENGTH_SHORT).show();
-
-//
-                                        return true;
-
-                                }
-                                return false;
-                            }
-                        });
-                        popupMenu.inflate(R.menu.video_manage_menu);
-                        break;
-                    case "favorite":
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                switch (item.getItemId()) {
-                                    case R.id.itemFDelete:
-                                        String favkey = adaptIds.get(position);
-                                        deletefav(favkey);
-                                        return true;
-                                    default:
-                                        return false;
-                                }
-
-                            }
-                        });
-                        popupMenu.inflate(R.menu.fav_menu);
-                        break;
-                }
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.inflate(R.menu.video_manage_menu);
                 popupMenu.show();
 
             }
@@ -179,27 +158,4 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
         database = FirebaseDatabase.getInstance();
     }
 
-    private void addfav(String videokey) {
-
-    }
-
-    private void deletefav(String favkey) {
-        if (!favkey.isEmpty() || !favkey.equals("")) {
-//            Log.d("test", "message text:" + favkey);
-            String uid = firebaseAuth.getCurrentUser().getUid();
-            DatabaseReference favRef = database.getReference("Favorite").child(favkey);
-            DatabaseReference userFavRef = database.getReference("Users").child(uid).child("Favorite").child(favkey);
-            favRef.removeValue();
-            userFavRef.removeValue();
-            Toast.makeText(context, "Removed Video in Favorite List", Toast.LENGTH_SHORT).show();
-        } else {
-            Log.d("test", "message text:");
-        }
-    }
-
-
-    private void deletevideo(String videokey) {
-
-
-    }
 }

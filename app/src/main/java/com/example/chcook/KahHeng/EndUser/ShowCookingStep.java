@@ -25,7 +25,6 @@ public class ShowCookingStep extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,6 +37,7 @@ public class ShowCookingStep extends Fragment {
                 .asBitmap()
                 .load(head)
                 .into(imageView);
+
         return view;
     }
 

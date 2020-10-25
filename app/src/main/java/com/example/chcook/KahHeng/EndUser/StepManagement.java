@@ -45,6 +45,7 @@ public class StepManagement extends Fragment {
     private View view;
     private Uri Imageuri;
     private ProgressBar progressBar;
+
     public StepManagement() {
         // Required empty public constructor
     }
@@ -60,6 +61,7 @@ public class StepManagement extends Fragment {
         RecipeDA recipeDA = new RecipeDA();
         recyclerView = view.findViewById(R.id.recycleview);
         progressBar=view.findViewById(R.id.progressBarRecipeManage);
+
 
         recipeDA.getUploadedRecipe(new RecipeDA.RecipesCallback() {
             @Override

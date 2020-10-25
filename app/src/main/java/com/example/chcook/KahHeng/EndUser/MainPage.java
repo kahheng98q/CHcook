@@ -92,7 +92,6 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
 // load default fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -122,10 +121,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         if (toolbar2.getVisibility() == View.VISIBLE) {
 
         }
-//        Toast.makeText(MainPage.this, toolbar2.getVisibility(), Toast.LENGTH_SHORT).show();
         settablayout();
-
-//        Log.d("tag","onCreate "+firebaseAuth.getCurrentUser().getEmail()+firebaseAuth.getCurrentUser().getDisplayName());
 
     }
 
@@ -190,9 +186,9 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.profile:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
+//                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PlayVideo());
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
+                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
                 fragmentTransaction.commit();
                 progressBar.setVisibility(View.GONE);

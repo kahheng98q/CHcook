@@ -45,6 +45,7 @@ public class EditVideoInfo extends AppCompatActivity {
         editBtn = findViewById(R.id.editButton);
         if (getIntent()!=null){
             key=getIntent().getStringExtra("Key");
+
         }
 
         getVideoInform(key);

@@ -75,7 +75,7 @@ public class VideoManagement extends Fragment {
             @Override
             public ArrayList<Videos> onCallback(ArrayList<Videos> videos) {
                 recyclerView.setHasFixedSize(true);
-                adapter = new Adapter(getContext(), videos, "video", null);
+                adapter = new Adapter(getContext(), videos);
                 layoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
@@ -85,8 +85,6 @@ public class VideoManagement extends Fragment {
                 return videos;
             }
         });
-
-
 
         return view;
     }

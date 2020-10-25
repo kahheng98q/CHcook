@@ -1,4 +1,5 @@
 package com.example.chcook.KahHeng.EndUser.DA;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -24,10 +25,12 @@ import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Recipes;
 
 
+import com.example.chcook.KahHeng.EndUser.CookingStepManagement;
 import com.example.chcook.R;
 
 import java.util.ArrayList;
-public class RecipeAdapter extends  RecyclerView.Adapter<RecipeAdapter.RViewHolder> implements PopupMenu.OnMenuItemClickListener {
+
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolder> implements PopupMenu.OnMenuItemClickListener {
     private ArrayList<Recipes> recipes;
     private Context context;
     private RecipeDA recipeDA = new RecipeDA();
@@ -57,7 +60,6 @@ public class RecipeAdapter extends  RecyclerView.Adapter<RecipeAdapter.RViewHold
         this.recipes = recipes;
 
     }
-
 
 
     @Override
@@ -93,15 +95,14 @@ public class RecipeAdapter extends  RecyclerView.Adapter<RecipeAdapter.RViewHold
                 FragmentTransaction fragmentTransaction;
 
                 Bundle bundle = new Bundle();
-//                bundle.putString("key", history.getVideos().getVideoID());
-//                //set Fragmentclass Arguments
-//                PlayVideo fragobj = new PlayVideo();
-//                fragobj.setArguments(bundle);
-//
-//                fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-//                fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-//                fragmentTransaction.commit();
+                bundle.putString("key", recipe.getRecipeId());
+                //set Fragmentclass Arguments
+                CookingStepManagement fragobj = new CookingStepManagement();
+                fragobj.setArguments(bundle);
+                fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
+                fragmentTransaction.commit();
             }
         });
         holder.btnMore.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +132,7 @@ public class RecipeAdapter extends  RecyclerView.Adapter<RecipeAdapter.RViewHold
 
                     }
                 });
-                popupMenu.inflate(R.menu.his_menu);
+                popupMenu.inflate(R.menu.fav_menu);
                 popupMenu.show();
             }
         });
