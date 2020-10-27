@@ -1,10 +1,10 @@
 package com.example.chcook.Domain;
 
 public class CookingSteps {
-    private String stepId;
-    private String imageUrl;
-    private String description;
-    private Recipes recipes;
+    private String stepId="";
+    private String imageUrl="";
+    private String description="";
+    private Recipes recipes=new Recipes();
 
     public CookingSteps() {
     }
@@ -49,7 +49,6 @@ public class CookingSteps {
     public Recipes getRecipes() {
         return recipes;
     }
-
     public void setRecipes(Recipes recipes) {
         this.recipes = recipes;
     }

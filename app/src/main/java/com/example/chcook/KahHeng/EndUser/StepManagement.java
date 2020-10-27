@@ -141,9 +141,8 @@ public class StepManagement extends Fragment {
                 UploadRecipe fragobj = new UploadRecipe();
                 fragobj.setArguments(bundle);
 
-                fragmentManager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                fragmentManager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.myNavHostFragment,new PlayVideo());
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
                 fragmentTransaction.commit();
             }

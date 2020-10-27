@@ -1,5 +1,7 @@
 package com.example.chcook.KahHeng.EndUser.DA;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.chcook.Domain.CookingSteps;
@@ -12,14 +14,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class CookingStepDA {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private ArrayList<CookingSteps> cookingSteps = new ArrayList<>();
     private String recipeKey = "";
-    private String stepKey="";
+    private String stepKey = "";
+
     public String getRecipeKey() {
         return recipeKey;
     }
@@ -45,11 +50,31 @@ public class CookingStepDA {
         database = FirebaseDatabase.getInstance();
     }
 
-    public interface StepsCallback {
-        ArrayList<CookingSteps> onCallback(ArrayList<CookingSteps> recipes);
+    public void createStep(CookingSteps cookingStep) {
+//        String uid = firebaseAuth.getCurrentUser().getUid();
+        DatabaseReference ref = database.getReference("Recipes").child(cookingStep.getRecipes().getRecipeId()).child("CookingSteps");
+        String stepId = ref.push().getKey();
+        DatabaseReference videoref = database.getReference("CookingSteps").child(stepId);
+        Map<String, Object> addid = new HashMap<>();
+        addid.put(stepId, "true");
+//                                    videoid
+        Map<String, Object> addURL = new HashMap<>();
+        addURL.put("Image", cookingStep.getImageUrl());
+        addURL.put("Description", cookingStep.getDescription());
+//        addURL.put("view",0);
+//        addURL.put("UploadDate", getCurrentTimeStamp());
+//                                    addURL.put("id",videoid);
+        ref.updateChildren(addid);
+        videoref.updateChildren(addURL);
     }
+
+    public interface StepsCallback {
+        ArrayList<CookingSteps> onCallback(ArrayList<CookingSteps> cookingSteps);
+    }
+
     public void getUploadedCooking(final StepsCallback stepsCallback) {
-        DatabaseReference ref = database.getReference("Recipe").child(recipeKey);
+        DatabaseReference ref = database.getReference("Recipes").child(recipeKey).child("CookingSteps");
+//        Log.d("test", recipeKey);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -77,27 +102,27 @@ public class CookingStepDA {
 
     public void getAllRecipes(final StepsCallback stepsCallback) {
         DatabaseReference videoRef = database.getReference().child("CookingSteps").child(stepKey);
+//        Log.d("test", stepKey);
         videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String url = "";
-                    String name = "";
-                    Long time = 0L;
-                    if (dataSnapshot.exists()) {
+                    String desc = "";
 
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (child.getKey().equals("Image")) {
-                                url = child.getValue().toString();
-                            }
-                            if (child.getKey().equals("Descprition")) {
-                                name = child.getValue().toString();
-                            }
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        if (child.getKey().equals("Image")) {
+                            url = child.getValue().toString();
                         }
-                        cookingSteps.add(new CookingSteps(stepKey, name, url));
-                        stepsCallback.onCallback(cookingSteps);
+                        if (child.getKey().equals("Description")) {
+                            desc = child.getValue().toString();
+                        }
                     }
+                    cookingSteps.add(new CookingSteps(stepKey, url, desc));
+                    stepsCallback.onCallback(cookingSteps);
 
+                }else {
+                    stepsCallback.onCallback(new ArrayList<CookingSteps>());
                 }
 
             }

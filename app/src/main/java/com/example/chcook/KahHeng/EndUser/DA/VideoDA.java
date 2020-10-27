@@ -3,9 +3,11 @@ package com.example.chcook.KahHeng.EndUser.DA;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.chcook.Domain.Videos;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,7 +59,8 @@ public class VideoDA {
     public void getVideoRealData(Callvideo callvideo) {
         getVideoInform(callvideo);
     }
-// get All User's Upload View
+
+    // get All User's Upload View
     public void getUploadedVideo(final VideoCallback videoCallback) {
         DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("video");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,7 +74,7 @@ public class VideoDA {
 
                     }
 
-                }else {
+                } else {
                     videoCallback.onCallback(new ArrayList<Videos>());
                 }
 
@@ -138,7 +141,7 @@ public class VideoDA {
         ;
     }
 
-    public void getAllVideos(final VideoCallback videoCallback){
+    public void getAllVideos(final VideoCallback videoCallback) {
         DatabaseReference videoRef = database.getReference().child("Videos").child(videokey);
         videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -161,7 +164,7 @@ public class VideoDA {
 
                             }
                         }
-                        videos.add(new Videos(videokey,name, url, getDate(time)));
+                        videos.add(new Videos(videokey, name, url, getDate(time)));
                         videoCallback.onCallback(videos);
                     }
 
@@ -178,6 +181,46 @@ public class VideoDA {
         ;
     }
 
+    public void getAllVidoaInHome(final VideoCallback videoCallback) {
+        DatabaseReference videoref = database.getReference("Videos");
+        videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                Log.d("test", dataSnapshot.getKey());
+//                System.out.println(dataSnapshot.getKey());
+                if(dataSnapshot.exists()){
+                    String name= dataSnapshot.child("name").getValue(String.class);
+                    String url= dataSnapshot.child("URL").getValue(String.class);
+                    String desc= dataSnapshot.child("description").getValue(String.class);
+                    Long date= dataSnapshot.child("Uploaddate").getValue(Long.class);
+//                Log.d("test", dataSnapshot.getKey());
+                    Long formatedDate = Long.valueOf(date);
+                    videos.add(new Videos(dataSnapshot.getKey(),name, url, getDate(formatedDate)));
+                    videoCallback.onCallback(videos);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private String getDate(Long timeStamp) {
         Calendar cal = Calendar.getInstance(Locale.getDefault());

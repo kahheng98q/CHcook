@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -38,6 +39,7 @@ private ConstraintLayout constraintLayout;
 private SpeechRecognizer speechRecognizer;
 private Intent speechRecognizerIntent;
 private String keeper="";
+private  Boolean isActivated = false;
 
     public premium() {
         // Required empty public constructor
@@ -89,10 +91,20 @@ private String keeper="";
             @Override
             public void onResults(Bundle results) {
                 ArrayList<String> matchesF =results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+//                ArrayList<Float>  scores = results.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES);
                 if(matchesF!=null){
+
                     keeper=matchesF.get(0);
                     Toast.makeText(getActivity(), "Keep:"+keeper, Toast.LENGTH_LONG).show();
                 }
+
+
+
+//                if(matchesF!=null){
+//
+//                    keeper=matchesF.get(0);
+//                    Toast.makeText(getActivity(), "Keep:"+keeper, Toast.LENGTH_LONG).show();
+//                }
             }
 
             @Override
@@ -108,21 +120,21 @@ private String keeper="";
 
 
         constraintLayout=view.findViewById(R.id.CLayout);
-        constraintLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        speechRecognizer.startListening(speechRecognizerIntent);
-                        keeper="";
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        speechRecognizer.stopListening();
-                        break;
-                }
-                return false;
-            }
-        });
+//        constraintLayout.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()){
+//                    case MotionEvent.ACTION_DOWN:
+//                        speechRecognizer.startListening(speechRecognizerIntent);
+//                        keeper="";
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        speechRecognizer.stopListening();
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
 
         return view;
     }
@@ -132,6 +144,14 @@ private String keeper="";
 //        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
 //                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 //    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     private void checkvoice(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){

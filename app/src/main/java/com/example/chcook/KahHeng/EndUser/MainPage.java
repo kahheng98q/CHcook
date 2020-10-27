@@ -188,8 +188,9 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 fragmentTransaction = fragmentManager.beginTransaction();
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PlayVideo());
-                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
+//                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
+                fragmentTransaction.replace(R.id.myNavHostFragment, new Testing());
                 fragmentTransaction.commit();
                 progressBar.setVisibility(View.GONE);
                 break;
@@ -223,7 +224,6 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                                 progressBar.setVisibility(View.GONE);
 //                                User user = dataSnapshot.getValue(User.class);
                                String type= dataSnapshot.child("type").getValue(String.class);
-                                Log.d("test", "AAAAAAAAA");
                                 if (type==null ||!type.equals("Premium")) {
                                     startActivity(new Intent(getApplicationContext(), Pay.class));
                                     Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();

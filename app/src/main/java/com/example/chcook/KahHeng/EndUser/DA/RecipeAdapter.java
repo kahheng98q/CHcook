@@ -76,7 +76,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeAdapter.RViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeAdapter.RViewHolder holder, final int position) {
         final Recipes recipe = recipes.get(position);
 
         if (!recipe.getImageUrl().equals("")) {
@@ -93,9 +93,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolde
             public void onClick(View v) {
                 FragmentManager fragmentManager;
                 FragmentTransaction fragmentTransaction;
-
+                Toast.makeText(context, recipe.getRecipeId(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("key", recipe.getRecipeId());
+
                 //set Fragmentclass Arguments
                 CookingStepManagement fragobj = new CookingStepManagement();
                 fragobj.setArguments(bundle);

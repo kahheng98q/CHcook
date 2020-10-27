@@ -21,6 +21,7 @@ import android.widget.SearchView;
 
 import com.example.chcook.KahHeng.EndUser.DA.HomeAdapter;
 import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -46,6 +47,8 @@ public class Home extends Fragment {
     private FirebaseDatabase database;
     private ArrayList<Videos> videos;
     private ProgressBar progressBar;
+    private VideoDA videoDA=new VideoDA();
+
     public Home() {
         // Required empty public constructor
     }
@@ -62,56 +65,65 @@ public class Home extends Fragment {
         progressBar=view.findViewById(R.id.progressBarHome);
         progressBar.setVisibility(View.VISIBLE);
 
-        DatabaseReference videoref = database.getReference("Videos");
-        videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
+        videoDA.getAllVidoaInHome(new VideoDA.VideoCallback() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                progressBar.setVisibility(View.VISIBLE);
-//                Log.d("test", dataSnapshot.getKey());
-//                System.out.println(dataSnapshot.getKey());
-                if(dataSnapshot.exists()){
-                    String name= dataSnapshot.child("name").getValue(String.class);
-                    String url= dataSnapshot.child("URL").getValue(String.class);
-                    String desc= dataSnapshot.child("description").getValue(String.class);
-                    Long date= dataSnapshot.child("Uploaddate").getValue(Long.class);
-//                Log.d("test", dataSnapshot.getKey());
-                    Long formatedDate = Long.valueOf(date);
-                    videos.add(new Videos(dataSnapshot.getKey(),name, url, getDate(formatedDate)));
-
-                    adapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                }
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public ArrayList<Videos> onCallback(ArrayList<Videos> videos) {
+                recyclerView=view.findViewById(R.id.homeRecyclerView);
+                recyclerView.setHasFixedSize(true);
+                adapter=new HomeAdapter(getContext(),videos);
+                layoutManager=new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+                return videos;
             }
         });
+//        progressBar.setVisibility(View.GONE);
+//        DatabaseReference videoref = database.getReference("Videos");
+//        videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////                Log.d("test", dataSnapshot.getKey());
+////                System.out.println(dataSnapshot.getKey());
+//                if(dataSnapshot.exists()){
+//                    String name= dataSnapshot.child("name").getValue(String.class);
+//                    String url= dataSnapshot.child("URL").getValue(String.class);
+//                    String desc= dataSnapshot.child("description").getValue(String.class);
+//                    Long date= dataSnapshot.child("Uploaddate").getValue(Long.class);
+////                Log.d("test", dataSnapshot.getKey());
+//                    Long formatedDate = Long.valueOf(date);
+//                    videos.add(new Videos(dataSnapshot.getKey(),name, url, getDate(formatedDate)));
+//
+//
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
-        recyclerView=view.findViewById(R.id.homeRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        adapter=new HomeAdapter(getContext(),videos);
-        layoutManager=new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+
 //         ad=new ArrayAdapter<>(getActivity(),android);
         return view;
     }

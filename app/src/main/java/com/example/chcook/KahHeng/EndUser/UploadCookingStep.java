@@ -4,12 +4,6 @@ package com.example.chcook.KahHeng.EndUser;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,43 +14,40 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.bumptech.glide.Glide;
-import com.example.chcook.Domain.Recipes;
-import com.example.chcook.KahHeng.EndUser.DA.RecipeDA;
+import com.example.chcook.Domain.CookingSteps;
+import com.example.chcook.KahHeng.EndUser.DA.CookingStepDA;
 import com.example.chcook.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class UploadRecipe extends Fragment {
+public class UploadCookingStep extends Fragment {
     private View view;
     private ImageView imageView;
     private String imagekey;
+    private String recipeKey="";
     private String imageURL;
-    private EditText editTextRecipeName;
-    private EditText editTextRecipeDesc;
-    private Button btnUploadRecipe;
+
+    private EditText editTextStepDesc;
+    private Button btnUploadStep;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private Recipes recipe;
+    private CookingSteps cookingStep;
     private StorageReference imageRef;
     private FirebaseAuth firebaseAuth;
 
-    public UploadRecipe() {
+    public UploadCookingStep() {
         // Required empty public constructor
     }
 
@@ -65,23 +56,24 @@ public class UploadRecipe extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_upload_recipe, container, false);
-        imageView = view.findViewById(R.id.imageViewRecipe);
+        view = inflater.inflate(R.layout.fragment_upload_cooking_step, container, false);
+        imageView = view.findViewById(R.id.imageViewStep);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+
             imagekey = bundle.getString("key");
+            recipeKey=bundle.getString("Recipekey");
             Glide.with(getContext())
                     .asBitmap()
                     .load(imagekey)
                     .into(imageView);
             imageURL=imagekey;
         }
-        editTextRecipeDesc = view.findViewById(R.id.editTxtRecipeDesc);
-        editTextRecipeName = view.findViewById(R.id.editTxtRecipeName);
-        btnUploadRecipe=view.findViewById(R.id.btnUploadRecipe);
+        editTextStepDesc = view.findViewById(R.id.editTxtStepDesc);
+        btnUploadStep=view.findViewById(R.id.btnUploadStep);
 
-        btnUploadRecipe.setOnClickListener(new View.OnClickListener() {
+        btnUploadStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 upload();
@@ -89,7 +81,6 @@ public class UploadRecipe extends Fragment {
         });
         return view;
     }
-
     private String getFileExtension(){
         ContentResolver contentResolver=getContext().getContentResolver();
         MimeTypeMap mimeTypeMap=MimeTypeMap.getSingleton();
@@ -97,20 +88,21 @@ public class UploadRecipe extends Fragment {
     }
 
     private void upload() {
-        recipe=new Recipes();
+        cookingStep=new CookingSteps();
 
-        final String name=editTextRecipeName.getText().toString();
-        final String desc=editTextRecipeDesc.getText().toString();
+        final String desc=editTextStepDesc.getText().toString();
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth= FirebaseAuth.getInstance();
         String uid=firebaseAuth.getCurrentUser().getUid();
 
-        recipe.setTitle(name);
-        recipe.setDescription(desc);
-        recipe.setImageUrl(imageURL);
 
-        if (imageURL != null && !desc.isEmpty() && !name.isEmpty()) {
+        if (imageURL != null && !desc.isEmpty()&&!recipeKey.isEmpty()) {
+            cookingStep.setDescription(desc);
+            cookingStep.setImageUrl(imageURL);
+
+            cookingStep.getRecipes().setRecipeId(recipeKey);
+
             imageRef = storageReference.child("/Image/" + uid + "/" + System.currentTimeMillis() + "."+getFileExtension());
             UploadTask uploadTask = imageRef.putFile(Uri.parse(imageURL));
             uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -127,9 +119,10 @@ public class UploadRecipe extends Fragment {
                             result.addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    recipe.setImageUrl(uri.toString());
-                                    RecipeDA recipeDA=new RecipeDA();
-                                    recipeDA.createRecipe(recipe);
+                                     cookingStep.setImageUrl(uri.toString());
+                                    CookingStepDA cookingStepDA=new CookingStepDA();
+                                    cookingStepDA.createStep(cookingStep);
+
                                 }
 
                             });
@@ -138,7 +131,7 @@ public class UploadRecipe extends Fragment {
 
                     }
                     Toast.makeText(getActivity(), "Upload Successful", Toast.LENGTH_SHORT).show();
-                    fragmentManager =getActivity().getSupportFragmentManager();
+                    fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
                     fragmentTransaction.commit();
@@ -152,7 +145,7 @@ public class UploadRecipe extends Fragment {
                 }
             });
         } else {
-            Toast.makeText(getActivity(), "Please Select Video and fill in the information", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please fill in the information", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -163,8 +156,9 @@ public class UploadRecipe extends Fragment {
         long fileSize = taskSnapshot.getTotalByteCount();
         long uploadbytes = taskSnapshot.getBytesTransferred();
         long progress = (100 * uploadbytes) / fileSize;
-        ProgressBar progressBar = view.findViewById(R.id.progressBarUploadRecipe);
+        ProgressBar progressBar = view.findViewById(R.id.progressBarUploadStep);
         progressBar.setProgress((int) progress);
     }
+
 
 }

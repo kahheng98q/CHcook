@@ -140,7 +140,4 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.RViewH
     public int getItemCount() {
         return favorites.size();
     }
-
-
-
 }

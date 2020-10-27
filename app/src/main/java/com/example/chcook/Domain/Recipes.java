@@ -1,11 +1,11 @@
 package com.example.chcook.Domain;
 
 public class Recipes {
-    private String recipeId;
-    private String title;
-    private String description;
-    private String imageUrl;
-    private String uploadDate;
+    private String recipeId="";
+    private String title="";
+    private String description="";
+    private String imageUrl="";
+    private String uploadDate="";
 
     public Recipes() {
     }
