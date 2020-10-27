@@ -189,8 +189,9 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PlayVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
-                fragmentTransaction.replace(R.id.myNavHostFragment, new Testing());
+                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
+//                fragmentTransaction.replace(R.id.myNavHostFragment, new PremiumRecipeAdapter());
+
                 fragmentTransaction.commit();
                 progressBar.setVisibility(View.GONE);
                 break;

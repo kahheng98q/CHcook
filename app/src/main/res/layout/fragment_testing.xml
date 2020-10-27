@@ -9,19 +9,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/testT"
-        android:text="@string/hello_blank_fragment" />
 
-        <Button
-            android:id="@+id/btnActiveVoice"
+        <ImageView
+            android:id="@+id/imageViewStepPremium"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchVoice" />
+
+        <Switch
+            android:id="@+id/switchVoice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="196dp"
-            android:text="Button"
+            android:checked="false"
+            android:text="Voice Control"
+            android:textOff="No"
+            android:textOn="Yes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtStep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/testT" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewStepPremium" />
+
+        <TextView
+            android:id="@+id/txtCookingStepDescPremium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="32dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtStep" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
