@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie.StaffLoginAndManagement;
+package com.example.chcook.YangJie;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -94,7 +94,7 @@ public class Fragment_addStaff extends Fragment implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
 
         switch (v.getId()) {
             //get profile image
@@ -126,12 +126,12 @@ public class Fragment_addStaff extends Fragment implements View.OnClickListener 
                                 final String sEmail = Email.getText().toString();
                                 final String sPass = Pass.getText().toString();
                                 final String sStatus = "Working";
-                                final Boolean IsAdmin = true;
+                                final Boolean IsAdmin = false;
                                 fAuth.createUserWithEmailAndPassword(sEmail, sPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                     @Override
                                     public void onSuccess(AuthResult authResult) {
                                         final String id = authResult.getUser().getUid();
-                                        Toast.makeText(getActivity(), "new staff account created", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getActivity(), "new staff account created", Toast.LENGTH_SHORT).show();
                                         final FirebaseUser user = fAuth.getCurrentUser();
                                         reference = fBase.getReference("Staff").child(user.getUid());
 //                                        Staff  st = new Staff(sEmail,sName,sPass,IsAdmin,sStatus);
@@ -159,15 +159,27 @@ public class Fragment_addStaff extends Fragment implements View.OnClickListener 
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         //user info update success
                                                                         if (task.isSuccessful()) {
-                                                                            Map<String, Object> staffInfo = new HashMap<>();
-                                                                            staffInfo.put("StaffEmail", sEmail);
-                                                                            staffInfo.put("StaffName", sName);
-                                                                            staffInfo.put("StaffPassword", sPass);
-                                                                            staffInfo.put("StaffStatus", sStatus);
-                                                                            staffInfo.put("IsAdmin", IsAdmin);
-                                                                            staffInfo.put("ProfileImage",ff);
-                                                                            staffInfo.put("StaffId",id);
-                                                                            reference.setValue(staffInfo);
+                                                                            fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    if(task.isSuccessful()){
+                                                                                        Map<String, Object> staffInfo = new HashMap<>();
+                                                                                        staffInfo.put("StaffEmail", sEmail);
+                                                                                        staffInfo.put("StaffName", sName);
+//                                                                                        staffInfo.put("StaffPassword", sPass);
+                                                                                        staffInfo.put("StaffStatus", sStatus);
+                                                                                        staffInfo.put("IsAdmin", IsAdmin);
+                                                                                        staffInfo.put("ProfileImage",ff);
+                                                                                        staffInfo.put("StaffId",id);
+                                                                                        reference.setValue(staffInfo);
+                                                                                        Toast.makeText(v.getContext(),"Register successfully ,please check email for verification",Toast.LENGTH_SHORT).show();
+                                                                                    }else{
+                                                                                        Toast.makeText(v.getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+
+                                                                                    }
+                                                                                }
+                                                                            });
+
 
                                                                         }
                                                                     }

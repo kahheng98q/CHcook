@@ -1,4 +1,4 @@
-package com.example.chcook.DA;
+package com.example.chcook.YangJie.DA;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerViewAdapter_banVideo.viewHolder> {
+public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerViewAdapter_banVideo.viewHolder>{
     private static final String TAG = "recyclerViewAdapter_ban";
     private ArrayList<Report> banVideo = new ArrayList<>();
     private String VID,VName,VDesc,VReporter,VDate;

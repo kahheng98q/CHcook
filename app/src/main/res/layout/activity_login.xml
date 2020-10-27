@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/foodlogin"
     tools:context=".KahHeng.EndUser.Login">
 
     <EditText
@@ -25,19 +24,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLogin" />
 
-    <TextView
+    <ImageView
         android:id="@+id/txtTitle"
         android:layout_width="196dp"
-        android:layout_height="57dp"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="52dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="CHCooK"
+        android:src="@drawable/cookish"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textColor="#ffff"
         android:textIsSelectable="false"
         android:textSize="50sp"
         android:textStyle="bold|italic"
@@ -73,7 +71,7 @@
         android:text="Login"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textColor="#ffff"
+        android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,14 +81,16 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="335dp"
+        android:layout_height="47dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:background="@drawable/custom_button"
         android:text="Login"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Register here"
-        android:textColor="#ffff"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,12 +122,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        app:backgroundTint="#4A00E0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976"
-        app:srcCompat="@drawable/staff_icon_24dp" />
+        app:srcCompat="@drawable/staffpageicon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

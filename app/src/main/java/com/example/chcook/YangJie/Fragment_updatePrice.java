@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.chcook.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -71,6 +73,10 @@ public class Fragment_updatePrice extends Fragment {
                             @Override
                             public void onSuccess(Object o) {
                                 Toast.makeText(getActivity(),"updated",Toast.LENGTH_SHORT).show();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.container_staff,new Fragment_updatePrice());
+                                fragmentTransaction.commit();
                             }
                         });
                     }
@@ -93,16 +99,16 @@ public class Fragment_updatePrice extends Fragment {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String emailEditor = dataSnapshot.child("Editor").getValue(String.class);
-                        String getPrice = dataSnapshot.child("Price").getValue(String.class);
-                        Long getDate = dataSnapshot.child("EditTime").getValue(Long.class);
+                String emailEditor = dataSnapshot.child("Editor").getValue(String.class);
+                String getPrice = dataSnapshot.child("Price").getValue(String.class);
+                Long getDate = dataSnapshot.child("EditTime").getValue(Long.class);
 
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        String latestDate = df.format(getDate);
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String latestDate = df.format(getDate);
 
-                        date.setText("Last edit time : "+latestDate);
-                        editor.setText("Last Editor : "+emailEditor);
-                        cPrice.setText("Current Price : RM "+getPrice);
+                date.setText("Last edit time : "+latestDate);
+                editor.setText("Last Editor : "+emailEditor);
+                cPrice.setText("Current Price : RM "+getPrice);
             }
 
             @Override

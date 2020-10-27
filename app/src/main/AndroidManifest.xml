@@ -7,14 +7,16 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/cookishlogo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".YangJie.ShowBanUser"></activity>
+        <activity android:name=".YangJie.showIncomeStatus"></activity>
+        <activity android:name=".YangJie.ForgetPassword" />
+        <activity android:name=".YangJie.ShowBanUser" />
         <activity android:name=".YangJie.ShowBanVideo" />
-        <activity android:name=".YangJie.StaffLoginAndManagement.StaffLogin" />
+        <activity android:name=".YangJie.StaffLogin" />
         <activity android:name=".YangJie.StaffMainPage" />
         <activity android:name=".KahHeng.EndUser.EditVideoInfo" />
         <activity android:name=".KahHeng.EndUser.Pay" />

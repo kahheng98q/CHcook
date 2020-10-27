@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chcook.DA.recylcerViewAdapter_banUser;
+import com.example.chcook.YangJie.DA.*;
 import com.example.chcook.Domain.Report;
 import com.example.chcook.Domain.User;
 import com.example.chcook.R;
@@ -19,11 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Fragment_banUser extends Fragment {
 

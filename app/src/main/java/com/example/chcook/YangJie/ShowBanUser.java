@@ -104,7 +104,7 @@ public class ShowBanUser extends AppCompatActivity {
                         HashMap hashMap = new HashMap();
 
 
-                            hashMap.put("Banned", "yes");
+                        hashMap.put("Banned", "yes");
 
 
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
