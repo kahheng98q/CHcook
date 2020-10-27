@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.example.chcook.Domain.Recipes;
 import com.example.chcook.KahHeng.EndUser.DA.Adapter;
 import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.DA.PremiumRecipeAdapter;
 import com.example.chcook.KahHeng.EndUser.DA.RecipeAdapter;
 import com.example.chcook.KahHeng.EndUser.DA.RecipeDA;
 import com.example.chcook.R;
@@ -48,7 +49,7 @@ public class DisplayRecipes extends Fragment {
         recipeDA.getAllRecipesInPremium(new RecipeDA.RecipesCallback() {
             @Override
             public ArrayList<Recipes> onCallback(ArrayList<Recipes> recipes) {
-                adapter = new RecipeAdapter(getContext(), recipes);
+                adapter = new PremiumRecipeAdapter(getContext(), recipes);
                 layoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);

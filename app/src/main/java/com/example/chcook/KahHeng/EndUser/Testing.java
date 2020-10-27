@@ -19,10 +19,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.chcook.Domain.CookingSteps;
+import com.example.chcook.KahHeng.EndUser.DA.CookingStepDA;
 import com.example.chcook.R;
 
 import java.util.ArrayList;
@@ -31,16 +37,23 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class Testing extends Fragment implements RecognitionListener {
-private View view=null;
-    private TextView returnedText;
+    private View view = null;
+    private ImageView imageView = null;
+    private TextView stepDesc = null;
+
     private TextView returnedError;
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
     private ProgressBar progressBar;
     private Button btnActivate;
-    private Boolean isActivate=false;
+    //    private Boolean isActivate=false;
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
+    private Switch SwitchVoice = null;
     private String LOG_TAG = "VoiceRecognitionActivity";
+    private ArrayList<CookingSteps> tmpCookingSteps = new ArrayList<>();
+    private String recipeKey = "";
+    private int position = 0;
+
     public Testing() {
         // Required empty public constructor
     }
@@ -50,22 +63,49 @@ private View view=null;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view=inflater.inflate(R.layout.fragment_testing, container, false);
-        returnedText =view.findViewById(R.id.testT);
+        view = inflater.inflate(R.layout.fragment_testing, container, false);
+//        returnedText =view.findViewById(R.id.testT);
 
-        progressBar=getActivity().findViewById(R.id.progressBar);
-        btnActivate=view.findViewById(R.id.btnActiveVoice);
+        progressBar = getActivity().findViewById(R.id.progressBar);
+//        btnActivate=view.findViewById(R.id.btnActiveVoice);
+        SwitchVoice = view.findViewById(R.id.switchVoice);
+        imageView = view.findViewById(R.id.imageViewStepPremium);
+        stepDesc = view.findViewById(R.id.txtCookingStepDescPremium);
 //        returnedError = findViewById(R.id.errorView1);
         progressBar.setVisibility(View.INVISIBLE);
+        CookingStepDA cookingStepDA = new CookingStepDA();
+
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            recipeKey = bundle.getString("key");
+            cookingStepDA.setRecipeKey(recipeKey);
+            cookingStepDA.getUploadedCooking(new CookingStepDA.StepsCallback() {
+                @Override
+                public ArrayList<CookingSteps> onCallback(ArrayList<CookingSteps> cookingSteps) {
+                    tmpCookingSteps = cookingSteps;
+                    Glide.with(getContext())
+                            .asBitmap()
+                            .load(tmpCookingSteps.get(0).getImageUrl())
+                            .into(imageView);
+                    stepDesc.setText(tmpCookingSteps.get(0).getDescription());
+                    progressBar.setVisibility(View.GONE);
+                    return cookingSteps;
+
+                }
+            });
+        }
+
+
         // start speech recogniser
-        btnActivate.setOnClickListener(new View.OnClickListener() {
+        SwitchVoice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (!isActivate){
-                    isActivate=true;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+//                    isActivate=true;
                     resetSpeechRecognizer();
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressBar.setIndeterminate(true);
+//                    progressBar.setVisibility(View.VISIBLE);
+//                    progressBar.setIndeterminate(true);
 
                     // check for permission
                     int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO);
@@ -74,8 +114,8 @@ private View view=null;
                     }
                     setRecogniserIntent();
                     speech.startListening(recognizerIntent);
-                }else {
-                    isActivate=false;
+                } else {
+//                    isActivate=false;
                     stopVoiceRecognition();
                 }
             }
@@ -83,13 +123,14 @@ private View view=null;
 
         return view;
     }
+
     private void resetSpeechRecognizer() {
 
-        if(speech != null)
+        if (speech != null)
             speech.destroy();
         speech = SpeechRecognizer.createSpeechRecognizer(getActivity());
         Log.i(LOG_TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(getActivity()));
-        if(SpeechRecognizer.isRecognitionAvailable(getActivity()))
+        if (SpeechRecognizer.isRecognitionAvailable(getActivity()))
             speech.setRecognitionListener(this);
         else
             getActivity().finish();
@@ -117,7 +158,7 @@ private View view=null;
             } else {
                 Toast.makeText(getActivity(), "Permission Denied!", Toast
                         .LENGTH_SHORT).show();
-               getActivity().finish();
+                getActivity().finish();
             }
         }
     }
@@ -127,7 +168,7 @@ private View view=null;
     public void onResume() {
         Log.i(LOG_TAG, "resume");
         super.onResume();
-        if (isActivate){
+        if (SwitchVoice.isChecked()) {
             resetSpeechRecognizer();
             speech.startListening(recognizerIntent);
         }
@@ -154,8 +195,8 @@ private View view=null;
     @Override
     public void onBeginningOfSpeech() {
         Log.i(LOG_TAG, "onBeginningOfSpeech");
-        progressBar.setIndeterminate(false);
-        progressBar.setMax(10);
+//        progressBar.setIndeterminate(false);
+//        progressBar.setMax(10);
     }
 
     @Override
@@ -166,7 +207,7 @@ private View view=null;
     @Override
     public void onEndOfSpeech() {
         Log.i(LOG_TAG, "onEndOfSpeech");
-        progressBar.setIndeterminate(true);
+//        progressBar.setIndeterminate(true);
         speech.stopListening();
     }
 
@@ -176,17 +217,48 @@ private View view=null;
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = "";
-        for (String result : matches)
-            text += result + "\n";
-
-        returnedText.setText(text);
+        Boolean voiceCheck = false;
+        for (String result : matches){
+            if (result.toUpperCase().equals("NEXT") && position < tmpCookingSteps.size() - 1) {
+                position = position + 1;
+                Glide.with(getContext())
+                        .asBitmap()
+                        .load(tmpCookingSteps.get(position).getImageUrl())
+                        .into(imageView);
+                stepDesc.setText(tmpCookingSteps.get(position).getDescription());
+                voiceCheck = true;
+            } else if (result.toUpperCase().equals("PREVIOUS") && position > 0) {
+                position = position - 1;
+                Glide.with(getContext())
+                        .asBitmap()
+                        .load(tmpCookingSteps.get(position).getImageUrl())
+                        .into(imageView);
+                stepDesc.setText(tmpCookingSteps.get(position).getDescription());
+                voiceCheck = true;
+            } else if (result.toUpperCase().equals("PREVIOUS") && position == 0) {
+                Toast.makeText(getActivity(), "This is already first Step", Toast
+                        .LENGTH_SHORT).show();
+                voiceCheck = true;
+            } else if (result.toUpperCase().equals("NEXT") && position == tmpCookingSteps.size() - 1) {
+                Toast.makeText(getActivity(), "This is already last Step", Toast
+                        .LENGTH_SHORT).show();
+                voiceCheck = true;
+            }
+        }
+           if (!voiceCheck){
+                Toast.makeText(getActivity(), "Invalid Command", Toast
+                        .LENGTH_SHORT).show();
+            }
         speech.startListening(recognizerIntent);
+
     }
 
     @Override
     public void onError(int errorCode) {
-        Log.i("Test", "FAILED " );
+        Log.i("Test", "FAILED ");
         String errorMessage = getErrorText(errorCode);
+        Toast.makeText(getActivity(), errorMessage, Toast
+                .LENGTH_SHORT).show();
 //        Log.i(LOG_TAG, "FAILED " + errorMessage);
 //        returnedError.setText(errorMessage);
 
@@ -213,7 +285,7 @@ private View view=null;
     @Override
     public void onRmsChanged(float rmsdB) {
         //Log.i(LOG_TAG, "onRmsChanged: " + rmsdB);
-        progressBar.setProgress((int) rmsdB);
+//        progressBar.setProgress((int) rmsdB);
     }
 
     public String getErrorText(int errorCode) {
@@ -252,8 +324,8 @@ private View view=null;
         }
         return message;
     }
-    public void stopVoiceRecognition()
-    {
+
+    public void stopVoiceRecognition() {
 
         if (speech != null) {
             speech.destroy();
