@@ -1,70 +1,75 @@
 package com.example.chcook.Domain;
 
-public class User {
-    private String favorite="";
+public class User{
+    private String status="";
     private String email="";
-    private String history="";
-    private String like="";
-    private String video="";
+    private String image="";
     private String type="";
+    private String name="";
+    private String password="";
 
     public User() {
+
     }
 
     public User(String type) {
         this.type=type;
     }
 
-    public User(String favorite, String email, String history, String like, String video,String type) {
-        this.favorite = favorite;
+    public User(String status, String email, String Image, String type, String name, String password) {
+        this.status = status;
         this.email = email;
-        this.history = history;
-        this.like = like;
-        this.video = video;
-        this.type=type;
+        this.image = Image;
+        this.type = type;
+        this.name = name;
+        this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public String getType() {
-        return type;
-    }
-    public void setFavorite(String favorite) {
-        this.favorite = favorite;
+    public String getName() {
+        return name;
     }
 
-    public String getFavorite() {
-        return favorite;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getVideo() {
-        return video;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setLike(String like) {
-        this.like = like;
+    public String getPassword() {
+        return password;
     }
 
-    public String getLike() {
-        return like;
-    }
-
-    public void setHistory(String history) {
-        this.history = history;
-    }
-
-    public String getHistory() {
-        return history;
-    }
-
-    public void setVideo(String video) {
-        this.video = video;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

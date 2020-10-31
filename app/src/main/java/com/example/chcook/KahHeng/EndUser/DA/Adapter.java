@@ -40,12 +40,8 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implements MenuItem.OnMenuItemClickListener {
     private ArrayList<Videos> videos;
     private Context context;
-    private String type;
-    private Activity activity;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase database;
-    private ArrayList<String> adaptIds;
-    private HistoryDA historyDA;
+
+
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -74,8 +70,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
     public Adapter(Context context, ArrayList<Videos> vd) {
         this.context = context;
         this.videos = vd;
-        this.historyDA = new HistoryDA();
-        setInstance();
+
     }
 
     @NonNull
@@ -95,13 +90,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
                     .load(video.getVideo())
                     .into(holder.imageView);
         }
-
+//        Toast.makeText(context, videos.get(1).getVideoID(), Toast.LENGTH_SHORT).show();
         holder.textView1.setText(video.getName());
         holder.textView2.setText(video.getDate());
         holder.videoInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                Toast.makeText(context, videos.get(0).getVideoID(), Toast.LENGTH_SHORT).show();
                 FragmentManager fragmentManager;
                 FragmentTransaction fragmentTransaction;
 
@@ -153,9 +148,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
         return videos.size();
     }
 
-    private void setInstance() {
-        firebaseAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-    }
 
 }

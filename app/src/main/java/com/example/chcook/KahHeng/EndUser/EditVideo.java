@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
 import com.example.chcook.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +34,7 @@ public class EditVideo extends AppCompatActivity {
     private EditText desctxt;
     private Button editBtn;
     private String key="";
+    private VideoDA videoDA= new VideoDA();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,24 +48,36 @@ public class EditVideo extends AppCompatActivity {
         editBtn = findViewById(R.id.editButton);
         if (getIntent()!=null){
             key=getIntent().getStringExtra("Key");
+            videoDA.setVideokey(key);
+            videoDA.getVideoInform(new VideoDA.Callvideo() {
+                @Override
+                public Videos onCallVideo(Videos video) {
+
+                        Glide.with(getApplicationContext())
+                                .asBitmap()
+                                .load(video.getVideo())
+                                .into(imageView);
+
+                        nametxt .setText(video.getName());
+                        desctxt .setText(video.getDesc());
+                    return video;
+                }
+            });
         }
 
-        getVideoInform(key);
+//        getVideoInform(key);
+
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name=nametxt.getText().toString();
                 String desc=desctxt.getText().toString();
                 if(!name.isEmpty()&&!desc.isEmpty()){
-                    DatabaseReference videoRef = database.getReference().child("Videos").child(key);
 
-                    Map<String, Object> videoUpdates = new HashMap<>();
-                    videoUpdates.put("name",name );
-                    videoUpdates.put("description", desc);
-                    videoRef.updateChildren(videoUpdates);
+//                    videoDA.setVideokey(key);
+                    videoDA.editVideoNameNDesc(name,desc);
                     Toast.makeText(getApplicationContext(),"Edit Successful" , Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(),MainPage.class));
-
                 }else {
                     Toast.makeText(getApplicationContext(),"Name and Description can be empty" , Toast.LENGTH_SHORT).show();
                 }
@@ -70,43 +85,5 @@ public class EditVideo extends AppCompatActivity {
             }
         });
     }
-    private void getVideoInform(final String key) {
-        DatabaseReference videoRef = database.getReference().child("Videos").child(key);
-        videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
 
-
-                    Log.d("test", "step");
-                    if (dataSnapshot.exists()) {
-
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (child.getKey().equals("URL")) {
-                                Glide.with(getApplicationContext())
-                                        .asBitmap()
-                                        .load(child.getValue().toString())
-                                        .into(imageView);
-                            }
-                            if (child.getKey().equals("name")) {
-                                nametxt .setText(child.getValue().toString());
-                            }
-                            if (child.getKey().equals("description")) {
-                                desctxt .setText(child.getValue().toString());
-                            }
-                        }
-                    }
-
-                }
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        })
-        ;
-//                getVideoInform();
-
-    }
 }

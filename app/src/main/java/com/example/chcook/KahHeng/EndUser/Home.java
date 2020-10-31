@@ -79,50 +79,6 @@ public class Home extends Fragment {
                 return videos;
             }
         });
-//        progressBar.setVisibility(View.GONE);
-//        DatabaseReference videoref = database.getReference("Videos");
-//        videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-////                Log.d("test", dataSnapshot.getKey());
-////                System.out.println(dataSnapshot.getKey());
-//                if(dataSnapshot.exists()){
-//                    String name= dataSnapshot.child("name").getValue(String.class);
-//                    String url= dataSnapshot.child("URL").getValue(String.class);
-//                    String desc= dataSnapshot.child("description").getValue(String.class);
-//                    Long date= dataSnapshot.child("Uploaddate").getValue(Long.class);
-////                Log.d("test", dataSnapshot.getKey());
-//                    Long formatedDate = Long.valueOf(date);
-//                    videos.add(new Videos(dataSnapshot.getKey(),name, url, getDate(formatedDate)));
-//
-//
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
 
 //         ad=new ArrayAdapter<>(getActivity(),android);
         return view;

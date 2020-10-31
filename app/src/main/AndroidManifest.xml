@@ -12,6 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SplashScreen" android:theme="@style/AppTheme.SplashTheme">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".YangJie.showIncomeStatus"></activity>
         <activity android:name=".YangJie.ForgetPassword" />
         <activity android:name=".YangJie.ShowBanUser" />
@@ -23,11 +30,7 @@
         <activity android:name=".KahHeng.EndUser.MainPage" />
         <activity android:name=".KahHeng.EndUser.Registration" />
         <activity android:name=".KahHeng.EndUser.Login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".KahHeng.EndUser.MainActivity" />
     </application>

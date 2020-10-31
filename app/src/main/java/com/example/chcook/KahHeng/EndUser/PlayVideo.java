@@ -3,6 +3,7 @@ package com.example.chcook.KahHeng.EndUser;
 
 import android.app.AlertDialog;
 import android.media.MediaPlayer;
+import android.media.Rating;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,13 +26,16 @@ import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.example.chcook.Domain.Ratings;
 import com.example.chcook.KahHeng.EndUser.DA.FavoriteDA;
 import com.example.chcook.KahHeng.EndUser.DA.HistoryDA;
+import com.example.chcook.KahHeng.EndUser.DA.RatingDA;
 import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
@@ -58,7 +63,7 @@ public class PlayVideo extends Fragment {
     private View view;
 
     private VideoView imageView;
-
+    private TextView txtRate;
     private TextView txtView;
     private TextView txtDate;
     private TextView txtName;
@@ -76,16 +81,15 @@ public class PlayVideo extends Fragment {
 
     private Boolean fav = false;
     private String pfavKey = "";
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
     private EditText editTextDesc;
     private RadioGroup rgReportTitle;
     private RadioButton rbReportTitle;
     private Button btnSendReport;
     private Button btnCancel;
     private HistoryDA historyDA;
-    private VideoDA videoDA=new VideoDA();
-
+    private VideoDA videoDA = new VideoDA();
+    private RatingDA ratingDA=new RatingDA();
+    private ArrayList<Ratings> ratings=new ArrayList<>();
     public PlayVideo() {
         // Required empty public constructor
     }
@@ -100,7 +104,7 @@ public class PlayVideo extends Fragment {
         view = inflater.inflate(R.layout.fragment_play_video, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        historyDA=new HistoryDA();
+        historyDA = new HistoryDA();
 //        videos.add(new Videos("1","Fried Rice","3K","01/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FChicken%20rice.PNG?alt=media&token=d21f8eed-8c2a-4cd7-84a0-e022f5e2facc","Heng","This is nice"));
         imageView = view.findViewById(R.id.videoImage);
         txtView = view.findViewById(R.id.txtView);
@@ -114,14 +118,23 @@ public class PlayVideo extends Fragment {
         btnFav = view.findViewById(R.id.btnFavorite);
         btnReport = view.findViewById(R.id.btnReport);
 
+        txtRate=view.findViewById(R.id.txtRate);
         progressBar = view.findViewById(R.id.progressBarPlay);
         progressBar.setVisibility(View.VISIBLE);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             key = bundle.getString("key");
+            ratingDA.setVideoKey(key);
+            ratingDA.getAvgRating(new RatingDA.RatingCallback() {
+                @Override
+                public void onCallback(ArrayList<Ratings> retrievedRatings, double rating, int numofRate) {
+                    ratings=retrievedRatings;
+                    txtRate.setText(String.format("%.1f", rating));
+                }
+            });
         }
-        videoDA=new VideoDA(key);
+        videoDA = new VideoDA(key);
 //        head="https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Fhead.PNG?alt=media&token=23f78178-340a-49dd-8ad7-06ca772bd577";
         videoDA.getVideoRealData(new VideoDA.Callvideo() {
             @Override
@@ -138,14 +151,14 @@ public class PlayVideo extends Fragment {
 
         setUser(key);
         historyDA.setHistory(key);
-        final FavoriteDA favoriteDA=new FavoriteDA(key);
+        final FavoriteDA favoriteDA = new FavoriteDA(key);
         favoriteDA.CheckFav(new FavoriteDA.FavCheck() {
             @Override
             public Boolean onValidFav(Boolean addedList) {
                 Toast.makeText(getContext(), addedList.toString(), Toast.LENGTH_SHORT).show();
-                if(addedList==true){
+                if (addedList == true) {
                     btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
-                    fav=addedList;
+                    fav = addedList;
                 }
 
                 return addedList;
@@ -193,14 +206,14 @@ public class PlayVideo extends Fragment {
 //                    setFavorite(key);
                     favoriteDA.setFavorite();
                     btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
-                    fav=true;
+                    fav = true;
                     Toast.makeText(getContext(), "Add to favorite list", Toast.LENGTH_SHORT).show();
 
                 } else {
 
                     favoriteDA.deleteFav();
                     btnFav.setBackgroundResource(R.drawable.ic_star_grey_24dp);
-                    fav=false;
+                    fav = false;
                     Toast.makeText(getContext(), "Removed from favorite list", Toast.LENGTH_SHORT).show();
                 }
 
@@ -213,6 +226,12 @@ public class PlayVideo extends Fragment {
             }
         });
 
+        txtRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setReview();
+            }
+        });
         return view;
     }
 
@@ -336,43 +355,47 @@ public class PlayVideo extends Fragment {
             }
         });
     }
-// GUI
-    private void setReportDialog(){
-        dialogBuilder=new AlertDialog.Builder(getContext());
-        final View popReport=getLayoutInflater().inflate(R.layout.pop_window_report,null);
-        editTextDesc=popReport.findViewById(R.id.txtReportDesc);
-        rgReportTitle=popReport.findViewById(R.id.rgReportTitle);
-        btnSendReport=popReport.findViewById(R.id.btnSendReport);
-        btnCancel=popReport.findViewById(R.id.btnCancelReport);
 
-        dialogBuilder.setView(popReport);
-        dialog=dialogBuilder.create();
-        dialog.show();
+    // GUI
+    private void setReportDialog() {
+
+        final AlertDialog dialogReport;
+        final AlertDialog.Builder dialogBuilderReport = new AlertDialog.Builder(getContext());
+        final View popReport = getLayoutInflater().inflate(R.layout.pop_window_report, null);
+        editTextDesc = popReport.findViewById(R.id.txtReportDesc);
+        rgReportTitle = popReport.findViewById(R.id.rgReportTitle);
+        btnSendReport = popReport.findViewById(R.id.btnSendReport);
+        btnCancel = popReport.findViewById(R.id.btnCancelReport);
+
+        dialogBuilderReport.setView(popReport);
+        dialogReport = dialogBuilderReport.create();
+        dialogReport.show();
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialogReport.dismiss();
             }
         });
         btnSendReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int checkedId=rgReportTitle.getCheckedRadioButtonId();
-                if (checkedId==-1){
+                int checkedId = rgReportTitle.getCheckedRadioButtonId();
+                if (checkedId == -1) {
                     Toast.makeText(getContext(), "Please Select the report Title", Toast.LENGTH_SHORT).show();
-                }else{
-                    rbReportTitle=popReport.findViewById(checkedId);
-                    Toast.makeText(getContext(),"Reported this video" , Toast.LENGTH_SHORT).show();
-                    String desc="";
-                    desc=editTextDesc.getText().toString();
-                    setReport(rbReportTitle.getText().toString(),desc);
-                    dialog.dismiss();
+                } else {
+                    rbReportTitle = popReport.findViewById(checkedId);
+                    Toast.makeText(getContext(), "Reported this video", Toast.LENGTH_SHORT).show();
+                    String desc = "";
+                    desc = editTextDesc.getText().toString();
+                    setReport(rbReportTitle.getText().toString(), desc);
+                    dialogReport.dismiss();
                 }
             }
         });
     }
-    private void setReport(String title,String desc){
+
+    private void setReport(String title, String desc) {
         String uid = firebaseAuth.getCurrentUser().getUid();
 
         DatabaseReference ref = database.getReference("Users").child(uid).child("Report");
@@ -382,9 +405,9 @@ public class PlayVideo extends Fragment {
         Map<String, Object> addReport = new HashMap<>();
         addReport.put("Date", getCurrentTimeStamp());
         addReport.put("Video", key);
-        addReport.put("Type",title);
-        if (!desc.isEmpty()||!desc.equals("")){
-            addReport.put("Description",desc);
+        addReport.put("Type", title);
+        if (!desc.isEmpty() || !desc.equals("")) {
+            addReport.put("Description", desc);
         }
         Map<String, Object> addUserReport = new HashMap<>();
         addUserReport.put(repId, "true");
@@ -393,4 +416,43 @@ public class PlayVideo extends Fragment {
 
     }
 
+    private void setReview() {
+        final AlertDialog.Builder dialogBuilderReview = new AlertDialog.Builder(getContext());
+        final AlertDialog dialogReview;
+        final View popReport = getLayoutInflater().inflate(R.layout.pop_window_review, null);
+        Spinner spinner = popReport.findViewById(R.id.spinnerReview);
+        Button btnSendReview = popReport.findViewById(R.id.btnSendReview);
+        Button btnCancelReview = popReport.findViewById(R.id.btnCancelReview);
+
+        dialogBuilderReview.setView(popReport);
+        dialogReview = dialogBuilderReview.create();
+        dialogReview.show();
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.Review, R.layout.style_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(4);
+
+//        String text=spinner.getSelectedItem().toString();
+
+        btnCancelReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogReview.dismiss();
+            }
+        });
+        btnSendReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                int checkedId=rgReportTitle.getCheckedRadioButtonId();
+
+//                    rbReportTitle=popReport.findViewById(checkedId);
+//                    Toast.makeText(getContext(),"Reported this video" , Toast.LENGTH_SHORT).show();
+//                    String desc="";
+//                    desc=editTextDesc.getText().toString();
+//                    setReport(rbReportTitle.getText().toString(),desc);
+                dialogReview.dismiss();
+
+            }
+        });
+    }
 }

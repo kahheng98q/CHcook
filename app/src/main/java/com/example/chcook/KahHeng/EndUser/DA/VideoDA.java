@@ -71,9 +71,7 @@ public class VideoDA {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         setVideokey(child.getKey());
                         getAllVideos(videoCallback);
-
                     }
-
                 } else {
                     videoCallback.onCallback(new ArrayList<Videos>());
                 }
@@ -130,6 +128,8 @@ public class VideoDA {
                         callvideo.onCallVideo(video);
                     }
 
+                }else {
+                    callvideo.onCallVideo(video);
                 }
             }
 
@@ -164,7 +164,7 @@ public class VideoDA {
 
                             }
                         }
-                        videos.add(new Videos(videokey, name, url, getDate(time)));
+                        videos.add(new Videos(dataSnapshot.getKey(), name, url, getDate(time)));
                         videoCallback.onCallback(videos);
                     }
 
@@ -188,14 +188,14 @@ public class VideoDA {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //                Log.d("test", dataSnapshot.getKey());
 //                System.out.println(dataSnapshot.getKey());
-                if(dataSnapshot.exists()){
-                    String name= dataSnapshot.child("name").getValue(String.class);
-                    String url= dataSnapshot.child("URL").getValue(String.class);
-                    String desc= dataSnapshot.child("description").getValue(String.class);
-                    Long date= dataSnapshot.child("Uploaddate").getValue(Long.class);
+                if (dataSnapshot.exists()) {
+                    String name = dataSnapshot.child("name").getValue(String.class);
+                    String url = dataSnapshot.child("URL").getValue(String.class);
+                    String desc = dataSnapshot.child("description").getValue(String.class);
+                    Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
 //                Log.d("test", dataSnapshot.getKey());
                     Long formatedDate = Long.valueOf(date);
-                    videos.add(new Videos(dataSnapshot.getKey(),name, url, getDate(formatedDate)));
+                    videos.add(new Videos(dataSnapshot.getKey(), name, url, getDate(formatedDate)));
                     videoCallback.onCallback(videos);
                 }
             }
@@ -235,5 +235,13 @@ public class VideoDA {
         return timestamp;
     }
 
+    public void editVideoNameNDesc(String name, String desc) {
+        DatabaseReference videoRef = database.getReference().child("Videos").child(videokey);
+
+        Map<String, Object> videoUpdates = new HashMap<>();
+        videoUpdates.put("name",name );
+        videoUpdates.put("description", desc);
+        videoRef.updateChildren(videoUpdates);
+    }
 
 }

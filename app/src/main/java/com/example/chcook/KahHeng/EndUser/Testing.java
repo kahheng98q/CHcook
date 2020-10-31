@@ -226,6 +226,7 @@ public class Testing extends Fragment implements RecognitionListener {
                         .load(tmpCookingSteps.get(position).getImageUrl())
                         .into(imageView);
                 stepDesc.setText(tmpCookingSteps.get(position).getDescription());
+                Toast.makeText(getActivity(), "Next Step", Toast.LENGTH_SHORT).show();
                 voiceCheck = true;
             } else if (result.toUpperCase().equals("PREVIOUS") && position > 0) {
                 position = position - 1;
@@ -234,14 +235,13 @@ public class Testing extends Fragment implements RecognitionListener {
                         .load(tmpCookingSteps.get(position).getImageUrl())
                         .into(imageView);
                 stepDesc.setText(tmpCookingSteps.get(position).getDescription());
+                Toast.makeText(getActivity(), "Previous Step", Toast.LENGTH_SHORT).show();
                 voiceCheck = true;
             } else if (result.toUpperCase().equals("PREVIOUS") && position == 0) {
-                Toast.makeText(getActivity(), "This is already first Step", Toast
-                        .LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "This is already first Step", Toast.LENGTH_SHORT).show();
                 voiceCheck = true;
             } else if (result.toUpperCase().equals("NEXT") && position == tmpCookingSteps.size() - 1) {
-                Toast.makeText(getActivity(), "This is already last Step", Toast
-                        .LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "This is already last Step", Toast.LENGTH_SHORT).show();
                 voiceCheck = true;
             }
         }

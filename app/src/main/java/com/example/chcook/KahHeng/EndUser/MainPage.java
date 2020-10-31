@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.chcook.Domain.User;
+import com.example.chcook.KahHeng.EndUser.DA.UserDA;
 import com.example.chcook.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,14 +29,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,42 +43,24 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
     private FirebaseAuth firebaseAuth;
     private TabLayout tabLayout;
     private ProgressBar progressBar;
+    private UserDA userDA = new UserDA();
+    private User user = new User();
+    TextView navtxtuUsername = null;
+    TextView navtxtEmail = null;
+    CircleImageView navImageView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        String uid=firebaseAuth.getCurrentUser().getUid();
-        String currentemail=firebaseAuth.getCurrentUser().getEmail();
-        String name= firebaseAuth.getCurrentUser().getDisplayName();
-        String image= firebaseAuth.getCurrentUser().getPhotoUrl().toString();
-
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Users").child(uid);
-        Map<String, Object> addemail = new HashMap<>();
-        addemail.put("Email", currentemail);
-        addemail.put("Name", name);
-        addemail.put("Image",image);
-        ref.updateChildren(addemail);
-//        ref.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
-//
-//        DatabaseReference postsRef = ref.child("Users");
-//
-//        DatabaseReference newPostRef = postsRef.push();
-//        newPostRef.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
-//
-//// We can also chain the two calls together
-
-//        ref.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null,null));
 ////set navigation
         progressBar = findViewById(R.id.progressBar);
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar1);
         toolbar2 = findViewById(R.id.toolbar2);
         navigationView = findViewById(R.id.navigationView);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -92,37 +68,43 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
 // load default fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.myNavHostFragment, new Home());
         fragmentTransaction.commit();
-
 //display user email and name in top of navigation
-        View header = navigationView.getHeaderView(0);
-        TextView username = header.findViewById(R.id.username);
-        TextView email = header.findViewById(R.id.email);
-        CircleImageView pic = header.findViewById(R.id.profile);
+
 //        pic.setImageURI();
-        Glide.with(this)
-                .asBitmap()
-                .load(firebaseAuth.getCurrentUser().getPhotoUrl())
-                .into(pic);
+        userDA.retrieveUserInfo(new UserDA.UserCallback() {
+            @Override
+            public User onCallback(User getuser) {
+                View header = navigationView.getHeaderView(0);
+                navtxtuUsername = header.findViewById(R.id.username);
+                navtxtEmail = header.findViewById(R.id.email);
+                navImageView = header.findViewById(R.id.profile);
+
+                user = getuser;
+                Glide.with(getApplicationContext())
+                        .asBitmap()
+                        .load(user.getImage())
+                        .into(navImageView);
 
 
-        username.setText(firebaseAuth.getCurrentUser().getDisplayName());
-        email.setText(firebaseAuth.getCurrentUser().getEmail());
-//        Log.d("tag", "onCreate " + firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+                navtxtuUsername.setText(user.getName());
+                navtxtEmail.setText(user.getEmail());
+//                Toast.makeText(MainPage.this, user.getImage(), Toast.LENGTH_SHORT).show();
+                return getuser;
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(this);
 // set navigation listener
 //        toolbar.inflateMenu(R.menu.manage_menu);
-        navigationView.setNavigationItemSelectedListener(this);
+
         tabLayout = findViewById(R.id.tabLayout);
-
-        if (toolbar2.getVisibility() == View.VISIBLE) {
-
-        }
         settablayout();
-
     }
 
     //select your video
@@ -189,9 +171,9 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PlayVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
-                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
+//                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PremiumRecipeAdapter());
-
+                fragmentTransaction.replace(R.id.myNavHostFragment, new UserProfile());
                 fragmentTransaction.commit();
                 progressBar.setVisibility(View.GONE);
                 break;
@@ -216,38 +198,17 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 fragmentTransaction.commit();
                 break;
             case R.id.premium:
-                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid());
-//                DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid());
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                progressBar.setVisibility(View.GONE);
-//                                User user = dataSnapshot.getValue(User.class);
-                               String type= dataSnapshot.child("type").getValue(String.class);
-                                if (type==null ||!type.equals("Premium")) {
-                                    startActivity(new Intent(getApplicationContext(), Pay.class));
-                                    Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    fragmentManager = getSupportFragmentManager();
-                                    fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.replace(R.id.myNavHostFragment, new premium());
-                                    fragmentTransaction.commit();
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-//                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                    final DatabaseReference users = database.getReference("Users");
-//                    users.orderByChild(firebaseAuth.getCurrentUser().getEmail());
-
-
+                String type=user.getType();
+                if (user.getType() == null || !type.equals("Premium")) {
+                    startActivity(new Intent(getApplicationContext(), Pay.class));
+                    Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
+                } else {
+                    fragmentManager = getSupportFragmentManager();
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new premium());
+                    fragmentTransaction.commit();
+                    progressBar.setVisibility(View.GONE);
+                }
                 break;
 
             case R.id.history:
