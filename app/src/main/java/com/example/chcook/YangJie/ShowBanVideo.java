@@ -137,7 +137,7 @@ public class ShowBanVideo extends AppCompatActivity {
                 String url = dataSnapshot.child("URL").getValue(String.class);
                 String banned = dataSnapshot.child("Banned").getValue(String.class);
                 if (banned.equals("yes")) {
-                    ban.setText("approval");
+                    ban.setText("unBan");
                     ban.setTag(1);
                 } else {
                     ban.setText("Ban");

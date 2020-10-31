@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.chcook.R;
@@ -20,11 +21,14 @@ public class ForgetPassword extends AppCompatActivity {
     private EditText email;
     private Button btnRecover,btnBack;
     private ProgressBar pg;
+    private RelativeLayout pgb;
+    private Boolean valid = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
         email = findViewById(R.id.txtEmailRecover);
+        pgb = findViewById(R.id.progressBRecoverB);
         btnRecover = findViewById(R.id.btnRecover);
         btnBack = findViewById(R.id.btnBackStaffLoginPage);
         pg = findViewById(R.id.progressBRecover);
@@ -41,21 +45,35 @@ public class ForgetPassword extends AppCompatActivity {
         btnRecover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                pg.setVisibility(v.VISIBLE);
-
-                fAuth.sendPasswordResetEmail(email.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        pg.setVisibility(v.GONE);
-                        if(task.isSuccessful()){
-                            email.setText("");
-                            Toast.makeText(ForgetPassword.this,"Password send to your email",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(ForgetPassword.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                check(email);
+                if (valid) {
+                    pg.setVisibility(v.VISIBLE);
+                    pgb.setVisibility(v.VISIBLE);
+                    fAuth.sendPasswordResetEmail(email.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            pg.setVisibility(v.GONE);
+                            pgb.setVisibility(v.GONE);
+                            if (task.isSuccessful()) {
+                                email.setText("");
+                                Toast.makeText(ForgetPassword.this, "Password send to your email", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ForgetPassword.this, "Wrong email address", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
+    }
+    private boolean check(EditText textField) {
+        if (textField.getText().toString().isEmpty()) {
+            textField.setError("Do not leave empty");
+            valid = false;
+        } else {
+            textField.setError(null);
+            valid = true;
+        }
+        return valid;
     }
 }

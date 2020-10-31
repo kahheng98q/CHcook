@@ -22,6 +22,13 @@ public class Videos {
         this.video = video;
         this.date = date;
     }
+    public Videos(String videoId,String name, String date, String image, String desc){
+        this.videoID = videoId;
+        this.name= name;
+        this.date = date;
+        this.image = image;
+        this.desc = desc;
+    }
 
     public Videos(String videoID, String name, String view, String date, String image,String user) {
         this.videoID = videoID;

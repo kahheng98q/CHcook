@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:id="@+id/staffMain_parentLayout"
+    >
+<ImageView
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:id="@+id/staffMainImgVideo"
+    android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Video Name"
+        android:layout_marginLeft="30dp"
+        android:id="@+id/staffMainVideoName"
+        android:layout_toRightOf="@+id/staffMainImgVideo"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="description"
+        android:layout_marginLeft="30dp"
+        android:id="@+id/staffMainVideoDesc"
+        android:layout_toRightOf="@+id/staffMainImgVideo"
+        android:layout_below="@+id/staffMainVideoName"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="date"
+        android:layout_toRightOf="@+id/staffMainVideoName"
+        android:id="@+id/staffMainDate"/>
+
+
+
+</RelativeLayout>

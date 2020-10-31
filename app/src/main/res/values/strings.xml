@@ -16,4 +16,16 @@
         <item>4.0</item>
         <item>5.0</item>
     </string-array>
+    <string name="back">back</string>
+    <string name="sendMyPass">Send my password</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="clear">clear</string>
+    <string name="staffL">Staff Login</string>
+    <string name="login">Login</string>
+    <string name="forget">Forget Password</string>
+    <string name="name">Name</string>
+    <string name="Password">Password</string>
+    <string name="cPassword">Confirmed-Password</string>
+    <string name="titlePasswordRecovery">Password Recovery</string>
 </resources>
