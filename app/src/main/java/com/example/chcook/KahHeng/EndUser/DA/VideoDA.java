@@ -202,7 +202,7 @@ public class VideoDA {
                             Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
                             Long formatedDate = Long.valueOf(date);
 //                            Log.d("test", "message text:AAAAAAAAAAAAAAAA");
-                            videos.add(new Videos(dataSnapshot.getKey(), name, url, getDate(formatedDate),user));
+                            videos.add(new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user));
                             videoCallback.onCallback(videos);
                             return user;
                         }

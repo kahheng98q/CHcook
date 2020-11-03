@@ -9,7 +9,7 @@ public class Videos {
     private String video;
     private String date;
     private String image;
-    private String user;
+    private User user;
 
 
     public Videos() {
@@ -30,15 +30,15 @@ public class Videos {
         this.desc = desc;
     }
 
-    public Videos(String videoID, String name, String view, String date, String image,String user) {
+    public Videos(String videoID, String name, String view, String date, String video,User user) {
         this.videoID = videoID;
         this.name = name;
         this.view = view;
         this.date = date;
-        this.image = image;
+        this.video = video;
         this.user=user;
     }
-    public Videos(String videoID, String name, String view, String date, String image,String user,String desc) {
+    public Videos(String videoID, String name, String view, String date, String image,User user,String desc) {
         this.videoID = videoID;
         this.name = name;
         this.view = view;
@@ -46,6 +46,14 @@ public class Videos {
         this.image = image;
         this.user=user;
         this.desc=desc;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getVideoID() {
@@ -80,9 +88,7 @@ public class Videos {
         return image;
     }
 
-    public String getUser() {
-        return user;
-    }
+
 
     public void setView(String view) {
         this.view = view;
