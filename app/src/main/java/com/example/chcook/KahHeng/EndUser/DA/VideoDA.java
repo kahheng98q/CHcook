@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.chcook.Domain.User;
 import com.example.chcook.Domain.Videos;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -185,18 +186,28 @@ public class VideoDA {
         DatabaseReference videoref = database.getReference("Videos");
         videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
 //                Log.d("test", dataSnapshot.getKey());
 //                System.out.println(dataSnapshot.getKey());
+                UserDA userDA=new UserDA();
                 if (dataSnapshot.exists()) {
-                    String name = dataSnapshot.child("name").getValue(String.class);
-                    String url = dataSnapshot.child("URL").getValue(String.class);
-                    String desc = dataSnapshot.child("description").getValue(String.class);
-                    Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
-//                Log.d("test", dataSnapshot.getKey());
-                    Long formatedDate = Long.valueOf(date);
-                    videos.add(new Videos(dataSnapshot.getKey(), name, url, getDate(formatedDate)));
-                    videoCallback.onCallback(videos);
+                    String id = dataSnapshot.getKey();
+                    userDA.setVideokey(id);
+                    userDA.setUserBasedOnVideo(new UserDA.UserCallback() {
+                        @Override
+                        public User onCallback(User user) {
+                            String name = dataSnapshot.child("name").getValue(String.class);
+                            String url = dataSnapshot.child("URL").getValue(String.class);
+                            String desc = dataSnapshot.child("description").getValue(String.class);
+                            Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
+                            Long formatedDate = Long.valueOf(date);
+//                            Log.d("test", "message text:AAAAAAAAAAAAAAAA");
+                            videos.add(new Videos(dataSnapshot.getKey(), name, url, getDate(formatedDate),user));
+                            videoCallback.onCallback(videos);
+                            return user;
+                        }
+                    });
+
                 }
             }
 

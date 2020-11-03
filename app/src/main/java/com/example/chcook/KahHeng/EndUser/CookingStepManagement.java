@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,7 +15,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.CookingSteps;
 import com.example.chcook.KahHeng.EndUser.DA.CookingStepAdapter;
 import com.example.chcook.KahHeng.EndUser.DA.CookingStepDA;
@@ -41,7 +45,13 @@ public class CookingStepManagement extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String recipeKey;
+    private String recipeKey = "";
+    private String recipeTitle = "";
+    private String recipeDesc = "";
+    private String recipeImage = "";
+    private TextView txtTitle = null;
+    private TextView txtDesc = null;
+    private ImageView imageViewRecipe = null;
     private Uri Imageuri;
     private ProgressBar progressBar;
     private FragmentManager fragmentManager;
@@ -56,17 +66,32 @@ public class CookingStepManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_cooking_step_management, container, false);
+
+
         stepNVideotoolbar = getActivity().findViewById(R.id.toolbar2);
         stepNVideotoolbar.setVisibility(View.GONE);
         ArrayList<CookingSteps> cookingSteps = new ArrayList<>();
         CookingStepDA cookingStepDA = new CookingStepDA();
         recyclerView = view.findViewById(R.id.recycleview);
-        progressBar = view.findViewById(R.id.progressBarStepManagement);
-
+        progressBar = getActivity().findViewById(R.id.progressBar);
+        txtTitle = view.findViewById(R.id.txtRecipeTitle);
+        txtDesc = view.findViewById(R.id.txtRecipeDesc);
+        imageViewRecipe = view.findViewById(R.id.imageViewRecipeInCookM);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             recipeKey = bundle.getString("key");
+            recipeTitle = bundle.getString("title");
+            recipeDesc = bundle.getString("desc");
+            recipeImage = bundle.getString("uri");
+            Glide.with(getContext())
+                    .asBitmap()
+                    .load(recipeImage)
+                    .into(imageViewRecipe);
+            txtDesc.setText(recipeDesc);
+//            Toast.makeText(getActivity(), recipeDesc, Toast.LENGTH_SHORT).show();
+            txtTitle.setText(recipeTitle);
             cookingStepDA.setRecipeKey(recipeKey);
         }
 
@@ -87,11 +112,12 @@ public class CookingStepManagement extends Fragment {
             }
         });
 
-
-            return view;
+        getActivity().setTitle("Recipe Procedure");
+        return view;
 
 
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,8 +165,8 @@ public class CookingStepManagement extends Fragment {
                 Bundle bundle = new Bundle();
 
                 bundle.putString("key", Imageuri.toString());
-                bundle.putString("Recipekey",recipeKey );
-                Toast.makeText(getActivity(), recipeKey, Toast.LENGTH_SHORT).show();
+                bundle.putString("Recipekey", recipeKey);
+//                Toast.makeText(getActivity(), recipeKey, Toast.LENGTH_SHORT).show();
                 //set Fragmentclass Arguments
                 UploadCookingStep fragobj = new UploadCookingStep();
                 fragobj.setArguments(bundle);

@@ -22,6 +22,8 @@ import com.example.chcook.R;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomeAdapter extends RecyclerView.Adapter <HomeAdapter.RViewHolder>{
     private ArrayList<Videos> videos;
     private Context context;
@@ -31,6 +33,8 @@ public class HomeAdapter extends RecyclerView.Adapter <HomeAdapter.RViewHolder>{
         private TextView textView1;
         private TextView textView2;
         private ConstraintLayout videoLayout;
+        private CircleImageView circleImageView;
+        private TextView txtUserName;
 
 
         public RViewHolder(@NonNull View itemView) {
@@ -39,6 +43,8 @@ public class HomeAdapter extends RecyclerView.Adapter <HomeAdapter.RViewHolder>{
             textView1=itemView.findViewById(R.id.textViewName);
             textView2=itemView.findViewById(R.id.txtDate);
             videoLayout=itemView.findViewById(R.id.homepageLayout);
+            circleImageView=itemView.findViewById(R.id.imageviewUser);
+            txtUserName=itemView.findViewById(R.id.textViewAddress);
         }
     }
     public HomeAdapter(Context context, ArrayList<Videos> vd){
@@ -62,7 +68,15 @@ public class HomeAdapter extends RecyclerView.Adapter <HomeAdapter.RViewHolder>{
                     .load(video.getVideo())
                     .into(holder.imageView);
         }
+        if (!video.getUser().getImage().equals("")){
+            Glide.with(context)
+                    .asBitmap()
+                    .load(video.getUser().getImage())
 
+                    .into(holder.circleImageView);
+        }
+
+        holder.txtUserName.setText(video.getUser().getName());
         holder.textView1.setText(video.getName());
         holder.textView2.setText(video.getDate());
         holder.videoLayout.setOnClickListener(new View.OnClickListener() {

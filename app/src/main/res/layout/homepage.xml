@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/homepageLayout"
@@ -16,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -27,11 +28,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="9dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginRight="9dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:padding="2dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewName"
@@ -40,36 +46,52 @@
                 android:layout_below="@+id/profilePic"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:text="txtName" />
+                android:text="txtName"
+                android:textColor="#090000"
+                app:layout_constraintStart_toEndOf="@+id/imageviewUser"
+                app:layout_constraintTop_toBottomOf="@+id/profilePic" />
 
             <TextView
                 android:id="@+id/txtDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profilePic"
-                android:layout_marginStart="83dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_toEndOf="@+id/textViewName"
                 android:layout_toRightOf="@+id/textViewName"
-                android:text="txtAdd" />
+                android:text="txtAdd"
+                android:textColor="#090000"
+                app:layout_constraintStart_toEndOf="@+id/imageviewUser"
+                app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
             <TextView
                 android:id="@+id/textViewAddress"
                 android:layout_width="278dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewName"
-                android:layout_marginStart="26dp"
-                android:layout_marginLeft="26dp"
-                android:layout_marginTop="17dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_toEndOf="@+id/profilePic"
                 android:layout_toRightOf="@+id/profilePic"
-                android:text="txtEmail" />
+                android:text="txtEmail"
+                app:layout_constraintStart_toEndOf="@+id/imageviewUser"
+                app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageviewUser"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profilePic" />
 
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

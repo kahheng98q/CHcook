@@ -179,7 +179,10 @@ public class Testing extends Fragment implements RecognitionListener {
     public void onPause() {
         Log.i(LOG_TAG, "pause");
         super.onPause();
-        speech.stopListening();
+        if (speech != null) {
+            speech.stopListening();
+        }
+//
     }
 
     @Override

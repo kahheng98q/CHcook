@@ -12,4 +12,11 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
+    <style name="AppThemeRecipe" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

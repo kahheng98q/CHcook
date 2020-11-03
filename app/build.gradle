@@ -58,5 +58,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
     implementation 'com.karumi:dexter:6.2.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
+    implementation 'androidx.palette:palette:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -81,6 +81,7 @@ public class Home extends Fragment {
         });
 
 //         ad=new ArrayAdapter<>(getActivity(),android);
+        getActivity().setTitle("Home");
         return view;
     }
 

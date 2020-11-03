@@ -107,6 +107,7 @@ public class RecipeDA {
                     String url = "";
                     String name = "";
                     Long time = 0L;
+                    String desc="";
                     if (dataSnapshot.exists()) {
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -120,8 +121,11 @@ public class RecipeDA {
                                 time = Long.valueOf(child.getValue().toString());
 
                             }
+                            if (child.getKey().equals("Description")) {
+                                desc = child.getValue().toString();
+                            }
                         }
-                        recipes.add(new Recipes(dataSnapshot.getKey(), name, url, getDate(time)));
+                        recipes.add(new Recipes(dataSnapshot.getKey(), name, desc,url, getDate(time)));
                         recipesCallback.onCallback(recipes);
                     }
 
@@ -138,21 +142,21 @@ public class RecipeDA {
         ;
     }
 
-    public void getAllRecipesInPremium(final RecipesCallback recipesCallback){
+    public void getAllRecipesInPremium(final RecipesCallback recipesCallback) {
         DatabaseReference videoref = database.getReference("Recipes");
         videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists()){
-                    String title= dataSnapshot.child("Title").getValue(String.class);
-                    String url= dataSnapshot.child("Image").getValue(String.class);
-                    String desc= dataSnapshot.child("Description").getValue(String.class);
-                    Long date= dataSnapshot.child("UploadDate").getValue(Long.class);
+                if (dataSnapshot.exists()) {
+                    String title = dataSnapshot.child("Title").getValue(String.class);
+                    String url = dataSnapshot.child("Image").getValue(String.class);
+                    String desc = dataSnapshot.child("Description").getValue(String.class);
+                    Long date = dataSnapshot.child("UploadDate").getValue(Long.class);
 
 //                Log.d("test", dataSnapshot.getKey());
                     Long formatedDate = Long.valueOf(date);
 
-                    recipes.add(new Recipes(dataSnapshot.getKey(),title, desc,url, getDate(formatedDate)));
+                    recipes.add(new Recipes(dataSnapshot.getKey(), title, desc, url, getDate(formatedDate)));
                     recipesCallback.onCallback(recipes);
 
 //                    adapter.notifyDataSetChanged();

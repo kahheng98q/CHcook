@@ -96,7 +96,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolde
                 Toast.makeText(context, recipe.getRecipeId(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("key", recipe.getRecipeId());
-
+                bundle.putString("title", recipe.getTitle());
+                bundle.putString("desc", recipe.getDescription());
+                bundle.putString("uri", recipe.getImageUrl());
                 //set Fragmentclass Arguments
                 CookingStepManagement fragobj = new CookingStepManagement();
                 fragobj.setArguments(bundle);

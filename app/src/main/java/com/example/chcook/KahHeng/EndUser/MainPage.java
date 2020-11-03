@@ -153,7 +153,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainPage.this, "Fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainPage.this, "Fail to Logout", Toast.LENGTH_SHORT).show();
             }
         })
         ;
@@ -166,14 +166,22 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         progressBar.setVisibility(View.VISIBLE);
         switch (item.getItemId()) {
             case R.id.profile:
+                Bundle bundle = new Bundle();
+                bundle.putString("Email", user.getEmail());
+                bundle.putString("Name", user.getName());
+                bundle.putString("ImageUri",user.getImage());
+
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
+
+                UserProfile fragobj =new UserProfile();
+                fragobj.setArguments(bundle);
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PlayVideo());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PremiumRecipeAdapter());
-                fragmentTransaction.replace(R.id.myNavHostFragment, new UserProfile());
+                fragmentTransaction.replace(R.id.myNavHostFragment,fragobj);
                 fragmentTransaction.commit();
                 progressBar.setVisibility(View.GONE);
                 break;
@@ -201,11 +209,11 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 String type=user.getType();
                 if (user.getType() == null || !type.equals("Premium")) {
                     startActivity(new Intent(getApplicationContext(), Pay.class));
-                    Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
                 } else {
                     fragmentManager = getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.myNavHostFragment, new premium());
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
                     fragmentTransaction.commit();
                     progressBar.setVisibility(View.GONE);
                 }

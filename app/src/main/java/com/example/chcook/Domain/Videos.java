@@ -2,14 +2,14 @@ package com.example.chcook.Domain;
 
 public class Videos {
 
-    private String videoID;
-    private String name;
-    private String desc;
-    private String view;
-    private String video;
-    private String date;
-    private String image;
-    private String user;
+    private String videoID="";
+    private String name="";
+    private String desc="";
+    private String view="";
+    private String video="";
+    private String date="";
+    private String image="";
+    private User user=new User();
 
 
     public Videos() {
@@ -22,8 +22,15 @@ public class Videos {
         this.video = video;
         this.date = date;
     }
+    public Videos(String videoID,String name, String video, String date,User user) {
+        this.videoID = videoID;
+        this.name = name;
+        this.video = video;
+        this.date = date;
+        this.user=user;
+    }
 
-    public Videos(String videoID, String name, String view, String date, String image,String user) {
+    public Videos(String videoID, String name, String view, String date, String image,User user) {
         this.videoID = videoID;
         this.name = name;
         this.view = view;
@@ -31,7 +38,7 @@ public class Videos {
         this.image = image;
         this.user=user;
     }
-    public Videos(String videoID, String name, String view, String date, String image,String user,String desc) {
+    public Videos(String videoID, String name, String view, String date, String image,User user,String desc) {
         this.videoID = videoID;
         this.name = name;
         this.view = view;
@@ -69,12 +76,16 @@ public class Videos {
         return view;
     }
 
+
     public String getImage() {
         return image;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setView(String view) {

@@ -103,13 +103,13 @@ public class RatingDA {
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             if (child.getKey().equals("Rating")) {
                                 rating = Double.parseDouble(child.getValue().toString());
+                                numOfRating = numOfRating + 1;
                             }
                             if (child.getKey().equals("Date")) {
                                 time = Long.valueOf(child.getValue().toString());
-
                             }
                             rate = rating + rate;
-                            numOfRating = numOfRating + 1;
+
                         }
                         String id = dataSnapshot.getKey();
 
@@ -142,11 +142,13 @@ public class RatingDA {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.getKey().equals("Rating")) {
                         Map<String, Boolean> videoMap = (Map<String, Boolean>) child.getValue();
-
+//                        Log.d("test", "message text:"+child.getKey());
                         for (String userVideoKey : videoMap.keySet()) {
-//                              Log.d("test", "message text:"+key);
+//                              Log.d("test", "message text:"+userVideoKey);
+
                             for (Ratings rating : ratings){
-                                if (rating.equals(userVideoKey)){
+//                                Log.d("test", "message textAAAAAAA:"+"GGGGGGGGGGGGGGGGGGGGGGGGg");
+                                if (rating.getRateId().equals(userVideoKey)){
                                     onCheckRate.onCallback(rating.getRating());
                                 }
                             }

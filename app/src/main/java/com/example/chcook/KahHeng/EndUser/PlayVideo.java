@@ -33,9 +33,11 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Ratings;
+import com.example.chcook.Domain.User;
 import com.example.chcook.KahHeng.EndUser.DA.FavoriteDA;
 import com.example.chcook.KahHeng.EndUser.DA.HistoryDA;
 import com.example.chcook.KahHeng.EndUser.DA.RatingDA;
+import com.example.chcook.KahHeng.EndUser.DA.UserDA;
 import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
@@ -90,6 +92,8 @@ public class PlayVideo extends Fragment {
     private VideoDA videoDA = new VideoDA();
     private RatingDA ratingDA=new RatingDA();
     private ArrayList<Ratings> ratings=new ArrayList<>();
+    private double givenRate=0;
+    private UserDA userDA=new UserDA();
     public PlayVideo() {
         // Required empty public constructor
     }
@@ -106,6 +110,7 @@ public class PlayVideo extends Fragment {
         database = FirebaseDatabase.getInstance();
         historyDA = new HistoryDA();
 //        videos.add(new Videos("1","Fried Rice","3K","01/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FChicken%20rice.PNG?alt=media&token=d21f8eed-8c2a-4cd7-84a0-e022f5e2facc","Heng","This is nice"));
+
         imageView = view.findViewById(R.id.videoImage);
         txtView = view.findViewById(R.id.txtView);
         txtDate = view.findViewById(R.id.txtDate);
@@ -131,11 +136,17 @@ public class PlayVideo extends Fragment {
                 public void onCallback(ArrayList<Ratings> retrievedRatings, double rating, int numofRate) {
                     ratings=retrievedRatings;
                     txtRate.setText(String.format("%.1f", rating));
+                    ratingDA.CheckRating(new RatingDA.onCheckRate() {
+                        @Override
+                        public void onCallback(double ratingGiven) {
+                            givenRate=ratingGiven;
+                            Toast.makeText(getContext(), ""+givenRate, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
         }
         videoDA = new VideoDA(key);
-//        head="https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2Fhead.PNG?alt=media&token=23f78178-340a-49dd-8ad7-06ca772bd577";
         videoDA.getVideoRealData(new VideoDA.Callvideo() {
             @Override
             public Videos onCallVideo(Videos video) {
@@ -144,18 +155,29 @@ public class PlayVideo extends Fragment {
                 imageView.setVideoURI(Uri.parse(video.getVideo()));
                 txtDate.setText(video.getDate());
                 txtView.setText(video.getView());
-
                 return video;
             }
         });
 
-        setUser(key);
+//        setUser(key);
+       userDA. setVideokey(key);
+       userDA.setUserBasedOnVideo(new UserDA.UserCallback() {
+           @Override
+           public User onCallback(User user) {
+               Glide.with(getContext())
+                       .asBitmap()
+                       .load(user.getImage())
+                       .into(userPro);
+               txtUser.setText(user.getName());
+               return user;
+           }
+       });
         historyDA.setHistory(key);
         final FavoriteDA favoriteDA = new FavoriteDA(key);
         favoriteDA.CheckFav(new FavoriteDA.FavCheck() {
             @Override
             public Boolean onValidFav(Boolean addedList) {
-                Toast.makeText(getContext(), addedList.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), addedList.toString(), Toast.LENGTH_SHORT).show();
                 if (addedList == true) {
                     btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
                     fav = addedList;
@@ -208,30 +230,36 @@ public class PlayVideo extends Fragment {
                     btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
                     fav = true;
                     Toast.makeText(getContext(), "Add to favorite list", Toast.LENGTH_SHORT).show();
-
                 } else {
-
                     favoriteDA.deleteFav();
                     btnFav.setBackgroundResource(R.drawable.ic_star_grey_24dp);
                     fav = false;
                     Toast.makeText(getContext(), "Removed from favorite list", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
+
+
+
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setReportDialog();
             }
         });
-
         txtRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setReview();
+                if (givenRate>=1){
+                    Toast.makeText(getContext(), "This video's rating has been given.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), ""+givenRate, Toast.LENGTH_SHORT).show();
+                    setReview();
+                }
+
             }
         });
+        getActivity().setTitle("Play Video");
         return view;
     }
 
@@ -273,88 +301,7 @@ public class PlayVideo extends Fragment {
 
     //Histories
 
-    //User
-    private void setUser(final String key) {
-        DatabaseReference ref = database.getReference().child("Users");
-        ref.orderByChild("video").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                    if (child.getKey().equals("video")) {
-                        Map<String, Boolean> videoMap = (Map<String, Boolean>) child.getValue();
-
-                        for (String userVideoKey : videoMap.keySet()) {
-//                              Log.d("test", "message text:"+key);
-                            if (userVideoKey.equals(key)) {
-                                Log.d("test", "message text:" + dataSnapshot.getKey());
-                                setUserInfo(dataSnapshot.getKey());
-                                break;
-                            }
-                        }
-
-                    }
-
-                }
-//                dataSnapshot.getRef();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void setUserInfo(final String key) {
-        DatabaseReference userRef = database.getReference().child("Users").child(key);
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                    String url = "";
-                    String name = "";
-
-
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        if (child.getKey().equals("Image")) {
-                            Glide.with(getContext())
-                                    .asBitmap()
-                                    .load(child.getValue().toString())
-                                    .into(userPro);
-
-                        }
-                        if (child.getKey().equals("Name")) {
-                            name = child.getValue().toString();
-                            txtUser.setText(name);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     // GUI
     private void setReportDialog() {
@@ -420,7 +367,7 @@ public class PlayVideo extends Fragment {
         final AlertDialog.Builder dialogBuilderReview = new AlertDialog.Builder(getContext());
         final AlertDialog dialogReview;
         final View popReport = getLayoutInflater().inflate(R.layout.pop_window_review, null);
-        Spinner spinner = popReport.findViewById(R.id.spinnerReview);
+        final Spinner spinner = popReport.findViewById(R.id.spinnerReview);
         Button btnSendReview = popReport.findViewById(R.id.btnSendReview);
         Button btnCancelReview = popReport.findViewById(R.id.btnCancelReview);
 
@@ -443,6 +390,8 @@ public class PlayVideo extends Fragment {
         btnSendReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String text=spinner.getSelectedItem().toString();
+                ratingDA.giveRating(text);
 //                int checkedId=rgReportTitle.getCheckedRadioButtonId();
 
 //                    rbReportTitle=popReport.findViewById(checkedId);
@@ -450,6 +399,7 @@ public class PlayVideo extends Fragment {
 //                    String desc="";
 //                    desc=editTextDesc.getText().toString();
 //                    setReport(rbReportTitle.getText().toString(),desc);
+                
                 dialogReview.dismiss();
 
             }
