@@ -36,17 +36,19 @@ public class Fragment_banvideo extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
 
-                for (DataSnapshot report : dataSnapshot.getChildren()) {
+                    for (DataSnapshot report : dataSnapshot.getChildren()) {
 
-                    String dd = report.child("ReportDate").getValue(String.class);
-                    String Reason = report.child("Reason").getValue(String.class);
-                    String Reporter = report.child("UserName").getValue(String.class);
-                    String videoName = report.child("VideoName").getValue(String.class);
-                    String videoId = report.child("VideoId").getValue(String.class);
+                        String dd = report.child("ReportDate").getValue(String.class);
+                        String Reason = report.child("Reason").getValue(String.class);
+                        String Reporter = report.child("UserName").getValue(String.class);
+                        String videoName = report.child("VideoName").getValue(String.class);
+                        String videoId = report.child("VideoId").getValue(String.class);
 
-                    reportedVideoArraylist.add(new Report(report.getKey(),dd, Reason, Reporter, videoId, videoName));
-                    adapter.notifyDataSetChanged();
+                        reportedVideoArraylist.add(new Report(report.getKey(), dd, Reason, Reporter, videoId, videoName));
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
 

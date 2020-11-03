@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="250dp"
-    android:background="@drawable/staff_style"
+    android:background="@drawable/custom_button"
     android:gravity="bottom"
     android:padding="25dp">
     <de.hdodenhof.circleimageview.CircleImageView

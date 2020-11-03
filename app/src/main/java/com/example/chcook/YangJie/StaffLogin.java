@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class StaffLogin extends AppCompatActivity {
     private FloatingActionButton btnUserLoginPage;
     private ProgressBar pg;
     private TextView forget;
+    private RelativeLayout pgb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,10 @@ public class StaffLogin extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         btnLogin = findViewById(R.id.btnLogin);
         btnUserLoginPage = findViewById(R.id.btnUserLoginPage);
-        email = findViewById(R.id.txtEmail);
+        email = findViewById(R.id.staffLoginEmail);
         pass = findViewById(R.id.txtPassword);
         pg = findViewById(R.id.progressBarLogin1);
+        pgb = findViewById(R.id.progressBarLogin1B);
         pg.setVisibility(View.INVISIBLE);
         forget = findViewById(R.id.txtForgetPass);
 
@@ -65,6 +68,7 @@ public class StaffLogin extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
                 pg.setVisibility(v.VISIBLE);
+                pgb.setVisibility(v.VISIBLE);
 
                 check(email);
                 check(pass);
@@ -83,6 +87,7 @@ public class StaffLogin extends AppCompatActivity {
                                             if (fAuth.getCurrentUser().isEmailVerified()) {
                                                 Boolean pos = dataSnapshot.child("IsAdmin").getValue(Boolean.class);
                                                 pg.setVisibility(v.GONE);
+                                                pgb.setVisibility(v.GONE);
                                                 Toast.makeText(StaffLogin.this, "Welcome", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(getApplicationContext(), StaffMainPage.class);
                                                 intent.putExtra("position", pos);
@@ -90,16 +95,19 @@ public class StaffLogin extends AppCompatActivity {
                                                 startActivity(intent);
                                             } else {
                                                 pg.setVisibility(v.GONE);
+                                                pgb.setVisibility(v.GONE);
                                                 Toast.makeText(StaffLogin.this, "Please verify your email address", Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
                                             pg.setVisibility(v.GONE);
+                                            pgb.setVisibility(v.GONE);
                                             Toast.makeText(StaffLogin.this, "You are not allowed to sign in", Toast.LENGTH_SHORT).show();
                                         }
 
 
                                     } else {
                                         pg.setVisibility(v.GONE);
+                                        pgb.setVisibility(v.GONE);
                                         Toast.makeText(StaffLogin.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -115,6 +123,7 @@ public class StaffLogin extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             pg.setVisibility(v.GONE);
+                            pgb.setVisibility(v.GONE);
                             Toast.makeText(StaffLogin.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -126,7 +135,7 @@ public class StaffLogin extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(StaffLogin.this);
                 builder.setTitle("User Login Page");
-                builder.setMessage("Are you sure want to back to user login opage?");
+                builder.setMessage("Are you sure want to back to user login page?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -151,6 +160,7 @@ public class StaffLogin extends AppCompatActivity {
         if (textField.getText().toString().isEmpty()) {
             textField.setError("Do not leave empty");
             pg.setVisibility(View.INVISIBLE);
+            pgb.setVisibility(View.INVISIBLE);
             valid = false;
         } else {
             textField.setError(null);

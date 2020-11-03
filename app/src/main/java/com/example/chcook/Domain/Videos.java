@@ -2,14 +2,14 @@ package com.example.chcook.Domain;
 
 public class Videos {
 
-    private String videoID="";
-    private String name="";
-    private String desc="";
-    private String view="";
-    private String video="";
-    private String date="";
-    private String image="";
-    private User user=new User();
+    private String videoID;
+    private String name;
+    private String desc;
+    private String view;
+    private String video;
+    private String date;
+    private String image;
+    private String user;
 
 
     public Videos() {
@@ -22,15 +22,15 @@ public class Videos {
         this.video = video;
         this.date = date;
     }
-    public Videos(String videoID,String name, String video, String date,User user) {
-        this.videoID = videoID;
-        this.name = name;
-        this.video = video;
+    public Videos(String videoId,String name, String date, String image, String desc){
+        this.videoID = videoId;
+        this.name= name;
         this.date = date;
-        this.user=user;
+        this.image = image;
+        this.desc = desc;
     }
 
-    public Videos(String videoID, String name, String view, String date, String image,User user) {
+    public Videos(String videoID, String name, String view, String date, String image,String user) {
         this.videoID = videoID;
         this.name = name;
         this.view = view;
@@ -38,7 +38,7 @@ public class Videos {
         this.image = image;
         this.user=user;
     }
-    public Videos(String videoID, String name, String view, String date, String image,User user,String desc) {
+    public Videos(String videoID, String name, String view, String date, String image,String user,String desc) {
         this.videoID = videoID;
         this.name = name;
         this.view = view;
@@ -76,16 +76,12 @@ public class Videos {
         return view;
     }
 
-
     public String getImage() {
         return image;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public void setView(String view) {
