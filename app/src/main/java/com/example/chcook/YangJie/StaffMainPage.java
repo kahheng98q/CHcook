@@ -80,21 +80,51 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
 
         if(page.equals("banVideo")){
             toolbar.setTitle("Ban Video");
+            Fragment_banvideo fragment = new Fragment_banvideo();
+            Bundle post = new Bundle();
+            String StaffPosition;
+            if(isAdmin.equals("Admin")){
+                StaffPosition = "true";
+            }else{
+                StaffPosition = "false";
+            }
+            post.putString("position",StaffPosition);
+            fragment.setArguments(post);
             fragmentManager =getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.container_staff,new Fragment_banvideo());
+            fragmentTransaction.add(R.id.container_staff,fragment);
             fragmentTransaction.commit();
         }else if (page.equals("banUser")){
             toolbar.setTitle("Ban User");
+            Fragment_banUser ffragment = new Fragment_banUser();
+            Bundle posi = new Bundle();
+            String StaffPosition;
+            if(isAdmin.equals("Admin")){
+                StaffPosition = "true";
+            }else{
+                StaffPosition = "false";
+            }
+            posi.putString("position",StaffPosition);
+            ffragment.setArguments(posi);
             fragmentManager =getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.container_staff,new Fragment_banUser());
+            fragmentTransaction.add(R.id.container_staff,ffragment);
             fragmentTransaction.commit();
         }else{
             toolbar.setTitle("Home");
+            MainFragment_staff mainfragment = new MainFragment_staff();
+            Bundle posit = new Bundle();
+            String StaffPosition;
+            if(isAdmin.equals("Admin")){
+                StaffPosition = "true";
+            }else{
+                StaffPosition = "false";
+            }
+            posit.putString("position",StaffPosition);
+            mainfragment.setArguments(posit);
             fragmentManager =getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.container_staff,new MainFragment_staff());
+            fragmentTransaction.add(R.id.container_staff,mainfragment);
             fragmentTransaction.commit();
         }
 
@@ -144,9 +174,13 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
 
             case R.id.nav_home:
                 toolbar.setTitle("Home");
+                MainFragment_staff mainfragment = new MainFragment_staff();
+                Bundle posit = new Bundle();
+                posit.putString("position",isAdmin);
+                mainfragment.setArguments(posit);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_staff, new MainFragment_staff());
+                fragmentTransaction.replace(R.id.container_staff, mainfragment);
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_add_staff:
@@ -164,7 +198,7 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 }
                 break;
             case R.id.nav_update_staff:
-                toolbar.setTitle("Update Staff");
+                toolbar.setTitle("Update Normal Staff");
                 if (isAdmin.equals("true")) {
                     fragmentManager = getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
@@ -179,7 +213,7 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_delete_staff:
-                toolbar.setTitle("Delete Staff");
+                toolbar.setTitle("Delete Normal Staff");
                 if (isAdmin.equals("true")) {
                     fragmentManager = getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
@@ -194,16 +228,24 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.nav_ban_user:
                 toolbar.setTitle("Ban User");
+                Fragment_banUser ffragment = new Fragment_banUser();
+                Bundle posi = new Bundle();
+                posi.putString("position",isAdmin);
+                ffragment.setArguments(posi);
                 fragmentManager =getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_staff,new Fragment_banUser());
+                fragmentTransaction.replace(R.id.container_staff,ffragment);
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_ban_video:
                 toolbar.setTitle("Ban Video");
+                Fragment_banvideo fragment = new Fragment_banvideo();
+                Bundle post = new Bundle();
+                post.putString("position",isAdmin);
+                fragment.setArguments(post);
                 fragmentManager =getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_staff,new Fragment_banvideo());
+                fragmentTransaction.replace(R.id.container_staff,fragment);
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_display_income:

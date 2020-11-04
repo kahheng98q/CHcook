@@ -114,7 +114,7 @@ public class PlayVideo extends Fragment {
         imageView = view.findViewById(R.id.videoImage);
         txtView = view.findViewById(R.id.txtView);
         txtDate = view.findViewById(R.id.txtDate);
-        txtName = view.findViewById(R.id.txtName);
+        txtName = view.findViewById(R.id.addName);
 
         txtUser = view.findViewById(R.id.txtUsername);
         txtdesc = view.findViewById(R.id.txtDesc);

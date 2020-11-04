@@ -38,8 +38,9 @@ public class Fragment_UpdateStaff extends Fragment {
     private Spinner spinner,reason;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private ArrayList<String> arrayList = new ArrayList<>();
+    private ArrayList<String> idList = new ArrayList<>();
     private CircleImageView checkStaffImage;
-    private TextView email,name,status,Id;
+    private TextView email,name,status,StaffId;
     private Button btnUpd;
     private ProgressBar pg;
     private HashMap<String,String> staff = new HashMap<String,String>();
@@ -50,7 +51,7 @@ public class Fragment_UpdateStaff extends Fragment {
         checkStaffImage = view.findViewById(R.id.UpdateImg);
         email = view.findViewById(R.id.UpdEmail);
         name = view.findViewById(R.id.UpdName);
-        Id = view.findViewById(R.id.txtUpdId);
+        StaffId = view.findViewById(R.id.txtUpdId);
         status = view.findViewById(R.id.UpdaStatus);
         btnUpd = view.findViewById(R.id.btnUpdate);
         pg = view.findViewById(R.id.progressBarUdp);
@@ -67,10 +68,11 @@ public class Fragment_UpdateStaff extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 pg.setVisibility(view.VISIBLE);
                 String username = arrayList.get(position);
+                String uid = idList.get(position);
                 name.setText("Name :"+username);
                 Query query = FirebaseDatabase.getInstance().getReference("Staff")
-                        .orderByChild("StaffName")
-                        .equalTo(username);
+                        .orderByChild("StaffId")
+                        .equalTo(uid);
                 query.addListenerForSingleValueEvent(valueEventListener);
             }
             ValueEventListener valueEventListener = new ValueEventListener() {
@@ -82,13 +84,13 @@ public class Fragment_UpdateStaff extends Fragment {
                             String semail = snapshot.child("StaffEmail").getValue(String.class);
                             String sstatus = snapshot.child("StaffStatus").getValue(String.class);
                             String sImage = snapshot.child("ProfileImage").getValue(String.class);
-                            String uid = snapshot.child("StaffId").getValue(String.class);
+                            String sid = snapshot.child("StaffId").getValue(String.class);
                             email.setText("Email : "+semail);
                             status.setText("Status : "+sstatus);
                             Glide.with(getActivity())
                                     .load(Uri.parse(sImage))
                                     .into(checkStaffImage);
-                            Id.setText(uid);
+                            StaffId.setText(sid);
 
                         }
                     }
@@ -115,7 +117,7 @@ public class Fragment_UpdateStaff extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Query query = FirebaseDatabase.getInstance().getReference("Staff")
-                                .child(Id.getText().toString());
+                                .child(StaffId.getText().toString());
 
                         HashMap hashMap = new HashMap();
                         hashMap.put("IsAdmin",true);
@@ -145,17 +147,21 @@ public class Fragment_UpdateStaff extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
+                idList.clear();
                 for(DataSnapshot item : dataSnapshot.getChildren()){
 
                     String status = item.child("StaffStatus").getValue(String.class);
                     Boolean isAdmin = item.child("IsAdmin").getValue(Boolean.class);
                     if(status.equals("Working")&&isAdmin.equals(false)){
                         arrayList.add(item.child("StaffName").getValue(String.class));
+                        idList.add(item.getKey());
                     }
 
                 }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.style_spinner,arrayList);
-                spinner.setAdapter(arrayAdapter);
+                if(getActivity()!=null) {
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.stylle_spinner, arrayList);
+                    spinner.setAdapter(arrayAdapter);
+                }
             }
 
             @Override

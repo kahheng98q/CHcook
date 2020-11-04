@@ -7,11 +7,17 @@
 <!--        app:showAsAction="always"-->
 <!--        android:icon="@drawable/ic_short_text_black_24dp"-->
 <!--        />-->
+
     <item android:id="@+id/action_search_staff"
         android:title="Search"
         android:icon="@drawable/ic_search_black_24dp"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView"
+        />
+    <item android:id="@+id/action_filter_staff"
+        android:title="Filter"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_sort_black_24dp"
         />
 
 </menu>

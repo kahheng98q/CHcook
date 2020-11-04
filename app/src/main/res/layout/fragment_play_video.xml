@@ -31,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@+id/btnFavorite" />
 
         <TextView
-            android:id="@+id/txtName"
+            android:id="@+id/addName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -51,7 +51,7 @@
             android:layout_marginTop="8dp"
             android:text="Date"
             app:layout_constraintStart_toEndOf="@+id/txtView"
-            app:layout_constraintTop_toBottomOf="@+id/txtName" />
+            app:layout_constraintTop_toBottomOf="@+id/addName" />
 
         <TextView
             android:id="@+id/txtView"
@@ -62,7 +62,7 @@
             android:layout_marginTop="8dp"
             android:text="View"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtName" />
+            app:layout_constraintTop_toBottomOf="@+id/addName" />
 
         <ImageButton
             android:id="@+id/btnFavorite"

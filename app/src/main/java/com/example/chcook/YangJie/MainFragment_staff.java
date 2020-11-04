@@ -1,7 +1,9 @@
 package com.example.chcook.YangJie;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,10 +50,12 @@ public class MainFragment_staff extends Fragment  {
     recyclerViewAdapter_staffMain adapter;
     private RecyclerView recyclerView;
     Context mContext;
+    private String position;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Videos");
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         final View view = inflater.inflate(R.layout.main_fragment_staff,container,false);
+        final Bundle argument = getArguments();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -61,22 +65,23 @@ public class MainFragment_staff extends Fragment  {
                     for (DataSnapshot v : dataSnapshot.getChildren()) {
 
                         String videoName = v.child("name").getValue(String.class);
-//                        Long view = v.child("view").getValue(Long.class);
+
                         Long date = v.child("Uploaddate").getValue(Long.class);
                         String videoUrl = v.child("URL").getValue(String.class);
                         String user = v.child("userId").getValue(String.class);
                         String desc = v.child("description").getValue(String.class);
                         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         String latestDate = df.format(date);
-//                        String vv = Long.toString(view);
-
                         mVideo.add(new Videos(v.getKey(),videoName,latestDate,videoUrl,desc));
 
-//                        adapter.notifyDataSetChanged();
                     }
                 }
+                if(argument!=null){
+                    position = argument.getString("position");
+//            Toast.makeText(getActivity(),position,Toast.LENGTH_SHORT).show();
+                }
                 recyclerView = view.findViewById(R.id.StaffMainRecyclerView);
-                adapter = new recyclerViewAdapter_staffMain(getContext(),mVideo);
+                adapter = new recyclerViewAdapter_staffMain(getContext(),mVideo,position);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             }
@@ -132,7 +137,42 @@ public class MainFragment_staff extends Fragment  {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search_staff:
-                return false;
+//                Toast.makeText(getActivity(),"1",Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_filter_staff:
+//                Toast.makeText(getActivity(),"2",Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder category = new AlertDialog.Builder(getActivity());
+                category.setTitle("Select Category");
+                String[] cat = {"All","American","Malaysia","Indonesia"};
+                category.setItems(cat, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String getCat="";
+                        dialog.dismiss();
+                        switch (which){
+                            case 0:
+                                getCat = "all";
+                                //                                Toast.makeText(getActivity(),"All",Toast.LENGTH_SHORT).show();
+                                break;
+                            case 1:
+                                getCat = "video";
+//                                Toast.makeText(getActivity(),"American",Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                getCat = "hk";
+//                                Toast.makeText(getActivity(),"Malaysia",Toast.LENGTH_SHORT).show();
+                                break;
+                            case 3:
+//                                Toast.makeText(getActivity(),"Indonesia",Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+//                        Toast.makeText(getActivity(),getCat,Toast.LENGTH_SHORT).show();
+                        adapter.category(getCat);
+                    }
+                });
+                category.show();
+
+                return true;
             default:
                 break;
 

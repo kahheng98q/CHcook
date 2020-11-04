@@ -38,6 +38,7 @@ public class Fragment_deleteStaff extends Fragment {
     private Spinner spinner,reason;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private ArrayList<String> arrayList = new ArrayList<>();
+    private ArrayList<String> idList = new ArrayList<>();
     private CircleImageView checkStaffImage;
     private TextView email,name,status,Id;
     private Button btnDismiss;
@@ -67,10 +68,11 @@ public class Fragment_deleteStaff extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 pg.setVisibility(view.VISIBLE);
                String username = arrayList.get(position);
-               name.setText("Name :"+username);
+               String key = idList.get(position);
+               name.setText("Name : "+username);
                Query query = FirebaseDatabase.getInstance().getReference("Staff")
-                       .orderByChild("StaffName")
-                       .equalTo(username);
+                       .orderByChild("StaffId")
+                       .equalTo(key);
                query.addListenerForSingleValueEvent(valueEventListener);
             }
             ValueEventListener valueEventListener = new ValueEventListener() {
@@ -145,17 +147,21 @@ public class Fragment_deleteStaff extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
+                idList.clear();
                 for(DataSnapshot item : dataSnapshot.getChildren()){
 
                     String status = item.child("StaffStatus").getValue(String.class);
                     Boolean isAdmin = item.child("IsAdmin").getValue(Boolean.class);
                     if(status.equals("Working")&&isAdmin.equals(false)){
                         arrayList.add(item.child("StaffName").getValue(String.class));
+                        idList.add(item.getKey());
                     }
 
                 }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.style_spinner,arrayList);
-                spinner.setAdapter(arrayAdapter);
+                if(getActivity()!=null) {
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.style_spinner, arrayList);
+                    spinner.setAdapter(arrayAdapter);
+                }
             }
 
             @Override

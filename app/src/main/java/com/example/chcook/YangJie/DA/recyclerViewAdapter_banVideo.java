@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerViewAdapter_banVideo.viewHolder>{
     private static final String TAG = "recyclerViewAdapter_ban";
     private ArrayList<Report> banVideo = new ArrayList<>();
-    private String VID,VName,VDesc,VReporter,VDate;
+    private String VID,VName,VDesc,VType,VDate,VPosition;
 
     private Context mContext;
 
@@ -44,20 +44,20 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
             super(itemView);
             txtVideoName = itemView.findViewById(R.id.banVideoTxtVideoName);
             txtDate = itemView.findViewById(R.id.banVideoTxtVideoUploadTime);
-            reporterName = itemView.findViewById(R.id.banVideoTxtReporter);
             videoStatus = itemView.findViewById(R.id.banVideoTxtVideoStatus);
             reason = itemView.findViewById(R.id.banVideoTxtReason);
             vImg = itemView.findViewById(R.id.banVideoImgCover);
             parentLayout = itemView.findViewById(R.id.banVideoParent_Layout);
 
 
+
         }
     }
 
-    public recyclerViewAdapter_banVideo(Context context,ArrayList<Report> rp) {
-//        this.bVideoName = videoName;
+    public recyclerViewAdapter_banVideo(Context context,ArrayList<Report> rp,String position) {
         this.banVideo = rp;
         this.mContext = context;
+        this.VPosition = position;
     }
 
     @NonNull
@@ -72,16 +72,12 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
     public void onBindViewHolder(@NonNull final viewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: videoCalledtoBanvideo");
         final Report v = banVideo.get(position);
-        holder.txtVideoName.setText("Video Name:"+v.getVideoName());
-        holder.txtDate.setText(v.getDate());
-        holder.reason.setText(v.getReason());
-        holder.reporterName.setText(v.getUsername());
-        holder.videoStatus.setText("approval");
-        VID = v.getVideoId();
-        VName=v.getVideoName();
-        VDesc=v.getReason();
-        VReporter=v.getUsername();
-        VDate = v.getDate();
+//        holder.txtVideoName.setText("Video Name:"+v.getVideoName());
+        holder.txtDate.setText("Date : "+v.getDate());
+        holder.reason.setText("Reason : "+v.getReason());
+//        holder.reporterName.setText(v.getUsername());
+
+
 
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Videos");
@@ -91,6 +87,23 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     String videoUrl = dataSnapshot.child("URL").getValue(String.class);
+                    String videoName = dataSnapshot.child("name").getValue(String.class);
+                    String status = "";
+                    if(dataSnapshot.hasChild("Banned")){
+                         status = dataSnapshot.child("Banned").getValue(String.class);
+                    }else{
+                        status = "no";
+                    }
+
+                    VName=videoName;
+                    holder.txtVideoName.setText("Video Name : "+videoName);
+                    String statu="";
+                    if(status.equals("yes")){
+                        statu = "Banned";
+                    }else{
+                        statu="Approval";
+                    }
+                    holder.videoStatus.setText("Status : "+statu);
                     Glide.with(mContext)
                             .asBitmap()
                             .load(Uri.parse(videoUrl))
@@ -103,6 +116,10 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
 
             }
         });
+        VID = v.getVideoId();
+        VDesc=v.getReason();
+        VDate = v.getDate();
+        VType = v.getReportType();
 
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -110,10 +127,12 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ShowBanVideo.class);
                 intent.putExtra("videoId",VID);
+                intent.putExtra("position",VPosition);
                 intent.putExtra("description",VDesc);
                 intent.putExtra("videoName",VName);
-                intent.putExtra("reporter",VReporter);
                 intent.putExtra("date",VDate);
+                intent.putExtra("type",VType);
+                intent.putExtra("page","banVideo");
                 mContext.startActivity(intent);
 
             }

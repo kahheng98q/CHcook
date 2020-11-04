@@ -10,83 +10,88 @@
         android:id="@+id/UpdEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="52dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/UpdateImg"
         app:layout_constraintTop_toBottomOf="@+id/UpdateImg" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/UpdateImg"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerUpdateName" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/UpdName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/UpdEmail"
         app:layout_constraintTop_toBottomOf="@+id/UpdEmail" />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="28dp"
+
         android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UpdaStatus"
+        app:layout_constraintVertical_bias="0.03"
         tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/UpdaStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/UpdName"
         app:layout_constraintTop_toBottomOf="@+id/UpdName" />
 
     <Spinner
         android:id="@+id/spinnerUpdateName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <Spinner
         android:id="@+id/spinnerUpdateReason"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="68dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerUpdateName"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerUpdateName"
+        app:layout_constraintVertical_bias="0.05" />
 
     <Button
         android:id="@+id/btnUpdate"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/custom_button"
         android:text="Update"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerUpdateReason" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <ProgressBar
         android:id="@+id/progressBarUdp"
@@ -95,10 +100,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.199" />
+        app:layout_constraintVertical_bias="0.118" />
 
     <TextView
         android:id="@+id/txtUpdId"
@@ -111,4 +116,24 @@
         app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected Staff :"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerUpdateName"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerUpdateName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerUpdateName" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set As :"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerUpdateReason"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerUpdateReason"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerUpdateReason" />
 </androidx.constraintlayout.widget.ConstraintLayout>

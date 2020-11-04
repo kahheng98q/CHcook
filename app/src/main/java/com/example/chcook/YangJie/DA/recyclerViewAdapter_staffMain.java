@@ -1,6 +1,7 @@
 package com.example.chcook.YangJie.DA;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
 import com.example.chcook.YangJie.MainFragment_staff;
+import com.example.chcook.YangJie.ShowBanVideo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,6 +32,7 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
     private ArrayList<Videos> arrayList;
     private ArrayList<Videos> ori;
     private Context mContext;
+    private String Vposition,page;
 
     @NonNull
     @Override
@@ -51,7 +54,19 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,ori.get(position).getName(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ShowBanVideo.class);
+                intent.putExtra("videoId",ori.get(position).getVideoID());
+                intent.putExtra("position",Vposition);
+                intent.putExtra("page","staffMain");
+//                intent.putExtra("position",VPosition);
+//                intent.putExtra("description",VDesc);
+//                intent.putExtra("videoName",VName);
+//                intent.putExtra("date",VDate);
+//                intent.putExtra("type",VType);
+//
+                mContext.startActivity(intent);
+
+
             }
         });
     }
@@ -110,19 +125,21 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
 
 ;
 
-    public recyclerViewAdapter_staffMain(Context mContext,ArrayList<Videos> videos) {
+    public recyclerViewAdapter_staffMain(Context mContext,ArrayList<Videos> videos,String position) {
         this.ori = videos;
+        this.Vposition = position;
 //        arrayList = new ArrayList<>(videos);
         arrayList = new ArrayList<>();
         this.arrayList.addAll(videos);
         this.mContext = mContext;
+//        this.page = page;
     }
 
     public void filter(String characterText) {
         String input = characterText.toLowerCase(Locale.getDefault());
         ori.clear();
         if (input.length() == 0) {
-            Toast.makeText(mContext,"empty",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext,"empty",Toast.LENGTH_SHORT).show();
             ori.addAll(arrayList);
         } else {
             ori.clear();
@@ -134,6 +151,20 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
         }
         notifyDataSetChanged();
     }
-
+    public void category(String characterText) {
+        String input = characterText.toLowerCase(Locale.getDefault());
+        ori.clear();
+        if (input.equals("all")) {
+            ori.addAll(arrayList);
+        } else {
+            ori.clear();
+            for (Videos item: arrayList) {
+                if (item.getName().toLowerCase(Locale.getDefault()).contains(characterText)) {
+                    ori.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
 }
