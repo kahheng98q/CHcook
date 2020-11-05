@@ -2,6 +2,7 @@ package com.example.chcook.KahHeng.EndUser;
 
 
 import android.app.AlertDialog;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.media.Rating;
 import android.net.Uri;
@@ -11,6 +12,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -108,7 +112,8 @@ public class PlayVideo extends Fragment{
 
     private PlayerView playerView = null;
     private SimpleExoPlayer simpleExoPlayer = null;
-
+    private ImageView fullScreenButton=null;
+    private  Boolean fullscreen=false;
     public PlayVideo () {
         // Required empty public constructor
     }
@@ -281,6 +286,8 @@ public class PlayVideo extends Fragment{
     private void playVideo(String uri) {
         playerView = view.findViewById(R.id.videoImage);
         simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext());
+        fullScreenButton=playerView.findViewById(R.id.exo_fullscreen_icon);
+
         playerView.setPlayer(simpleExoPlayer);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
                 Util.getUserAgent(getContext(), "Cookish"));
@@ -297,6 +304,38 @@ public class PlayVideo extends Fragment{
                     progressBar.setVisibility(View.VISIBLE);
                 } else {
                     progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+        fullScreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(fullscreen) {
+                    fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.exo_controls_fullscreen_enter));
+                    getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                    if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
+                       ((AppCompatActivity)getActivity()). getSupportActionBar().show();
+                    }
+                   getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+                    params.width = params.MATCH_PARENT;
+                    params.height = (int) ( 200 *getContext().getResources().getDisplayMetrics().density);
+                    playerView.setLayoutParams(params);
+                    fullscreen = false;
+                }else{
+                    fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.exo_controls_fullscreen_exit));
+                    getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+                            |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                    if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
+                        ((AppCompatActivity)getActivity()). getSupportActionBar().hide();
+                    }
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+                    params.width = params.MATCH_PARENT;
+                    params.height = params.MATCH_PARENT;
+                    playerView.setLayoutParams(params);
+                    fullscreen = true;
                 }
             }
         });

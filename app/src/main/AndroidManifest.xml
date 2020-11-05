@@ -28,7 +28,9 @@
         <activity android:name=".YangJie.StaffMainPage" />
         <activity android:name=".KahHeng.EndUser.EditVideoInfo" />
         <activity android:name=".KahHeng.EndUser.Pay" />
-        <activity android:name=".KahHeng.EndUser.MainPage" />
+        <activity android:name=".KahHeng.EndUser.MainPage"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
         <activity android:name=".KahHeng.EndUser.Registration" />
         <activity android:name=".KahHeng.EndUser.Login">
 
