@@ -2,6 +2,7 @@ package com.example.chcook.KahHeng.EndUser;
 
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MediaController;
@@ -46,10 +48,10 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class UploadVideo extends Fragment {
-    private Uri videouri;
+    private String videouri=null;
     private StorageReference videoRef;
     private Button up;
-    private Button select;
+//    private Button select;
     private View view;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -57,6 +59,7 @@ public class UploadVideo extends Fragment {
     private MediaController mc;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
+//    private StorageReference videoRef;
     private EditText nametxt;
     private EditText desctxt;
 
@@ -76,22 +79,28 @@ public class UploadVideo extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-        select = view.findViewById(R.id.button);
+//        select = view.findViewById(R.id.button);
         nametxt = view.findViewById(R.id.name);
         desctxt = view.findViewById(R.id.desc);
         up = view.findViewById(R.id.button2);
         desctxt.setEnabled(true);
         nametxt.setEnabled(true);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            videouri = bundle.getString("key");
 
+//            imageURL=imagekey;
+        }
 
-        select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadvideo();
-            }
-        });
+//        select.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                uploadvideo();
+//            }
+//        });
+
         vv = view.findViewById(R.id.videoImage);
-
+        vv.setVideoURI(Uri.parse(videouri));
         vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -109,14 +118,14 @@ public class UploadVideo extends Fragment {
         });
         vv.start();
 
-        String uid = firebaseAuth.getCurrentUser().getUid();
+//        String uid = firebaseAuth.getCurrentUser().getUid();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference users = database.getReference("Users").child(uid);
-        String id = users.push().toString();
-        String[] separated = id.split("/");
-        String vid = separated[separated.length - 1];
-        videoRef = storageReference.child("/video/" + uid + "/" + vid + ".mp4");
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        final DatabaseReference users = database.getReference("Users").child(uid);
+//        String id = users.push().toString();
+//        String[] separated = id.split("/");
+//        String vid = separated[separated.length - 1];
+//        videoRef = storageReference.child("/video/" + uid + "/" + vid + ".mp4");
 
         up.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,12 +136,22 @@ public class UploadVideo extends Fragment {
         return view;
     }
 
+    private String getFileExtension(){
+        ContentResolver contentResolver=getContext().getContentResolver();
+        MimeTypeMap mimeTypeMap=MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(Uri.parse(videouri)));
+    }
     private void upload() {
         final String desc=desctxt.getText().toString();
         final String name=nametxt.getText().toString();
 
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        firebaseAuth=FirebaseAuth.getInstance();
+        String uid=firebaseAuth.getCurrentUser().getUid();
+
         if (videouri != null && !desc.isEmpty() && !name.isEmpty()) {
-            UploadTask uploadTask = videoRef.putFile(videouri);
+            videoRef = storageReference.child("/Video/" + uid + "/" + System.currentTimeMillis() + "."+getFileExtension());
+            UploadTask uploadTask = videoRef.putFile(Uri.parse(videouri));
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -178,7 +197,7 @@ public class UploadVideo extends Fragment {
                     fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
-                    fragmentTransaction.commit();
+                    fragmentTransaction.addToBackStack(null).commit();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -200,17 +219,17 @@ public class UploadVideo extends Fragment {
         long timestamp=System.currentTimeMillis()/1000;
         return timestamp;
     }
-    private void uploadvideo() {
-        Intent intent = new Intent();
-        intent.setType("video/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select a Video"), 10005);
-    }
+//    private void uploadvideo() {
+//        Intent intent = new Intent();
+//        intent.setType("video/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent, "Select a Video"), 10005);
+//    }
 
-    public void record() {
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(intent, 10005);
-    }
+//    public void record() {
+//        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+//        startActivityForResult(intent, 10005);
+//    }
 
     private void updateProgress(UploadTask.TaskSnapshot taskSnapshot) {
         long fileSize = taskSnapshot.getTotalByteCount();
@@ -220,17 +239,17 @@ public class UploadVideo extends Fragment {
         progressBar.setProgress((int) progress);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 10005) {
-            if (resultCode == RESULT_OK && requestCode == 10005 && data != null) {
-//                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
-                videouri = data.getData();
-                vv.setVideoURI(videouri);
-            }
-
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 10005) {
+//            if (resultCode == RESULT_OK && requestCode == 10005 && data != null) {
+////                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+//                videouri = data.getData();
+//                vv.setVideoURI(videouri);
+//            }
+//
+//        }
+//    }
 }

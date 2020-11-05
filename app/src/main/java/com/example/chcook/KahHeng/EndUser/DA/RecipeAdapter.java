@@ -105,7 +105,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolde
                 fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
+
             }
         });
         holder.btnMore.setOnClickListener(new View.OnClickListener() {

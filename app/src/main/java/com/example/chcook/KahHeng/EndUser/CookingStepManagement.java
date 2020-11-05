@@ -174,7 +174,7 @@ public class CookingStepManagement extends Fragment {
                 fragmentManager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }
 
         }

@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -117,12 +118,12 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                     fragmentManager = getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.myNavHostFragment, new VideoManagement());
-                    fragmentTransaction.commit();
+                    fragmentTransaction.addToBackStack(null).commit();
                 } else {
                     fragmentManager = getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.myNavHostFragment, new StepManagement());
-                    fragmentTransaction.commit();
+                    fragmentTransaction.addToBackStack(null).commit();
                 }
 
             }
@@ -182,14 +183,14 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
 //                fragmentTransaction.replace(R.id.myNavHostFragment, new PremiumRecipeAdapter());
                 fragmentTransaction.replace(R.id.myNavHostFragment,fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 progressBar.setVisibility(View.GONE);
                 break;
             case R.id.home:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 progressBar.setVisibility(View.GONE);
                 break;
             case R.id.myVideos:
@@ -203,7 +204,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 } else {
                     fragmentTransaction.replace(R.id.myNavHostFragment, new StepManagement());
                 }
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 break;
             case R.id.premium:
                 String type=user.getType();
@@ -214,7 +215,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                     fragmentManager = getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
-                    fragmentTransaction.commit();
+                    fragmentTransaction.addToBackStack(null).commit();
                     progressBar.setVisibility(View.GONE);
                 }
                 break;
@@ -223,7 +224,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, new HistoryUI());
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 progressBar.setVisibility(View.GONE);
                 break;
 
@@ -231,7 +232,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, new AddToFavorite());
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 progressBar.setVisibility(View.GONE);
                 break;
 
@@ -240,8 +241,8 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 Logout();
                 break;
         }
+
         return false;
     }
-
 
 }

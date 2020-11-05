@@ -97,7 +97,7 @@ public class PremiumRecipeAdapter extends RecyclerView.Adapter<PremiumRecipeAdap
                 fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }
         });
     }

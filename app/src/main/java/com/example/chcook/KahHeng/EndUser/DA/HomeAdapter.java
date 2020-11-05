@@ -95,7 +95,8 @@ public class HomeAdapter extends RecyclerView.Adapter <HomeAdapter.RViewHolder>{
                 fragmentTransaction = fragmentManager.beginTransaction();
 //                fragmentTransaction.replace(R.id.myNavHostFragment,new PlayVideo());
                 fragmentTransaction.replace(R.id.myNavHostFragment,fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
+
             }
         });
     }

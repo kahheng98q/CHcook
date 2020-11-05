@@ -1,11 +1,8 @@
 package com.example.chcook.KahHeng.EndUser.DA;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -26,14 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
 
-import com.example.chcook.KahHeng.EndUser.EditVideo;
 import com.example.chcook.KahHeng.EndUser.EditVideoInfo;
-import com.example.chcook.KahHeng.EndUser.Pay;
 import com.example.chcook.KahHeng.EndUser.PlayVideo;
 import com.example.chcook.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -110,7 +101,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.RViewHolder> implement
                 fragmentTransaction = fragmentManager.beginTransaction();
 //                fragmentTransaction.replace(R.id.myNavHostFragment,new PlayVideo());
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
 
 //                Toast.makeText(context, "Added Video in Favorite List", Toast.LENGTH_SHORT).show();
             }

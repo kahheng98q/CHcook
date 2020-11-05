@@ -102,7 +102,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.RViewH
                 fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }
         });
         holder.btnMore.setOnClickListener(new View.OnClickListener() {

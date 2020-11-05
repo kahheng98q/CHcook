@@ -41,6 +41,16 @@ import com.example.chcook.KahHeng.EndUser.DA.UserDA;
 import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +61,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -59,12 +70,12 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlayVideo extends Fragment {
+public class PlayVideo extends Fragment{
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private View view;
 
-    private VideoView imageView;
+    //    private VideoView imageView;
     private TextView txtRate;
     private TextView txtView;
     private TextView txtDate;
@@ -78,7 +89,7 @@ public class PlayVideo extends Fragment {
     private String head;
     private String key;
     private ArrayList<Videos> videos = new ArrayList<>();
-    private MediaController mc;
+    //    private MediaController mc;
     private ProgressBar progressBar;
 
     private Boolean fav = false;
@@ -90,11 +101,15 @@ public class PlayVideo extends Fragment {
     private Button btnCancel;
     private HistoryDA historyDA;
     private VideoDA videoDA = new VideoDA();
-    private RatingDA ratingDA=new RatingDA();
-    private ArrayList<Ratings> ratings=new ArrayList<>();
-    private double givenRate=0;
-    private UserDA userDA=new UserDA();
-    public PlayVideo() {
+    private RatingDA ratingDA = new RatingDA();
+    private ArrayList<Ratings> ratings = new ArrayList<>();
+    private double givenRate = 0;
+    private UserDA userDA = new UserDA();
+
+    private PlayerView playerView = null;
+    private SimpleExoPlayer simpleExoPlayer = null;
+
+    public PlayVideo () {
         // Required empty public constructor
     }
 
@@ -111,7 +126,7 @@ public class PlayVideo extends Fragment {
         historyDA = new HistoryDA();
 //        videos.add(new Videos("1","Fried Rice","3K","01/08/2020","https://firebasestorage.googleapis.com/v0/b/chcook-30453.appspot.com/o/recipe%2FChicken%20rice.PNG?alt=media&token=d21f8eed-8c2a-4cd7-84a0-e022f5e2facc","Heng","This is nice"));
 
-        imageView = view.findViewById(R.id.videoImage);
+//        imageView = view.findViewById(R.id.videoImage);
         txtView = view.findViewById(R.id.txtView);
         txtDate = view.findViewById(R.id.txtDate);
         txtName = view.findViewById(R.id.txtName);
@@ -123,7 +138,7 @@ public class PlayVideo extends Fragment {
         btnFav = view.findViewById(R.id.btnFavorite);
         btnReport = view.findViewById(R.id.btnReport);
 
-        txtRate=view.findViewById(R.id.txtRate);
+        txtRate = view.findViewById(R.id.txtRate);
         progressBar = view.findViewById(R.id.progressBarPlay);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -134,13 +149,13 @@ public class PlayVideo extends Fragment {
             ratingDA.getAvgRating(new RatingDA.RatingCallback() {
                 @Override
                 public void onCallback(ArrayList<Ratings> retrievedRatings, double rating, int numofRate) {
-                    ratings=retrievedRatings;
+                    ratings = retrievedRatings;
                     txtRate.setText(String.format("%.1f", rating));
                     ratingDA.CheckRating(new RatingDA.onCheckRate() {
                         @Override
                         public void onCallback(double ratingGiven) {
-                            givenRate=ratingGiven;
-                            Toast.makeText(getContext(), ""+givenRate, Toast.LENGTH_SHORT).show();
+                            givenRate = ratingGiven;
+                            Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -152,7 +167,8 @@ public class PlayVideo extends Fragment {
             public Videos onCallVideo(Videos video) {
                 txtdesc.setText(video.getDesc());
                 txtName.setText(video.getName());
-                imageView.setVideoURI(Uri.parse(video.getVideo()));
+//                imageView.setVideoURI(Uri.parse(video.getVideo()));
+                playVideo(video.getVideo());
                 txtDate.setText(video.getDate());
                 txtView.setText(video.getView());
                 return video;
@@ -160,18 +176,18 @@ public class PlayVideo extends Fragment {
         });
 
 //        setUser(key);
-       userDA. setVideokey(key);
-       userDA.setUserBasedOnVideo(new UserDA.UserCallback() {
-           @Override
-           public User onCallback(User user) {
-               Glide.with(getContext())
-                       .asBitmap()
-                       .load(user.getImage())
-                       .into(userPro);
-               txtUser.setText(user.getName());
-               return user;
-           }
-       });
+        userDA.setVideokey(key);
+        userDA.setUserBasedOnVideo(new UserDA.UserCallback() {
+            @Override
+            public User onCallback(User user) {
+                Glide.with(getContext())
+                        .asBitmap()
+                        .load(user.getImage())
+                        .into(userPro);
+                txtUser.setText(user.getName());
+                return user;
+            }
+        });
         historyDA.setHistory(key);
         final FavoriteDA favoriteDA = new FavoriteDA(key);
         favoriteDA.CheckFav(new FavoriteDA.FavCheck() {
@@ -187,38 +203,38 @@ public class PlayVideo extends Fragment {
             }
         });
 
-        imageView.start();
-        imageView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.start();
-                mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
-                    @Override
-                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-                        mc = new MediaController(getActivity());
-                        imageView.setMediaController(mc);
-                        mc.setAnchorView(imageView);
-                        progressBar.setVisibility(View.GONE);
-                        mp.start();
-                    }
-                });
-            }
-        });
-        imageView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                if (MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START == what) {
-                    progressBar.setVisibility(View.GONE);
-                }
-                if (MediaPlayer.MEDIA_INFO_BUFFERING_START == what) {
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-                if (MediaPlayer.MEDIA_INFO_BUFFERING_END == what) {
-                    progressBar.setVisibility(View.GONE);
-                }
-                return false;
-            }
-        });
+//        imageView.start();
+//        imageView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.start();
+//                mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+//                    @Override
+//                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+//                        mc = new MediaController(getActivity());
+//                        imageView.setMediaController(mc);
+//                        mc.setAnchorView(imageView);
+//                        progressBar.setVisibility(View.GONE);
+//                        mp.start();
+//                    }
+//                });
+//            }
+//        });
+//        imageView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+//            @Override
+//            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+//                if (MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START == what) {
+//                    progressBar.setVisibility(View.GONE);
+//                }
+//                if (MediaPlayer.MEDIA_INFO_BUFFERING_START == what) {
+//                    progressBar.setVisibility(View.VISIBLE);
+//                }
+//                if (MediaPlayer.MEDIA_INFO_BUFFERING_END == what) {
+//                    progressBar.setVisibility(View.GONE);
+//                }
+//                return false;
+//            }
+//        });
 
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,7 +256,6 @@ public class PlayVideo extends Fragment {
         });
 
 
-
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,10 +265,10 @@ public class PlayVideo extends Fragment {
         txtRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (givenRate>=1){
+                if (givenRate >= 1) {
                     Toast.makeText(getContext(), "This video's rating has been given.", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(), ""+givenRate, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
                     setReview();
                 }
 
@@ -263,36 +278,71 @@ public class PlayVideo extends Fragment {
         return view;
     }
 
+    private void playVideo(String uri) {
+        playerView = view.findViewById(R.id.videoImage);
+        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext());
+        playerView.setPlayer(simpleExoPlayer);
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
+                Util.getUserAgent(getContext(), "Cookish"));
+
+
+        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(uri));
+        simpleExoPlayer.prepare(videoSource);
+        simpleExoPlayer.setPlayWhenReady(true);
+        simpleExoPlayer.addListener(new Player.EventListener() {
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (Player.STATE_BUFFERING == playbackState) {
+                    progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+
     //Favorite
-    private void setFavorite(String videoKey) {
-        String uid = firebaseAuth.getCurrentUser().getUid();
-        final DatabaseReference userRef = database.getReference().child("Users").child(uid).child("Favorite");
+//    private void setFavorite(String videoKey) {
+//        String uid = firebaseAuth.getCurrentUser().getUid();
+//        final DatabaseReference userRef = database.getReference().child("Users").child(uid).child("Favorite");
+//
+//        String favId = userRef.push().getKey();
+//        DatabaseReference favRef = database.getReference("Favorite").child(favId);
+//
+//        Map<String, Object> addFav = new HashMap<>();
+//        addFav.put("Video", videoKey);
+//        addFav.put("Date", getCurrentTimeStamp());
+//
+//        Map<String, Object> addFavID = new HashMap<>();
+//        addFavID.put(favId, true);
+//        pfavKey = favId;
+//        favRef.updateChildren(addFav);
+//        userRef.updateChildren(addFavID);
+//        fav = true;
+//
+//        Toast.makeText(getContext(), "Added Video in Favorite List", Toast.LENGTH_SHORT).show();
+//    }
+//
 
-        String favId = userRef.push().getKey();
-        DatabaseReference favRef = database.getReference("Favorite").child(favId);
-
-        Map<String, Object> addFav = new HashMap<>();
-        addFav.put("Video", videoKey);
-        addFav.put("Date", getCurrentTimeStamp());
-
-        Map<String, Object> addFavID = new HashMap<>();
-        addFavID.put(favId, true);
-        pfavKey = favId;
-        favRef.updateChildren(addFav);
-        userRef.updateChildren(addFavID);
-        fav = true;
-
-        Toast.makeText(getContext(), "Added Video in Favorite List", Toast.LENGTH_SHORT).show();
-    }
-
-    // Date Function
-    private String getDate(Long timeStamp) {
-        Calendar cal = Calendar.getInstance(Locale.getDefault());
-        cal.setTimeInMillis(timeStamp * 1000);
-        android.text.format.DateFormat df = new android.text.format.DateFormat();
-        String date = df.format("dd-MM-yyyy hh:mm", cal).toString();
-        return date;
-    }
+//    @Override
+//    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+//        if (Player.STATE_BUFFERING == playbackState) {
+//            progressBar.setVisibility(View.VISIBLE);
+//        }
+//       else  {
+//            progressBar.setVisibility(View.GONE);
+//        }
+//    }
+//    // Date Function
+//    private String getDate(Long timeStamp) {
+//        Calendar cal = Calendar.getInstance(Locale.getDefault());
+//        cal.setTimeInMillis(timeStamp * 1000);
+//        android.text.format.DateFormat df = new android.text.format.DateFormat();
+//        String date = df.format("dd-MM-yyyy hh:mm", cal).toString();
+//        return date;
+//    }
 
     private long getCurrentTimeStamp() {
         long timestamp = System.currentTimeMillis() / 1000;
@@ -300,7 +350,6 @@ public class PlayVideo extends Fragment {
     }
 
     //Histories
-
 
 
     // GUI
@@ -390,7 +439,7 @@ public class PlayVideo extends Fragment {
         btnSendReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text=spinner.getSelectedItem().toString();
+                String text = spinner.getSelectedItem().toString();
                 ratingDA.giveRating(text);
 //                int checkedId=rgReportTitle.getCheckedRadioButtonId();
 
@@ -399,10 +448,16 @@ public class PlayVideo extends Fragment {
 //                    String desc="";
 //                    desc=editTextDesc.getText().toString();
 //                    setReport(rbReportTitle.getText().toString(),desc);
-                
+
                 dialogReview.dismiss();
 
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        simpleExoPlayer.release();
     }
 }

@@ -121,14 +121,14 @@ public class StepManagement extends Fragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select a Image"), 10005);
+        startActivityForResult(Intent.createChooser(intent, "Select a Image"), 10002);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10005) {
-            if (resultCode == RESULT_OK && requestCode == 10005 && data != null) {
+        if (requestCode == 10002) {
+            if (resultCode == RESULT_OK && requestCode == 10002 && data != null) {
 //                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
 
                 Imageuri = data.getData();

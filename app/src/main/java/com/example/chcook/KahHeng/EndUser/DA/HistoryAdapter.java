@@ -101,7 +101,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.RViewHol
                 fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }
         });
         holder.btnMore.setOnClickListener(new View.OnClickListener() {
