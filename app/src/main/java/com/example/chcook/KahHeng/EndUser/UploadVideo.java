@@ -182,6 +182,7 @@ public class UploadVideo extends Fragment {
                                     addURL.put("name",name);
                                     addURL.put("description",desc);
                                     addURL.put("view",0);
+//                                    addURL.put("Banned","no");
                                     addURL.put("Uploaddate",getCurrentTimeStamp());
 //                                    addURL.put("id",videoid);
                                     ref.updateChildren(addid);

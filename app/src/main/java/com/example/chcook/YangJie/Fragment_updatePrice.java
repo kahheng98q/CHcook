@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,13 +43,13 @@ public class Fragment_updatePrice extends Fragment {
         View view = inflater.inflate(R.layout.fragment_updateprice, container, false);
         final FirebaseUser currentStaff = FirebaseAuth.getInstance().getCurrentUser();
         cPrice = view.findViewById(R.id.txtCurrentPrice);
-        editor = view.findViewById(R.id.txtViewNewPrice);
+        editor = view.findViewById(R.id.txtEditor);
         date = view.findViewById(R.id.txtDate);
         spinnerPrice = view.findViewById(R.id.spinnerPrice);
         btnUp = view.findViewById(R.id.btnUpdate);
 
         showDetail();
-        String[] arraySpinner = new String[] {"10", "11","12", "13","14", "15","16", "17"};
+        String[] arraySpinner = new String[] {"10", "11","12", "13","14", "15","16", "17","18","19","20","21","22", "23","24", "25","26", "27","28","29","30","31","32", "33","34", "35","36", "37","38","39","40"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.style_spinner, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -57,25 +58,27 @@ public class Fragment_updatePrice extends Fragment {
             @Override
             public void onClick(View v) {
                 spinnerPrice.getSelectedItem().toString();
+
+
                 AlertDialog.Builder builderR = new AlertDialog.Builder(getActivity());
                 builderR.setTitle("Update Price");
                 builderR.setMessage("Are you sure want to update?");
                 builderR.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Query query = FirebaseDatabase.getInstance().getReference("Payment");
+                        Query query = FirebaseDatabase.getInstance().getReference("ManagePrice");
 
                         HashMap hashMap = new HashMap();
-                        hashMap.put("Price",spinnerPrice.getSelectedItem().toString());
-                        hashMap.put("Editor",currentStaff.getEmail().toString());
+                        hashMap.put("Price", spinnerPrice.getSelectedItem().toString());
+                        hashMap.put("Editor", currentStaff.getDisplayName().toString());
                         hashMap.put("EditTime", ServerValue.TIMESTAMP);
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
-                                Toast.makeText(getActivity(),"updated",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "updated", Toast.LENGTH_SHORT).show();
                                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.container_staff,new Fragment_updatePrice());
+                                fragmentTransaction.replace(R.id.container_staff, new Fragment_updatePrice());
                                 fragmentTransaction.commit();
                             }
                         });
@@ -90,12 +93,15 @@ public class Fragment_updatePrice extends Fragment {
                 AlertDialog dialogR = builderR.create();
                 dialogR.show();
             }
+
         });
         return view;
     }
 
+
+
     private void showDetail() {
-        Query query = FirebaseDatabase.getInstance().getReference("Payment");
+        Query query = FirebaseDatabase.getInstance().getReference("ManagePrice");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -106,7 +112,7 @@ public class Fragment_updatePrice extends Fragment {
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String latestDate = df.format(getDate);
 
-                date.setText("Last edit time : "+latestDate);
+                date.setText("Last Edit Time : "+latestDate);
                 editor.setText("Last Editor : "+emailEditor);
                 cPrice.setText("Current Price : RM "+getPrice);
             }

@@ -2,12 +2,14 @@ package com.example.chcook.YangJie.DA;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,11 +35,12 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
 
     private ArrayList<Report> banUser = new ArrayList<>();
     private Context mContext;
-    private String uId, vName, uName, uStatus;
+    private String uId, vName, uName, uStatus,VPosition;
 
-    public recylcerViewAdapter_banUser(Context mContext, ArrayList<Report> banUser) {
+    public recylcerViewAdapter_banUser(Context mContext, ArrayList<Report> banUser,String position) {
         this.banUser = banUser;
         this.mContext = mContext;
+        this.VPosition = position;
     }
 
     @NonNull
@@ -57,11 +60,9 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    uId = dataSnapshot.child("userId").getValue(String.class);
+//                    uId = dataSnapshot.child("userId").getValue(String.class);
                     vName = dataSnapshot.child("name").getValue(String.class);
-                    holder.videoName.setText("video name: " + vName);
-
-
+                    holder.videoName.setText("Reported video : " + vName);
                 }
             }
 
@@ -88,8 +89,24 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
                                         .into(holder.banUserImg);
                                 uId = dataSnapshot.getKey();
                                 uName = dataSnapshot.child("Name").getValue(String.class);
-                                uStatus = dataSnapshot.child("Banned").getValue(String.class);
-                                holder.name.setText("UserName :"+uName+" - "+uStatus);
+
+                                if(dataSnapshot.hasChild("Banned")){
+                                    uStatus = dataSnapshot.child("Banned").getValue(String.class);
+                                }else{
+                                    uStatus = "no";
+                                }
+                                String st;
+                                if(uStatus.equals("yes")){
+                                    st = "Banned";
+                                    holder.sttus.setText("Status : "+st);
+                                    holder.sttus.setTextColor(Color.parseColor("#FF0000"));
+
+                                }else{
+                                    st = "Approval";
+                                    holder.sttus.setText("Status : "+st);
+                                }
+
+                                holder.name.setText("UserName : "+uName);
                             }
                         }
                     }
@@ -118,7 +135,7 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
         });
 
 
-        holder.reporter.setText("reported by " + banUser.get(position).getUsername());
+//        holder.reporter.setText("reported by " + banUser.get(position).getUsername());
 
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +145,7 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
                 intent.putExtra("videoId",banUser.get(position).getVideoId());
                 intent.putExtra("reportId",banUser.get(position).getReportId());
                 intent.putExtra("userId",uId);
+                intent.putExtra("position",VPosition);
                 mContext.startActivity(intent);
 
             }
@@ -143,7 +161,7 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
 
     public class viewHolder extends RecyclerView.ViewHolder {
         CircleImageView banUserImg;
-        TextView name, videoName, reporter;
+        TextView name, videoName, sttus;
         RelativeLayout parentLayout;
 
         public viewHolder(@NonNull View itemView) {
@@ -151,7 +169,7 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
             banUserImg = itemView.findViewById(R.id.banUserProfile);
             name = itemView.findViewById(R.id.banUserName);
             videoName = itemView.findViewById(R.id.banUserVideoName);
-            reporter = itemView.findViewById(R.id.banUserReporter);
+            sttus = itemView.findViewById(R.id.banUserState);
             parentLayout = itemView.findViewById(R.id.banUserParent_Layout);
         }
     }
