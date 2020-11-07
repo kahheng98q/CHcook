@@ -9,7 +9,10 @@ public class Videos {
     private String video;
     private String date;
     private String image;
+    private String banned;
+    private String category;
     private User user;
+
 
 
     public Videos() {
@@ -47,10 +50,23 @@ public class Videos {
         this.user=user;
         this.desc=desc;
     }
+    public Videos(String banned, String name, String category, String date, String desc,String view,String videoID,String image) {
+        this.name = name;
+        this.category = category;
+        this.banned =banned;
+        this.date = date;
+        this.desc=desc;
+    }
+
 
     public User getUser() {
         return user;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
 
     public void setUser(User user) {
         this.user = user;

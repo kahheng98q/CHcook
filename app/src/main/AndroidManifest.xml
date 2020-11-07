@@ -4,6 +4,7 @@
     package="com.example.chcook">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:usesCleartextTraffic="true"
@@ -35,7 +36,17 @@
         <activity android:name=".KahHeng.EndUser.GUI.UserAuthentication.Login">
 
         </activity>
-        <activity android:name=".KahHeng.EndUser.MainActivity" />
+<!--        <activity android:name=".KahHeng.EndUser.MainActivity" />-->
+        <provider
+            android:authorities="com.example.chcook.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:name="androidx.core.content.FileProvider">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
+
 
 </manifest>

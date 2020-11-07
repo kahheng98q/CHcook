@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -48,7 +47,7 @@ public class ShowBanUser extends AppCompatActivity {
         reason = findViewById(R.id.txtBanReason);
         redirect = findViewById(R.id.txtRedirect);
         date = findViewById(R.id.txtBanDate);
-        btnback = findViewById(R.id.btnBack);
+        btnback = findViewById(R.id.btnShowIncomeBack);
         tt = findViewById(R.id.txtBanUserType);
         btnBan = findViewById(R.id.btnBan);
 
