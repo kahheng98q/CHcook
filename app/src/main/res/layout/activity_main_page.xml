@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c2"
-    tools:context=".KahHeng.EndUser.MainPage"
+    tools:context=".KahHeng.EndUser.GUI.MainPage"
     tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,35 +25,34 @@
                 android:id="@+id/toolbar1"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/c2"
+                android:background="@color/toolbar"
                 app:layout_scrollFlags="scroll|snap" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar2"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/c2"
-                android:visibility="gone"
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbar2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                android:background="@color/c2"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_collapseMode="pin">-->
 
-                app:layout_collapseMode="pin">
+<!--                <com.google.android.material.tabs.TabLayout-->
+<!--                    android:id="@+id/tabLayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+<!--                    <com.google.android.material.tabs.TabItem-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Video" />-->
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Video" />
+<!--                    <com.google.android.material.tabs.TabItem-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Recipe" />-->
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Recipe" />
-
-                </com.google.android.material.tabs.TabLayout>
-            </androidx.appcompat.widget.Toolbar>
+<!--                </com.google.android.material.tabs.TabLayout>-->
+<!--            </androidx.appcompat.widget.Toolbar>-->
         </com.google.android.material.appbar.AppBarLayout>
 
         <fragment
@@ -66,9 +65,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

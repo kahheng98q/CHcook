@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.chcook.Domain.CookingSteps;
+import com.example.chcook.Domain.Recipes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,7 +84,6 @@ public class CookingStepDA {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         setStepKey(child.getKey());
                         getAllRecipes(stepsCallback);
-
                     }
 
                 } else {
@@ -118,7 +118,7 @@ public class CookingStepDA {
                             desc = child.getValue().toString();
                         }
                     }
-                    cookingSteps.add(new CookingSteps(stepKey, url, desc));
+                    cookingSteps.add(new CookingSteps(stepKey, url, desc,new Recipes(recipeKey)));
                     stepsCallback.onCallback(cookingSteps);
 
                 }else {
@@ -134,6 +134,15 @@ public class CookingStepDA {
             }
         })
         ;
+    }
+    public boolean deleteStep() {
+        if (!stepKey.isEmpty() || !stepKey.equals("")&&!recipeKey.isEmpty()) {
+            DatabaseReference ref = database.getReference("Recipes").child(recipeKey).child("CookingSteps").child(stepKey);
+            ref.removeValue();
+        } else {
+            Log.d("test", "message text:null");
+        }
+        return  false;
     }
 
     private String getDate(Long timeStamp) {

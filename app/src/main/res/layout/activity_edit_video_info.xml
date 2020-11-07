@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KahHeng.EndUser.EditVideoInfo">
+    tools:context=".KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInfo">
     <EditText
         android:id="@+id/editDescText"
         android:layout_width="335dp"

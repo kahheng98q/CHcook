@@ -3,7 +3,4 @@
 <item
     android:id="@+id/itemHDelete"
     android:title="Delete"/>
-<item
-    android:id="@+id/itemFavorte"
-    android:title="Add to favorite"/>
 </menu>

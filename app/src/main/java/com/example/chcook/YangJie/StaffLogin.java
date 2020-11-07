@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chcook.KahHeng.EndUser.Login;
+import com.example.chcook.KahHeng.EndUser.GUI.UserAuthentication.Login;
 import com.example.chcook.R;
 
 import com.google.android.gms.tasks.OnFailureListener;

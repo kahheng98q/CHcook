@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KahHeng.EndUser.DisplayRecipes">
+    tools:context=".KahHeng.EndUser.GUI.PremiumFeatures.DisplayRecipes">
 
     <!-- TODO: Update blank fragment layout -->
 

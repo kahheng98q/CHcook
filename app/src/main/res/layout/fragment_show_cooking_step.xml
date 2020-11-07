@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".KahHeng.EndUser.ShowCookingStep">
+    tools:context=".KahHeng.EndUser.GUI.VideoAndRecipeManagement.ShowCookingStep">
 <androidx.constraintlayout.widget.ConstraintLayout
 android:layout_width="match_parent"
 android:layout_height="match_parent">

@@ -6,8 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.chcook.KahHeng.EndUser.Login;
-import com.example.chcook.KahHeng.EndUser.MainPage;
+import com.example.chcook.KahHeng.EndUser.GUI.UserAuthentication.Login;
 
 public class SplashScreen  extends AppCompatActivity {
     @Override
