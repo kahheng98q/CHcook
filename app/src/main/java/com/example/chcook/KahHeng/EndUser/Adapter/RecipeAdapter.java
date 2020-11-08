@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -26,6 +27,8 @@ import com.example.chcook.Domain.Recipes;
 
 import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.CookingStepManagement;
 import com.example.chcook.KahHeng.EndUser.DA.RecipeDA;
+import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditRecipe;
+import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInformation;
 import com.example.chcook.R;
 
 import java.util.ArrayList;
@@ -118,16 +121,30 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolde
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.itemHDelete:
-//                                recipe.deletehis(histories.get(position).getHistoryId());
-//                                Toast.makeText(context, "Removed Video in Histories", Toast.LENGTH_SHORT).show();
-//                                histories.remove(position);
-//                                notifyDataSetChanged();
+                            case R.id.itemVDelete:
+                                recipeDA.setRecipeKey(recipes.get(position).getRecipeId());
+                                recipeDA.deleteRecipe();
+                                Toast.makeText(context, "Deleted the Recipe", Toast.LENGTH_SHORT).show();
+                                recipes.remove(position);
+                                notifyDataSetChanged();
                                 return true;
 
-//                            case R.id.itemFavorte:
-//
-//                                return true;
+                            case R.id.itemVEdit:
+                                FragmentManager fragmentManager;
+                                FragmentTransaction fragmentTransaction;
+                                Bundle bundle = new Bundle();
+                                bundle.putString("key", recipe.getRecipeId());
+                                bundle.putString("title", recipe.getTitle());
+                                bundle.putString("desc", recipe.getDescription());
+                                bundle.putString("uri", recipe.getImageUrl());
+                                //set Fragmentclass Arguments
+                                EditRecipe fragobj = new EditRecipe();
+                                fragobj.setArguments(bundle);
+                                fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                                fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
+                                fragmentTransaction.addToBackStack(null).commit();
+                                return true;
 
                             default:
                                 return false;
@@ -135,7 +152,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolde
 
                     }
                 });
-                popupMenu.inflate(R.menu.his_menu);
+                popupMenu.inflate(R.menu.video_manage_menu);
                 popupMenu.show();
             }
         });

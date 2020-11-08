@@ -85,6 +85,7 @@ public class PlayVideo extends Fragment{
     private TextView txtDate;
     private TextView txtName;
     private TextView txtdesc;
+    private TextView txtCategory;
     private ImageView userPro;
     private TextView txtUser;
     private ImageButton btnFav;
@@ -139,7 +140,7 @@ public class PlayVideo extends Fragment{
         txtUser = view.findViewById(R.id.txtUsername);
         txtdesc = view.findViewById(R.id.txtDesc);
         userPro = view.findViewById(R.id.userHead);
-
+        txtCategory= view.findViewById(R.id.txtCategory);
         btnFav = view.findViewById(R.id.btnFavorite);
         btnReport = view.findViewById(R.id.btnReport);
 
@@ -176,6 +177,7 @@ public class PlayVideo extends Fragment{
                 playVideo(video.getVideo());
                 txtDate.setText(video.getDate());
                 txtView.setText(video.getView());
+                txtCategory.setText("Category: "+video.getCategory());
                 return video;
             }
         });
@@ -390,7 +392,7 @@ public class PlayVideo extends Fragment{
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.Review, R.layout.style_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(4);
+        spinner.setSelection(0);
 
 //        String text=spinner.getSelectedItem().toString();
 

@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
 
 import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInfo;
+import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInformation;
 import com.example.chcook.KahHeng.EndUser.GUI.VideoPlaying.PlayVideo;
 import com.example.chcook.R;
 
@@ -116,10 +117,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RViewHolder>
                             case R.id.itemVDelete:
                                 return true;
                             case R.id.itemVEdit:
-                                Intent intent = new Intent(context, EditVideoInfo.class);
-                                intent.putExtra("Key", video.getVideoID());
-                                context.startActivity(intent);
-//                                        Toast.makeText(context, video.getVideoID(), Toast.LENGTH_SHORT).show();
+                                FragmentManager fragmentManager;
+                                FragmentTransaction fragmentTransaction;
+                                Bundle bundle = new Bundle();
+                                bundle.putString("key", video.getVideoID());
+                                //set Fragmentclass Arguments
+                                EditVideoInformation fragobj = new EditVideoInformation();
+                                fragobj.setArguments(bundle);
+                                fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                                fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
+                                fragmentTransaction.addToBackStack(null).commit();
                                 return true;
                         }
                         return false;

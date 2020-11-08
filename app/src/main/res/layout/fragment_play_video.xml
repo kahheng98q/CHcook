@@ -54,7 +54,7 @@
             android:layout_marginTop="8dp"
             android:text="Date"
             app:layout_constraintStart_toEndOf="@+id/txtView"
-            app:layout_constraintTop_toBottomOf="@+id/addName" />
+            app:layout_constraintTop_toBottomOf="@+id/txtCategory" />
 
         <TextView
             android:id="@+id/txtView"
@@ -65,7 +65,7 @@
             android:layout_marginTop="8dp"
             android:text="View"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addName" />
+            app:layout_constraintTop_toBottomOf="@+id/txtCategory" />
 
         <ImageButton
             android:id="@+id/btnFavorite"
@@ -129,7 +129,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
-            android:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/userHead"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
@@ -172,7 +171,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
@@ -185,5 +183,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/videoImage" />
+
+        <TextView
+            android:id="@+id/txtCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

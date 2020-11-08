@@ -144,7 +144,14 @@ public class CookingStepDA {
         }
         return  false;
     }
-
+    public void editCookingStep(String desc) {
+        if (!stepKey.isEmpty() || !stepKey.equals("")) {
+            DatabaseReference stepRef = database.getReference().child("CookingSteps").child(stepKey);
+            Map<String, Object> stepUpdates = new HashMap<>();
+            stepUpdates.put("Description", desc);
+            stepRef.updateChildren(stepUpdates);
+        }
+    }
     private String getDate(Long timeStamp) {
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.setTimeInMillis(timeStamp * 1000);

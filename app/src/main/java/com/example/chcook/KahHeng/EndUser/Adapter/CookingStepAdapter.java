@@ -1,6 +1,7 @@
 package com.example.chcook.KahHeng.EndUser.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.CookingSteps;
 import com.example.chcook.KahHeng.EndUser.DA.CookingStepDA;
 import com.example.chcook.KahHeng.EndUser.DA.FavoriteDA;
+import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditCookingStep;
 import com.example.chcook.R;
 
 import java.util.ArrayList;
@@ -115,7 +120,7 @@ import java.util.ArrayList;
                         public boolean onMenuItemClick(MenuItem item) {
 
                             switch (item.getItemId()) {
-                                case R.id.itemFDelete:
+                                case R.id.itemVDelete:
 //                                    favoriteDA.setFavoriteKey(cookingSteps.get(position).getStepId());
 //                                    favoriteDA.deleteFav();
                                     cookingStepDA.setRecipeKey(cookingSteps.get(position).getRecipes().getRecipeId());
@@ -126,6 +131,21 @@ import java.util.ArrayList;
                                     cookingSteps.remove(position);
                                     notifyDataSetChanged();
                                     return true;
+                                case R.id.itemVEdit:
+                                    FragmentManager fragmentManager;
+                                    FragmentTransaction fragmentTransaction;
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("key",cookingStep.getStepId());
+                                    bundle.putString("desc", cookingStep.getDescription());
+                                    bundle.putString("uri",cookingStep.getImageUrl());
+                                    //set Fragmentclass Arguments
+                                    EditCookingStep fragobj = new EditCookingStep();
+                                    fragobj.setArguments(bundle);
+                                    fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                                    fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
+                                    fragmentTransaction.addToBackStack(null).commit();
+                                    return true;
 
                                 default:
                                     return false;
@@ -133,7 +153,7 @@ import java.util.ArrayList;
 
                         }
                     });
-                    popupMenu.inflate(R.menu.fav_menu);
+                    popupMenu.inflate(R.menu.video_manage_menu);
                     popupMenu.show();
                 }
             });

@@ -187,7 +187,27 @@ public class RecipeDA {
         });
 
     }
+    public void deleteRecipe() {
 
+        if (!recipeKey.isEmpty() || !recipeKey.equals("")) {
+            String uid = firebaseAuth.getCurrentUser().getUid();
+            DatabaseReference recipeRef = database.getReference("Recipes").child(recipeKey);
+            DatabaseReference userRecipeRef = database.getReference("Users").child(uid).child("Recipe").child(recipeKey);
+
+            recipeRef.removeValue();
+            userRecipeRef.removeValue();
+
+        }
+    }
+    public void editRecipe(String name, String desc) {
+        if (!recipeKey.isEmpty() || !recipeKey.equals("")) {
+            DatabaseReference recipeRef = database.getReference().child("Recipes").child(recipeKey);
+            Map<String, Object> recipeUpdates = new HashMap<>();
+            recipeUpdates.put("Title", name);
+            recipeUpdates.put("Description", desc);
+            recipeRef.updateChildren(recipeUpdates);
+        }
+    }
     private String getDate(Long timeStamp) {
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.setTimeInMillis(timeStamp * 1000);

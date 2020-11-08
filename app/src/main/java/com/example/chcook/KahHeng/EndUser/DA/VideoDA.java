@@ -115,6 +115,11 @@ public class VideoDA {
                                 time = Long.valueOf(child.getValue().toString());
                                 video.setDate(getDate(time));
                             }
+                            if (child.getKey().equals("Category")) {
+                                String category = child.getValue().toString();
+                                video.setCategory(category);
+                            }
+
                             if (child.getKey().equals("view")) {
                                 int view = 0;
                                 view = Integer.valueOf(child.getValue().toString()) + 1;
@@ -246,12 +251,13 @@ public class VideoDA {
         return timestamp;
     }
 
-    public void editVideoNameNDesc(String name, String desc) {
+    public void editVideoNameNDesc(String name, String desc,String category) {
         DatabaseReference videoRef = database.getReference().child("Videos").child(videokey);
 
         Map<String, Object> videoUpdates = new HashMap<>();
         videoUpdates.put("name",name );
         videoUpdates.put("description", desc);
+        videoUpdates.put("Category", category);
         videoRef.updateChildren(videoUpdates);
     }
 

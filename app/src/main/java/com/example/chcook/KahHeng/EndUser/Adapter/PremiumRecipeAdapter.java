@@ -51,6 +51,7 @@ public class PremiumRecipeAdapter extends RecyclerView.Adapter<PremiumRecipeAdap
             textView1 = itemView.findViewById(R.id.textViewName);
             textView2 = itemView.findViewById(R.id.textViewAddress);
             btnMore = itemView.findViewById(R.id.btnMultiFunc);
+            btnMore.setVisibility(View.GONE);
             videoInfoLayout = itemView.findViewById(R.id.videoinfoLayout);
         }
 

@@ -1,37 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KahHeng.EndUser.GUI.VideoAndRecipeManagement.UploadVideo">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInformation">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <EditText
-            android:id="@+id/name"
-            android:layout_width="335dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="#ffff"
-            android:ems="10"
-            android:hint="Name"
-            android:inputType="textPersonName"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar1" />
-
-        <EditText
-            android:id="@+id/desc"
+            android:id="@+id/editDescText"
             android:layout_width="335dp"
             android:layout_height="47dp"
             android:layout_marginStart="8dp"
@@ -45,55 +24,56 @@
             android:hint="Description"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
+            app:layout_constraintTop_toBottomOf="@+id/editNameTxt" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
+        <EditText
+            android:id="@+id/editNameTxt"
+            android:layout_width="335dp"
+            android:layout_height="47dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="Upload"
+            android:background="#ffff"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerReview" />
+            app:layout_constraintTop_toBottomOf="@+id/editvideoImage" />
 
-        <VideoView
-            android:id="@+id/videoImage"
-            android:layout_width="411dp"
-            android:layout_height="189dp"
+        <ImageView
+            android:id="@+id/editvideoImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <Spinner
-            android:id="@+id/spinnerReview"
+            android:id="@+id/spinnerCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/desc" />
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:max="100"
+            app:layout_constraintTop_toBottomOf="@+id/editDescText" />
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Edit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/videoImage" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +29,7 @@ public class EditVideoInfo extends AppCompatActivity {
     private Button editBtn;
     private String key="";
     private VideoDA videoDA= new VideoDA();
+    private Spinner spinner=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,11 @@ public class EditVideoInfo extends AppCompatActivity {
         nametxt = findViewById(R.id.editNameTxt);
         desctxt = findViewById(R.id.editDescText);
         editBtn = findViewById(R.id.editButton);
+        spinner = findViewById(R.id.spinnerCategory);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.Categories, R.layout.style_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+//        spinner.setSelection(0);
         if (getIntent()!=null){
             key=getIntent().getStringExtra("Key");
             videoDA.setVideokey(key);
@@ -51,29 +59,39 @@ public class EditVideoInfo extends AppCompatActivity {
 
                     nametxt .setText(video.getName());
                     desctxt .setText(video.getDesc());
+                    setSpinText(video.getCategory());
                     return video;
                 }
             });
         }
 
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name=nametxt.getText().toString();
-                String desc=desctxt.getText().toString();
-                if(!name.isEmpty()&&!desc.isEmpty()){
-                    videoDA.editVideoNameNDesc(name,desc);
-                    Toast.makeText(getApplicationContext(),"Edit Successful" , Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainPage.class));
+        editBtn.setOnClickListener(v -> {
+            String name=nametxt.getText().toString();
+            String desc=desctxt.getText().toString();
+            String cate=spinner.getSelectedItem().toString();
+            if(!name.isEmpty()&&!desc.isEmpty()){
+                videoDA.editVideoNameNDesc(name,desc,cate);
 
-                }else {
-                    Toast.makeText(getApplicationContext(),"Name and Description can be empty" , Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(getApplicationContext(),"Edit Successful" , Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MainPage.class));
 
+            }else {
+                Toast.makeText(getApplicationContext(),"Name and Description can be empty" , Toast.LENGTH_SHORT).show();
             }
+
         });
 
     }
+    public void setSpinText(String text)
+    {
+        for(int i= 0; i < spinner.getAdapter().getCount(); i++)
+        {
+            if(spinner.getAdapter().getItem(i).toString().contains(text))
+            {
+                spinner.setSelection(i);
+            }
+        }
 
+    }
 }

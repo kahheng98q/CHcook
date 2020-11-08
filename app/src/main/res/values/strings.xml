@@ -10,12 +10,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="Review">
-        <item>1.0</item>
-        <item>2.0</item>
-        <item>3.0</item>
-        <item>4.0</item>
         <item>5.0</item>
+        <item>4.0</item>
+        <item>3.0</item>
+        <item>2.0</item>
+        <item>1.0</item>
     </string-array>
+    <string-array name="Categories">
+        <item>Other</item>
+        <item>Pizza</item>
+        <item>Dessert</item>
+        <item>Breakfast</item>
+        <item>Dinner</item>
+        <item>Pancake</item>
+        <item>Soup</item>
+        <item>Sandwiches</item>
+        <item>Pasta</item>
+        <item>Western</item>
+        <item>Rice</item>
+    </string-array>
+
     <string name="back">back</string>
     <string name="sendMyPass">Send my password</string>
     <string name="email">Email</string>
