@@ -271,6 +271,13 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 fragmentTransaction.replace(R.id.container_staff,new Fragment_VideoUploadReport());
                 fragmentTransaction.commit();
                 break;
+            case R.id.nav_report_type:
+                toolbar.setTitle("Banning Report");
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_staff,new Fragment_Banning_Report());
+                fragmentTransaction.commit();
+                break;
             case R.id.nav_logout:
                 AlertDialog.Builder builderR = new AlertDialog.Builder(this);
                 builderR.setTitle("Logout");

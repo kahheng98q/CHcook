@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,9 +26,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ShowBanVideo extends AppCompatActivity {
 
@@ -65,35 +69,37 @@ public class ShowBanVideo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builderR = new AlertDialog.Builder(ShowBanVideo.this);
+                final EditText input = new EditText(ShowBanVideo.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
                 if (tag == 1) {
                     builderR.setTitle("Unban this video");
                     builderR.setMessage("Are you sure want to recover?");
                 } else {
                     builderR.setTitle("Ban this video");
-                    builderR.setMessage("Are you sure want to ban?");
+                    builderR.setMessage("Please state the reason ban");
+                    builderR.setView(input);
                 }
-
                 builderR.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Query query = FirebaseDatabase.getInstance().getReference("Videos").child(vid);
+                        Query query = FirebaseDatabase.getInstance().getReference("Videos").child(vid).child("Status");
 
-                        HashMap hashMap = new HashMap();
-
+                        Map<String, Object> hashMap = new HashMap<>();
                         if (tag == 1) {
-                            hashMap.put("Banned", "no");
+                            hashMap.put("Status", "Approval");
+                            hashMap.put("Reason","");
+
                         } else {
-                            hashMap.put("Banned", "yes");
+                            hashMap.put("Status", "Banned");
+                            hashMap.put("Reason",input.getText().toString());
+                            hashMap.put("Date", ServerValue.TIMESTAMP);
                         }
 
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
                                 Toast.makeText(ShowBanVideo.this, "Success", Toast.LENGTH_SHORT).show();
-//                                ban.setEnabled(false);
                                 Vposition =position;
-//                                Toast.makeText(ShowBanVideo.this, admin.toString(), Toast.LENGTH_SHORT).show();
-
                             }
                         });
                     }
@@ -165,9 +171,9 @@ public class ShowBanVideo extends AppCompatActivity {
                 String videoName = dataSnapshot.child("name").getValue(String.class);
                 String videoType = dataSnapshot.child("Category").getValue(String.class);
                 String videoDesc = dataSnapshot.child("description").getValue(String.class);
-                if (dataSnapshot.hasChild("Banned")){
-                     banned = dataSnapshot.child("Banned").getValue(String.class);
-                    if (banned.equals("yes")) {
+                if (dataSnapshot.hasChild("Status")){
+                     banned = dataSnapshot.child("Status").child("Status").getValue(String.class);
+                    if (banned.equals("Banned")) {
                         ban.setText("unBan");
                         ban.setTag(1);
                     } else {

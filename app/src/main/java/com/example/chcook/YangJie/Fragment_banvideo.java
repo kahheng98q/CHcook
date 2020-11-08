@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class Fragment_banvideo extends Fragment {
 
@@ -46,17 +48,17 @@ public class Fragment_banvideo extends Fragment {
                 if(dataSnapshot.exists()) {
 
                     for (DataSnapshot report : dataSnapshot.getChildren()) {
-
+                        String Reason;
                         Long dd = report.child("Date").getValue(Long.class);
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        String latestDate = df.format(dd);
-                        String Reason = report.child("Description").getValue(String.class);
-//                        String Reporter = report.child("UserName").getValue(String.class);
-//                        String videoName = report.child("VideoName").getValue(String.class);
+                        if(report.hasChild("Description")){
+                             Reason = report.child("Description").getValue(String.class);
+                        }else{
+                            Reason = "";
+                        }
                         String videoId = report.child("Video").getValue(String.class);
                         String videoType = report.child("Type").getValue(String.class);
 
-                        reportedVideoArraylist.add(new Report(report.getKey(), latestDate, Reason, videoId,videoType));
+                        reportedVideoArraylist.add(new Report(report.getKey(), getDate(dd), Reason, videoId,videoType));
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -76,6 +78,13 @@ public class Fragment_banvideo extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
+    }
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("dd-MM-yyyy", cal).toString();
+        return date;
     }
 
 }

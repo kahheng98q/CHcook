@@ -2,6 +2,7 @@ package com.example.chcook.YangJie.DA;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,13 +73,8 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
     public void onBindViewHolder(@NonNull final viewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: videoCalledtoBanvideo");
         final Report v = banVideo.get(position);
-//        holder.txtVideoName.setText("Video Name:"+v.getVideoName());
         holder.txtDate.setText("Date : "+v.getDate());
         holder.reason.setText("Reason : "+v.getReason());
-//        holder.reporterName.setText(v.getUsername());
-
-
-
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Videos");
         DatabaseReference df = databaseReference.child(v.getVideoId());
@@ -89,21 +85,19 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
                     String videoUrl = dataSnapshot.child("URL").getValue(String.class);
                     String videoName = dataSnapshot.child("name").getValue(String.class);
                     String status = "";
-                    if(dataSnapshot.hasChild("Banned")){
-                         status = dataSnapshot.child("Banned").getValue(String.class);
+                    if(dataSnapshot.hasChild("Status")){
+                         status = dataSnapshot.child("Status").child("Status").getValue(String.class);
                     }else{
-                        status = "no";
+                        status = "Approval";
                     }
-
+                    if (status.equals("Approval")){
+                        holder.videoStatus.setText("Status : "+status);
+                    }else{
+                        holder.videoStatus.setTextColor(Color.parseColor("#FF0000"));
+                        holder.videoStatus.setText("Status : "+status);
+                    }
                     VName=videoName;
                     holder.txtVideoName.setText("Video Name : "+videoName);
-                    String statu="";
-                    if(status.equals("yes")){
-                        statu = "Banned";
-                    }else{
-                        statu="Approval";
-                    }
-                    holder.videoStatus.setText("Status : "+statu);
                     Glide.with(mContext)
                             .asBitmap()
                             .load(Uri.parse(videoUrl))
@@ -116,22 +110,17 @@ public class recyclerViewAdapter_banVideo extends RecyclerView.Adapter<recyclerV
 
             }
         });
-        VID = v.getVideoId();
-        VDesc=v.getReason();
-        VDate = v.getDate();
-        VType = v.getReportType();
-
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ShowBanVideo.class);
-                intent.putExtra("videoId",VID);
+                intent.putExtra("videoId",banVideo.get(position).getVideoId());
                 intent.putExtra("position",VPosition);
-                intent.putExtra("description",VDesc);
-                intent.putExtra("videoName",VName);
-                intent.putExtra("date",VDate);
-                intent.putExtra("type",VType);
+                intent.putExtra("description",banVideo.get(position).getReason());
+                intent.putExtra("videoName",banVideo.get(position).getVideoName());
+                intent.putExtra("date",banVideo.get(position).getDate());
+                intent.putExtra("type",banVideo.get(position).getReportType());
                 intent.putExtra("page","banVideo");
                 mContext.startActivity(intent);
 

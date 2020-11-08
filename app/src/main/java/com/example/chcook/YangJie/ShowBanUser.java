@@ -8,8 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,10 +23,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -57,19 +63,24 @@ public class ShowBanUser extends AppCompatActivity {
             reportId = extras.getString("reportId");
             position = extras.getString("position");
 
-//            Toast.makeText(this, IsAdmin, Toast.LENGTH_SHORT).show();
         }
         DatabaseReference databaseReferenceU = FirebaseDatabase.getInstance().getReference("Users");
         final DatabaseReference databaseReferenceR = FirebaseDatabase.getInstance().getReference("Report");
         databaseReferenceR.child(extras.getString("reportId")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                reason.setText("Reason : "+dataSnapshot.child("Description").getValue(String.class));
-                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                String latestDate = df.format(dataSnapshot.child("Date").getValue(Long.class));
+                String rreason="";
+                if(dataSnapshot.hasChild("Description")){
+                    rreason = dataSnapshot.child("Description").getValue(String.class);
+                    if(rreason.equals("")){
+                        rreason="";
+                    }
+                }
+
+                reason.setText("Reason : "+rreason);
                 String type = dataSnapshot.child("Type").getValue(String.class);
-                date.setText("Report Date : "+latestDate);
-                Vdate = latestDate;
+                date.setText("Report Date : "+getDate(dataSnapshot.child("Date").getValue(Long.class)));
+                Vdate = getDate(dataSnapshot.child("Date").getValue(Long.class));
                 VReason = dataSnapshot.child("Description").getValue(String.class);
                 Vtype = dataSnapshot.child("Type").getValue(String.class);
                 tt.setText("Type : "+type);
@@ -85,7 +96,7 @@ public class ShowBanUser extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String ban = "";
                 if(dataSnapshot.hasChild("Status")){
-                   ban =  dataSnapshot.child("Status").getValue(String.class);
+                   ban =  dataSnapshot.child("Status").child("Status").getValue(String.class);
                 }else {
                     ban = "Approval";
                 }
@@ -121,23 +132,36 @@ public class ShowBanUser extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builderR = new AlertDialog.Builder(ShowBanUser.this);
+                final EditText input = new EditText(ShowBanUser.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
                 if (tag == 1) {
                     builderR.setTitle("Unban this user");
                     builderR.setMessage("Are you sure want to unban?");
                 } else {
                     builderR.setTitle("Ban this user");
-                    builderR.setMessage("Are you sure want to ban?");
+                    builderR.setMessage("Please state the reason ban");
+                    builderR.setView(input);
                 }
 
                 builderR.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Query query = FirebaseDatabase.getInstance().getReference("Users").child(extras.getString("userId"));
-                        HashMap hashMap = new HashMap();
+                        Query query = FirebaseDatabase.getInstance().getReference("Users").child(extras.getString("userId")).child("Status");
+//                        HashMap hashMap = new HashMap();
+//                        if (tag == 1) {
+//                            hashMap.put("Status", "Approval");
+//                        } else {
+//                            hashMap.put("Status", "Banned");
+//                        }
+                        Map<String, Object> hashMap = new HashMap<>();
                         if (tag == 1) {
                             hashMap.put("Status", "Approval");
+                            hashMap.put("Reason","");
+
                         } else {
                             hashMap.put("Status", "Banned");
+                            hashMap.put("Reason", input.getText().toString());
+                            hashMap.put("Date", ServerValue.TIMESTAMP);
                         }
 
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
@@ -215,6 +239,13 @@ public class ShowBanUser extends AppCompatActivity {
                 dialogR.show();
             }
         });
+    }
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("dd-MM-yyyy", cal).toString();
+        return date;
     }
 
 }

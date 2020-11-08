@@ -121,13 +121,8 @@ public class Fragment_VideoUploadReport extends Fragment {
                                                     final String getLastDate = ddf.format(dato);
                                                     String category = video.child("Category").getValue(String.class);
                                                     String banned="";
-                                                    if(video.hasChild("Banned")){
-                                                        banned = video.child("Banned").getValue(String.class);
-                                                        if(banned.equals("no")){
-                                                            banned = "Approval";
-                                                        }else{
-                                                            banned = "Banned";
-                                                        }
+                                                    if(video.hasChild("Status")){
+                                                        banned = video.child("Status").child("Status").getValue(String.class);
                                                     }else{
                                                         banned = "Approval";
                                                     }

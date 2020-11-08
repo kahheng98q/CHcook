@@ -7,6 +7,9 @@ public class User{
     private String type="";
     private String name="";
     private String password="";
+    private String reason="";
+    private String BanDate="";
+
 
     public User() {
 
@@ -20,6 +23,12 @@ public class User{
         this.email=email;
         this.name=name;
     }
+    public User(String BanDate,String email,String name,String reason){
+        this.name=name;
+        this.email=email;
+        this.BanDate=BanDate;
+        this.reason=reason;
+    }
 
     public User(String status, String email, String Image, String type, String name, String password) {
         this.status = status;
@@ -29,6 +38,9 @@ public class User{
         this.name = name;
         this.password = password;
     }
+    public String getReason() { return reason; }
+
+    public String getBanDate() { return BanDate; }
 
     public String getStatus() {
         return status;

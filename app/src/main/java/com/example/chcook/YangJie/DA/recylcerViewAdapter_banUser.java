@@ -34,6 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerViewAdapter_banUser.viewHolder> {
 
     private ArrayList<Report> banUser = new ArrayList<>();
+    private ArrayList<String> userId = new ArrayList<>();
     private Context mContext;
     private String uId, vName, uName, uStatus,VPosition;
 
@@ -87,10 +88,12 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
                                         .error(R.drawable.load_error_24dp)
                                         .into(holder.banUserImg);
                                 uId = dataSnapshot.getKey();
+//                                setUserId(dataSnapshot.getKey());
+                                userId.add(uId);
                                 uName = dataSnapshot.child("Name").getValue(String.class);
 
                                 if(dataSnapshot.hasChild("Status")){
-                                    uStatus = dataSnapshot.child("Status").getValue(String.class);
+                                    uStatus = dataSnapshot.child("Status").child("Status").getValue(String.class);
                                 }else{
                                     uStatus = "Approval";
                                 }
@@ -131,17 +134,13 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
             }
         });
 
-
-//        holder.reporter.setText("reported by " + banUser.get(position).getUsername());
-
-
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ShowBanUser.class);
                 intent.putExtra("videoId",banUser.get(position).getVideoId());
                 intent.putExtra("reportId",banUser.get(position).getReportId());
-                intent.putExtra("userId",uId);
+                intent.putExtra("userId",userId.get(position));
                 intent.putExtra("position",VPosition);
                 mContext.startActivity(intent);
 
@@ -149,6 +148,12 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
         });
 
 
+    }
+    private String getUserId(){
+        return uId;
+    }
+    private void setUserId(String uId) {
+        this.uId=uId;
     }
 
     @Override

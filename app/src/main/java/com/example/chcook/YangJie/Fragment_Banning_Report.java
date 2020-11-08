@@ -26,6 +26,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.chcook.Domain.Payment;
+import com.example.chcook.Domain.User;
+import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
 import com.example.chcook.YangJie.DA.PdfDocumentAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -60,24 +62,26 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Fragment_Banning_Report extends Fragment {
     private Button report;
-    private Spinner ySpinner, mSpinner;
+    private Spinner ySpinner, mSpinner, cSpinner;
     private ProgressBar pg;
     private TextView sign;
-    private Boolean gotData=false;
-    private ArrayList<Payment> payments = new ArrayList<>();
-    private ArrayList<Payment> firstPayments = new ArrayList<>();
+    private Boolean gotData = false, isUser = false;
+    private ArrayList<Videos> videoArray = new ArrayList<>();
+    private ArrayList<User> userArray = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_banning_report, container, false);
 //        payments.clear();
         sign = view.findViewById(R.id.txtBanSIgn);
         report = view.findViewById(R.id.btnBanReport);
-
+        cSpinner = view.findViewById(R.id.spinnerBanReportCategory);
         ySpinner = view.findViewById(R.id.spinnerBanReportYear);
         mSpinner = view.findViewById(R.id.spinnerBanReportMonth);
+        String[] arrayCategory = new String[]{"User", "Video"};
         String[] arrayYear = new String[]{"2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031"};
         String[] arrayMonth = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.style_spinner, arrayYear);
@@ -86,6 +90,9 @@ public class Fragment_Banning_Report extends Fragment {
         final ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.style_spinner, arrayMonth);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
+        final ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.style_spinner, arrayCategory);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        cSpinner.setAdapter(cAdapter);
         final Handler handler = new Handler(Looper.getMainLooper());
 
         Dexter.withActivity(getActivity())
@@ -97,85 +104,110 @@ public class Fragment_Banning_Report extends Fragment {
                             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                             @Override
                             public void onClick(final View v) {
-                                payments.clear();
+                                videoArray.clear();
+                                userArray.clear();
+//                                Toast.makeText(getActivity(),"1",Toast.LENGTH_SHORT).show();
                                 report.setText("Loading...");
+                                cSpinner.setVisibility(View.INVISIBLE);
                                 sign.setVisibility(View.VISIBLE);
                                 ySpinner.setVisibility(View.INVISIBLE);
                                 mSpinner.setVisibility(View.INVISIBLE);
                                 report.setEnabled(false);
-                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Payment");
-                                databaseReference.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()) {
-                                            for (final DataSnapshot income : dataSnapshot.getChildren()) {
-                                                Long dd = income.child("PayDate").getValue(Long.class);
-                                                SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
-                                                String latestDate = df.format(dd);
+                                DatabaseReference databaseReferenceV = FirebaseDatabase.getInstance().getReference("Videos");
+                                DatabaseReference databaseReferenceU = FirebaseDatabase.getInstance().getReference("Users");
+                                if (cSpinner.getSelectedItem().toString().equals("User")) {
+                                    isUser = true;
+                                    databaseReferenceU.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
 
-                                                if (latestDate.equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
-                                                    gotData=true;
-                                                    Long dato = income.child("PayDate").getValue(Long.class);
-                                                    SimpleDateFormat ddf = new SimpleDateFormat("dd-MM-yyyy");
-                                                    final String getLastDate = ddf.format(dato);
-                                                    final Integer price = income.child("Price").getValue(Integer.class);
-                                                    String userId = income.child("UserId").getValue(String.class);
+                                                for (final DataSnapshot user : dataSnapshot.getChildren()) {
 
+                                                    if (user.hasChild("Status")) {
+
+                                                        Long dd = user.child("Status").child("Date").getValue(Long.class);
+                                                        SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
+                                                        String latestDate = df.format(dd);
 
 
+                                                        if (latestDate.equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
+                                                            gotData = true;
 
+                                                            Long dato = user.child("Status").child("Date").getValue(Long.class);
+                                                            SimpleDateFormat dff = new SimpleDateFormat("dd-MM-yyyy");
+                                                            String getDate = dff.format(dato);
+                                                            String reason = user.child("Status").child("Reason").getValue(String.class);
+                                                            String userEmail = user.child("Email").getValue(String.class);
+                                                            String userName = user.child("Name").getValue(String.class);
+                                                            userArray.add(new User(getDate, userEmail, userName, reason));
 
-                                                    DatabaseReference query = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-//
-                                                    query.addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot ds) {
-
-                                                            String userName = ds.child("Name").getValue(String.class);
-                                                            String userEmail = ds.child("Email").getValue(String.class);
-//                                                payments.add(new Payment("111",22,"333","444"));
-                                                            payments.add(new Payment(getLastDate, price, userName, userEmail));
-
+                                                        } else {
+                                                            Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
                                                         }
 
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                        }
-                                                    });
-
+                                                    }
                                                 }
-
                                             }
-                                            pg.setVisibility(View.INVISIBLE);
                                         }
-//                pg.setVisibility(View.INVISIBLE);
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                } else {
+                                    databaseReferenceV.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                for (final DataSnapshot v : dataSnapshot.getChildren()) {
+                                                    if (v.hasChild("Status")) {
+                                                        Long dd = v.child("Status").child("Date").getValue(Long.class);
+                                                        SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
+                                                        String latestDate = df.format(dd);
+
+                                                        if (latestDate.equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
+                                                            gotData = true;
+                                                            Long dato = v.child("Status").child("Date").getValue(Long.class);
+                                                            SimpleDateFormat vf = new SimpleDateFormat("dd-MM-yyyy");
+                                                            String getVideoDate = vf.format(dato);
+                                                            String reason = v.child("Status").child("Reason").getValue(String.class);
+                                                            String vCategory = v.child("Category").getValue(String.class);
+                                                            String vName = v.child("name").getValue(String.class);
+                                                            videoArray.add(new Videos(vCategory, vName, reason, getVideoDate));
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+
 
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(gotData.equals(true)){
-                                            createPDFfile(Common.getAppPath(v.getContext())+"test_pdf.pdf");
-                                        }else{
-                                            Toast.makeText(getActivity(),"no record found",Toast.LENGTH_SHORT).show();
+                                        if (gotData.equals(true)) {
+                                            createPDFfile(Common.getAppPath(v.getContext()) + "test_pdf.pdf");
+                                        } else {
+                                            Toast.makeText(getActivity(), "no record found", Toast.LENGTH_SHORT).show();
                                         }
                                         ySpinner.setVisibility(View.VISIBLE);
                                         mSpinner.setVisibility(View.VISIBLE);
+                                        cSpinner.setVisibility(View.VISIBLE);
                                         report.setText("Create Report");
                                         sign.setVisibility(View.INVISIBLE);
                                         report.setEnabled(true);
                                     }
                                 }, 10000);
-
-
-
 
                             }
                         });
@@ -197,51 +229,13 @@ public class Fragment_Banning_Report extends Fragment {
         return view;
     }
 
-    private void getFirstData() {
-        pg.setVisibility(View.VISIBLE);
-        firstPayments.clear();
-        payments.clear();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Payment");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (final DataSnapshot income : dataSnapshot.getChildren()) {
-                        Long dd = income.child("PayDate").getValue(Long.class);
-                        SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
-                        String latestDate = df.format(dd);
-
-                        if (latestDate.equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
-                            Long dato = income.child("PayDate").getValue(Long.class);
-                            SimpleDateFormat ddf = new SimpleDateFormat("dd-MM-yyyy");
-                            final String getLastDate = ddf.format(dato);
-                            final Integer price = income.child("Price").getValue(Integer.class);
-                            String userId = income.child("UserId").getValue(String.class);
-                            firstPayments.add(new Payment(getLastDate, price, userId));
-
-
-                        }
-
-                    }
-                    pg.setVisibility(View.INVISIBLE);
-                }
-//                pg.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createPDFfile(String appPath) {
         if (new File(appPath).exists())
             new File(appPath).delete();
         try {
-            pg.setVisibility(View.INVISIBLE);
+//            pg.setVisibility(View.INVISIBLE);
             final Document document = new Document();
             //save
             PdfWriter.getInstance(document, new FileOutputStream(appPath));
@@ -270,8 +264,12 @@ public class Fragment_Banning_Report extends Fragment {
             Font titleFont2 = new Font(fontName, 22.0f, Font.NORMAL, BaseColor.BLACK);
             Font space = new Font(fontName, 16.0f, Font.NORMAL, BaseColor.BLACK);
 
+            if (isUser) {
+                addNewItem(document, "User Banning Report", Element.ALIGN_CENTER, titleFont);
+            } else {
+                addNewItem(document, "Video Banning Report", Element.ALIGN_CENTER, titleFont);
+            }
 
-            addNewItem(document, "Income Report", Element.ALIGN_CENTER, titleFont);
             addNewItem(document, "\n", Element.ALIGN_CENTER, space);
             addNewItem(document, "\n", Element.ALIGN_CENTER, space);
 
@@ -286,79 +284,93 @@ public class Fragment_Banning_Report extends Fragment {
             Font orderNumberVFont = new Font(fontName, valueFontSize, Font.NORMAL, BaseColor.BLACK);
 
             addNewItem(document, "Selected Year : " + ySpinner.getSelectedItem().toString(), Element.ALIGN_LEFT, wordFont);
-            String month="";
-            switch (mSpinner.getSelectedItem().toString()){
+            String month = "";
+            switch (mSpinner.getSelectedItem().toString()) {
                 case "01":
-                    month="January";
+                    month = "January";
                     break;
                 case "02":
-                    month="February";
+                    month = "February";
                     break;
                 case "03":
-                    month="March";
+                    month = "March";
                     break;
                 case "04":
-                    month="April";
+                    month = "April";
                     break;
                 case "05":
-                    month="May";
+                    month = "May";
                     break;
                 case "06":
-                    month="June";
+                    month = "June";
                     break;
                 case "07":
-                    month="July";
+                    month = "July";
                     break;
                 case "08":
-                    month="August";
+                    month = "August";
                     break;
                 case "09":
-                    month="September";
+                    month = "September";
                     break;
                 case "10":
-                    month="October";
+                    month = "October";
                     break;
                 case "11":
-                    month="November";
+                    month = "November";
                     break;
                 case "12":
-                    month="December";
+                    month = "December";
                     break;
             }
-
 
 
             addNewItem(document, "Selected Month : " + month, Element.ALIGN_LEFT, wordFont);
             addNewItem(document, "\n", Element.ALIGN_CENTER, titleFont2);
             //title
             addLineSeperator(document);
-            String stitle = String.format("%s%17s%17s%13s", "Date", "Price", "UserName", "Email");
+            String stitle = "";
+            if (isUser) {
+                stitle = String.format("%s%17s%17s%13s", "Date", "Reason", "UserName", "Email");
+            } else {
+                stitle = String.format("%s%17s%17s%13s", "Date", "VideoName", "Category","Reason");
+            }
+
             addNewItem(document, stitle, Element.ALIGN_LEFT, titleFont2);
             addLineSeperator(document);
             addNewItem(document, "\n", Element.ALIGN_CENTER, space);
-            Integer total=0;
+            Integer total = 0;
             //Item
-            for (int i = 0; i < payments.size(); i++) {
-                String item = String.format("%10s%20d%35s%40s", payments.get(i).getPayDate(), payments.get(i).getPrice(), payments.get(i).getUserName(), payments.get(i).getUserEmail());
-                addNewItem(document, item, Element.ALIGN_LEFT, wordFont);
-                total = total+payments.get(i).getPrice();
+            if (isUser) {
+                for (int i = 0; i < userArray.size(); i++) {
+//                    String item = String.format("%10s%20s%35s%40s", userArray.get(i).getBanDate(), "", "", "");
+                    String item = String.format("%10s%27s%28s%40s", userArray.get(i).getBanDate(), userArray.get(i).getReason(), userArray.get(i).getName(), userArray.get(i).getEmail());
+                    addNewItem(document, item, Element.ALIGN_LEFT, wordFont);
 
+                }
+            } else {
+                for (int i = 0; i < videoArray.size(); i++) {
+                    String item = String.format("%10s%20s%40s%33s",  videoArray.get(i).getDate(),videoArray.get(i).getName(),videoArray.get(i).getVideoID(),videoArray.get(i).getVideo());
+                    addNewItem(document, item, Element.ALIGN_LEFT, wordFont);
+
+                }
             }
+
 
             //Total
             addNewItem(document, "\n", Element.ALIGN_CENTER, space);
             addNewItem(document, "\n", Element.ALIGN_CENTER, space);
-            addNewItem(document, "Record Found : " + payments.size(), Element.ALIGN_LEFT, wordFont);
+            if (isUser) {
+                addNewItem(document, "Record Found : " + userArray.size(), Element.ALIGN_LEFT, wordFont);
+            } else {
+                addNewItem(document, "Record Found : " + videoArray.size(), Element.ALIGN_LEFT, wordFont);
+            }
+
             addNewItem(document, "\n", Element.ALIGN_CENTER, space);
             addNewItem(document, "\n", Element.ALIGN_CENTER, space);
-            addNewItem(document, "Total amount : RM "+total, Element.ALIGN_LEFT, wordFont);
-            Integer totalCount = count[0] - count2[0];
-//            if(totalCount==2) {
             document.close();
             Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-
             printPDF();
-//            }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -378,10 +390,7 @@ public class Fragment_Banning_Report extends Fragment {
         } catch (Exception ex) {
             Log.e("EDMTDev", "" + ex.getMessage());
         }
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.container_staff, new MainFragment_staff());
-//        fragmentTransaction.commit();
+
     }
 
     private void addNewItemWithLeftAndRight(Document document, String textLeft, String textRight, Font textLeftFont, Font textRightFont) throws DocumentException {
@@ -411,5 +420,21 @@ public class Fragment_Banning_Report extends Fragment {
         Paragraph paragraph = new Paragraph(chunk);
         paragraph.setAlignment(alignCenter);
         document.add(paragraph);
+    }
+
+    private String getDate2(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("dd-MM-yyyy", cal).toString();
+        return date;
+    }
+
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("MM-yyyy", cal).toString();
+        return date;
     }
 }

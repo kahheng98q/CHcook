@@ -10,11 +10,9 @@
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginLeft="56dp"
         android:text="Year : "
         app:layout_constraintBottom_toBottomOf="@+id/spinnerBanReportYear"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView23"
         app:layout_constraintTop_toTopOf="@+id/spinnerBanReportYear"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -25,43 +23,45 @@
         android:text="Month :"
         app:layout_constraintBottom_toBottomOf="@+id/spinnerBanReportMonth"
         app:layout_constraintEnd_toStartOf="@+id/spinnerBanReportMonth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinnerBanReportMonth" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView20"
+        app:layout_constraintTop_toTopOf="@+id/spinnerBanReportMonth"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btnBanReport"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="228dp"
         android:background="@drawable/custom_button"
         android:text="Create Report"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.431"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerBanReportMonth" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerBanReportMonth"
+        app:layout_constraintVertical_bias="0.146" />
 
     <Spinner
         android:id="@+id/spinnerBanReportYear"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerBanReportCategory"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerBanReportCategory" />
 
     <Spinner
         android:id="@+id/spinnerBanReportMonth"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerBanReportYear" />
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerBanReportYear"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerBanReportYear"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView22"
@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:text="Banning Report"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerBanReportYear"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerBanReportCategory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -83,6 +83,28 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.448" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerBanReportCategory"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerBanReportCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerBanReportCategory" />
+
+    <Spinner
+        android:id="@+id/spinnerBanReportCategory"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginRight="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
