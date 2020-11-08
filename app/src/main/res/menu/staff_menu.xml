@@ -58,17 +58,17 @@
         <item android:title="Report Generate">
             <menu>
                 <item
-                    android:id="@+id/nav_report_rate"
+                    android:id="@+id/nav_report_income"
                     android:icon="@drawable/rate_24dp"
-                    android:title="Video Rating Report"></item>
+                    android:title="Income Report"></item>
                 <item
-                    android:id="@+id/nav_report_view"
+                    android:id="@+id/nav_report_video"
                     android:icon="@drawable/view_24dp"
-                    android:title="Video View Report"></item>
+                    android:title="Video Upload Report"></item>
                 <item
                     android:id="@+id/nav_report_type"
                     android:icon="@drawable/type_24dp"
-                    android:title="Video Type Report"></item>
+                    android:title="Banning Report"></item>
 
             </menu>
         </item>

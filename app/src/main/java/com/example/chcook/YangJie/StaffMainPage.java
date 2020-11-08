@@ -110,7 +110,24 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container_staff,ffragment);
             fragmentTransaction.commit();
-        }else{
+        }else if(page.equals("income")){
+            toolbar.setTitle("Income Status");
+            Fragment_ShowIncome income = new Fragment_ShowIncome();
+            Bundle positi = new Bundle();
+            String StaffPosition;
+            if(isAdmin.equals("Admin")){
+                StaffPosition = "true";
+            }else{
+                StaffPosition = "false";
+            }
+            positi.putString("position",StaffPosition);
+            income.setArguments(positi);
+            fragmentManager =getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_staff,income);
+            fragmentTransaction.commit();
+
+        } else{
             toolbar.setTitle("Home");
             MainFragment_staff mainfragment = new MainFragment_staff();
             Bundle posit = new Bundle();
@@ -250,9 +267,13 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.nav_display_income:
                 toolbar.setTitle("Income Status");
+                Fragment_ShowIncome income = new Fragment_ShowIncome();
+                Bundle positi = new Bundle();
+                positi.putString("position",isAdmin);
+                income.setArguments(positi);
                 fragmentManager =getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_staff,new Fragment_ShowIncome());
+                fragmentTransaction.replace(R.id.container_staff,income);
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_upd_price:
@@ -269,11 +290,18 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 fragmentTransaction.replace(R.id.container_staff,new Fragment_staffownprofile());
                 fragmentTransaction.commit();
                 break;
-            case R.id.nav_report_rate:
-                toolbar.setTitle("Video Rating Report");
+            case R.id.nav_report_income:
+                toolbar.setTitle("Income Report");
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_staff,new Fragment_VideoRatingReport());
+                fragmentTransaction.replace(R.id.container_staff,new Fragment_IncomeReport());
+                fragmentTransaction.commit();
+                break;
+            case R.id.nav_report_video:
+                toolbar.setTitle("Video Upload Report");
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_staff,new Fragment_VideoUploadReport());
                 fragmentTransaction.commit();
                 break;
             case R.id.nav_logout:

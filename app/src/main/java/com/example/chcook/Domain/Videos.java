@@ -1,18 +1,19 @@
 package com.example.chcook.Domain;
 
-import java.util.Locale;
-
 public class Videos {
 
-    private String videoID="";
-    private String name="";
-    private String desc="";
-    private String view="";
-    private String video="";
-    private String date="";
-    private String image="";
-    private User user=new User();
-    private String category="";
+    private String videoID;
+    private String name;
+    private String desc;
+    private String view;
+    private String video;
+    private String date;
+    private String image;
+    private String banned;
+    private String category;
+    private User user;
+
+
 
     public Videos() {
     }
@@ -49,22 +50,23 @@ public class Videos {
         this.user=user;
         this.desc=desc;
     }
-
-    public Videos(String videoID, String name, String desc, String view, String video, String date, String image, User user, String category) {
-        this.videoID = videoID;
+    public Videos(String banned, String name, String category, String date, String desc,String view,String videoID,String image) {
         this.name = name;
-        this.desc = desc;
-        this.view = view;
-        this.video = video;
-        this.date = date;
-        this.image = image;
-        this.user = user;
         this.category = category;
+        this.banned =banned;
+        this.date = date;
+        this.desc=desc;
     }
+
 
     public User getUser() {
         return user;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
 
     public void setUser(User user) {
         this.user = user;
@@ -122,17 +124,5 @@ public class Videos {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

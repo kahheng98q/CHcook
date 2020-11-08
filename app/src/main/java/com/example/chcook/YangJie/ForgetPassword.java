@@ -16,6 +16,11 @@ import com.example.chcook.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.itextpdf.text.Font;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ForgetPassword extends AppCompatActivity {
     private EditText email;
@@ -39,6 +44,7 @@ public class ForgetPassword extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ForgetPassword.this,StaffLogin.class);
                 startActivity(intent);
+
             }
         });
 
