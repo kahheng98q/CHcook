@@ -82,8 +82,8 @@ public class Fragment_UpdateStaff extends Fragment {
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                             pg.setVisibility(View.GONE);
                             String semail = snapshot.child("StaffEmail").getValue(String.class);
-                            String sstatus = snapshot.child("StaffStatus").getValue(String.class);
-                            String sImage = snapshot.child("ProfileImage").getValue(String.class);
+                            String sstatus = snapshot.child("Status").getValue(String.class);
+                            String sImage = snapshot.child("Image").getValue(String.class);
                             String sid = snapshot.child("StaffId").getValue(String.class);
                             email.setText("Email : "+semail);
                             status.setText("Status : "+sstatus);
@@ -120,7 +120,7 @@ public class Fragment_UpdateStaff extends Fragment {
                                 .child(StaffId.getText().toString());
 
                         HashMap hashMap = new HashMap();
-                        hashMap.put("IsAdmin",true);
+                        hashMap.put("StaffType","Admin");
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
@@ -150,10 +150,10 @@ public class Fragment_UpdateStaff extends Fragment {
                 idList.clear();
                 for(DataSnapshot item : dataSnapshot.getChildren()){
 
-                    String status = item.child("StaffStatus").getValue(String.class);
-                    Boolean isAdmin = item.child("IsAdmin").getValue(Boolean.class);
-                    if(status.equals("Working")&&isAdmin.equals(false)){
-                        arrayList.add(item.child("StaffName").getValue(String.class));
+                    String status = item.child("Status").getValue(String.class);
+                    String position = item.child("StaffType").getValue(String.class);
+                    if(status.equals("Working")&&position.equals("Staff")){
+                        arrayList.add(item.child("Name").getValue(String.class));
                         idList.add(item.getKey());
                     }
 

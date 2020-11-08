@@ -61,7 +61,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Fragment_IncomeReport extends Fragment {
+public class Fragment_Banning_Report extends Fragment {
     private Button report;
     private Spinner ySpinner, mSpinner;
     private ProgressBar pg;
@@ -71,13 +71,13 @@ public class Fragment_IncomeReport extends Fragment {
     private ArrayList<Payment> firstPayments = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_income_report, container, false);
+        View view = inflater.inflate(R.layout.fragment_banning_report, container, false);
 //        payments.clear();
-        sign = view.findViewById(R.id.txtIncomeSign);
-        report = view.findViewById(R.id.btnCreateReport);
-        pg = view.findViewById(R.id.progressBarReport1);
-        ySpinner = view.findViewById(R.id.spinnerIncomeReportYear);
-        mSpinner = view.findViewById(R.id.spinnerIncomeReportMonth);
+        sign = view.findViewById(R.id.txtBanSIgn);
+        report = view.findViewById(R.id.btnBanReport);
+
+        ySpinner = view.findViewById(R.id.spinnerBanReportYear);
+        mSpinner = view.findViewById(R.id.spinnerBanReportMonth);
         String[] arrayYear = new String[]{"2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031"};
         String[] arrayMonth = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.style_spinner, arrayYear);
@@ -125,24 +125,24 @@ public class Fragment_IncomeReport extends Fragment {
 
 
 
-                                                        DatabaseReference query = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                                                    DatabaseReference query = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 //
-                                                        query.addValueEventListener(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(@NonNull DataSnapshot ds) {
+                                                    query.addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot ds) {
 
-                                                                String userName = ds.child("Name").getValue(String.class);
-                                                                String userEmail = ds.child("Email").getValue(String.class);
+                                                            String userName = ds.child("Name").getValue(String.class);
+                                                            String userEmail = ds.child("Email").getValue(String.class);
 //                                                payments.add(new Payment("111",22,"333","444"));
-                                                                payments.add(new Payment(getLastDate, price, userName, userEmail));
+                                                            payments.add(new Payment(getLastDate, price, userName, userEmail));
 
-                                                            }
+                                                        }
 
-                                                            @Override
-                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                            }
-                                                        });
+                                                        }
+                                                    });
 
                                                 }
 
@@ -158,21 +158,21 @@ public class Fragment_IncomeReport extends Fragment {
                                     }
                                 });
 
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if(gotData.equals(true)){
-                                                createPDFfile(Common.getAppPath(v.getContext())+"test_pdf.pdf");
-                                            }else{
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(gotData.equals(true)){
+                                            createPDFfile(Common.getAppPath(v.getContext())+"test_pdf.pdf");
+                                        }else{
                                             Toast.makeText(getActivity(),"no record found",Toast.LENGTH_SHORT).show();
                                         }
-                                            ySpinner.setVisibility(View.VISIBLE);
-                                            mSpinner.setVisibility(View.VISIBLE);
-                                            report.setText("Create Report");
-                                            sign.setVisibility(View.INVISIBLE);
-                                            report.setEnabled(true);
-                                        }
-                                    }, 10000);
+                                        ySpinner.setVisibility(View.VISIBLE);
+                                        mSpinner.setVisibility(View.VISIBLE);
+                                        report.setText("Create Report");
+                                        sign.setVisibility(View.INVISIBLE);
+                                        report.setEnabled(true);
+                                    }
+                                }, 10000);
 
 
 
@@ -288,43 +288,43 @@ public class Fragment_IncomeReport extends Fragment {
             addNewItem(document, "Selected Year : " + ySpinner.getSelectedItem().toString(), Element.ALIGN_LEFT, wordFont);
             String month="";
             switch (mSpinner.getSelectedItem().toString()){
-                    case "01":
-                        month="January";
-                        break;
-                    case "02":
-                        month="February";
-                        break;
-                    case "03":
-                        month="March";
-                        break;
-                    case "04":
-                        month="April";
-                        break;
-                    case "05":
-                        month="May";
-                        break;
-                    case "06":
-                        month="June";
-                        break;
-                    case "07":
-                        month="July";
-                        break;
-                    case "08":
-                        month="August";
-                        break;
-                    case "09":
-                        month="September";
-                        break;
-                    case "10":
-                        month="October";
-                        break;
-                    case "11":
-                        month="November";
-                        break;
-                    case "12":
-                        month="December";
-                        break;
-                }
+                case "01":
+                    month="January";
+                    break;
+                case "02":
+                    month="February";
+                    break;
+                case "03":
+                    month="March";
+                    break;
+                case "04":
+                    month="April";
+                    break;
+                case "05":
+                    month="May";
+                    break;
+                case "06":
+                    month="June";
+                    break;
+                case "07":
+                    month="July";
+                    break;
+                case "08":
+                    month="August";
+                    break;
+                case "09":
+                    month="September";
+                    break;
+                case "10":
+                    month="October";
+                    break;
+                case "11":
+                    month="November";
+                    break;
+                case "12":
+                    month="December";
+                    break;
+            }
 
 
 

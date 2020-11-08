@@ -32,12 +32,12 @@ public class ShowBanVideo extends AppCompatActivity {
 
 
     private VideoView video;
-    private String vid,desc,type,date,isAdmin,page;
+    private String vid,desc,type,date,position,page,Vposition;
     private Button ban, back;
     private TextView rType,rDesc,rDate,title;
     private int tag;
     private ProgressBar pg;
-    private Boolean admin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +57,8 @@ public class ShowBanVideo extends AppCompatActivity {
             desc = extras.getString("description");
             type = extras.getString("type");
             date = extras.getString("date");
-            isAdmin = extras.getString("position");
+            position = extras.getString("position");
             page = extras.getString("page");
-            admin = Boolean.parseBoolean(isAdmin);
-//            Toast.makeText(this, isAdmin, Toast.LENGTH_SHORT).show();
 
         }
         ban.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +91,7 @@ public class ShowBanVideo extends AppCompatActivity {
                             public void onSuccess(Object o) {
                                 Toast.makeText(ShowBanVideo.this, "Success", Toast.LENGTH_SHORT).show();
 //                                ban.setEnabled(false);
-                                admin = Boolean.parseBoolean(isAdmin);
+                                Vposition =position;
 //                                Toast.makeText(ShowBanVideo.this, admin.toString(), Toast.LENGTH_SHORT).show();
 
                             }
@@ -133,7 +131,7 @@ public class ShowBanVideo extends AppCompatActivity {
                             }
 
 
-                        intent.putExtra("position",admin);
+                        intent.putExtra("position",position);
                         startActivity(intent);
                     }
                 });
@@ -165,7 +163,7 @@ public class ShowBanVideo extends AppCompatActivity {
                 String url = dataSnapshot.child("URL").getValue(String.class);
                String banned = null;
                 String videoName = dataSnapshot.child("name").getValue(String.class);
-                String videoType = dataSnapshot.child("name").getValue(String.class);
+                String videoType = dataSnapshot.child("Category").getValue(String.class);
                 String videoDesc = dataSnapshot.child("description").getValue(String.class);
                 if (dataSnapshot.hasChild("Banned")){
                      banned = dataSnapshot.child("Banned").getValue(String.class);

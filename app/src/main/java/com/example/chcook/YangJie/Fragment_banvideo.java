@@ -56,7 +56,7 @@ public class Fragment_banvideo extends Fragment {
                         String videoId = report.child("Video").getValue(String.class);
                         String videoType = report.child("Type").getValue(String.class);
 
-                        reportedVideoArraylist.add(new Report(report.getKey(), latestDate, Reason,  videoId,videoType));
+                        reportedVideoArraylist.add(new Report(report.getKey(), latestDate, Reason, videoId,videoType));
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -70,7 +70,6 @@ public class Fragment_banvideo extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.banVideoRecyclerView);
         if(argument!=null){
             position = argument.getString("position");
-//            Toast.makeText(getActivity(),position,Toast.LENGTH_SHORT).show();
         }
         adapter = new recyclerViewAdapter_banVideo(getContext(), reportedVideoArraylist,position);
         recyclerView.setAdapter(adapter);

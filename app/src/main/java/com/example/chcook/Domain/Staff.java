@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.Domain;
 
 public class Staff {
     String staffEmail,staffName,StaffPassword,staffStatus;

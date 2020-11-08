@@ -60,7 +60,6 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-//                    uId = dataSnapshot.child("userId").getValue(String.class);
                     vName = dataSnapshot.child("name").getValue(String.class);
                     holder.videoName.setText("Reported video : " + vName);
                 }
@@ -90,20 +89,18 @@ public class recylcerViewAdapter_banUser extends RecyclerView.Adapter<recylcerVi
                                 uId = dataSnapshot.getKey();
                                 uName = dataSnapshot.child("Name").getValue(String.class);
 
-                                if(dataSnapshot.hasChild("Banned")){
-                                    uStatus = dataSnapshot.child("Banned").getValue(String.class);
+                                if(dataSnapshot.hasChild("Status")){
+                                    uStatus = dataSnapshot.child("Status").getValue(String.class);
                                 }else{
-                                    uStatus = "no";
+                                    uStatus = "Approval";
                                 }
                                 String st;
-                                if(uStatus.equals("yes")){
-                                    st = "Banned";
-                                    holder.sttus.setText("Status : "+st);
+                                if(uStatus.equals("Banned")){
+                                    holder.sttus.setText("Status : "+uStatus);
                                     holder.sttus.setTextColor(Color.parseColor("#FF0000"));
 
                                 }else{
-                                    st = "Approval";
-                                    holder.sttus.setText("Status : "+st);
+                                    holder.sttus.setText("Status : "+uStatus);
                                 }
 
                                 holder.name.setText("UserName : "+uName);

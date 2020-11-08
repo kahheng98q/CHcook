@@ -40,7 +40,6 @@ public class showIncomeStatus extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_show_income_status);
         Button back = findViewById(R.id.btnShowIncomeBack);
         TextView title = findViewById(R.id.txtIncomeTitle);
-//        toolbar.setTitle("Income Status");
         final PieChart pieChart = findViewById(R.id.IncomePieChart);
         ArrayList<Payment> pay = new ArrayList<>();
         String year = null;
@@ -123,18 +122,13 @@ public class showIncomeStatus extends AppCompatActivity implements View.OnClickL
                     }
                     ArrayList<PieEntry> income = new ArrayList<>();
                     if (M1.equals(true)) {
-
                         income.add(new PieEntry(tM1, "January"));
-
-
                     }
                     if (M2.equals(true)) {
                         income.add(new PieEntry(tM2, "February"));
-
                     }
                     if (M3.equals(true)) {
                         income.add(new PieEntry(tM3, "March"));
-
                     }
                     if (M4.equals(true)) {
                         income.add(new PieEntry(tM4, "April"));
@@ -200,9 +194,7 @@ public class showIncomeStatus extends AppCompatActivity implements View.OnClickL
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getApplicationContext(), StaffMainPage.class);
                         intent.putExtra("page", "income");
-                        Boolean admin = Boolean.parseBoolean(position);
-                        intent.putExtra("position",admin);
-//                        Toast.makeText(getApplicationContext(),admin.toString(),Toast.LENGTH_SHORT).show();
+                        intent.putExtra("position",position);
                 startActivity(intent);
             }
         });

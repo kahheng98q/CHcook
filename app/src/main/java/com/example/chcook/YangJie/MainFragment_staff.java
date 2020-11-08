@@ -38,7 +38,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MainFragment_staff extends Fragment  {
 
@@ -65,20 +67,18 @@ public class MainFragment_staff extends Fragment  {
                     for (DataSnapshot v : dataSnapshot.getChildren()) {
 
                         String videoName = v.child("name").getValue(String.class);
-
                         Long date = v.child("Uploaddate").getValue(Long.class);
                         String videoUrl = v.child("URL").getValue(String.class);
                         String user = v.child("userId").getValue(String.class);
                         String desc = v.child("description").getValue(String.class);
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                        String latestDate = df.format(date);
-                        mVideo.add(new Videos(v.getKey(),videoName,latestDate,videoUrl,desc));
+                        String category = v.child("Category").getValue(String.class);
+//                        String banned, String name, String category, String date, String desc,String view,String videoID,String image) {
+                        mVideo.add(new Videos(" ",videoName,category,getDate(date),desc," ",v.getKey(),videoUrl));
 
                     }
                 }
                 if(argument!=null){
                     position = argument.getString("position");
-//            Toast.makeText(getActivity(),position,Toast.LENGTH_SHORT).show();
                 }
                 recyclerView = view.findViewById(R.id.StaffMainRecyclerView);
                 adapter = new recyclerViewAdapter_staffMain(getContext(),mVideo,position);
@@ -90,16 +90,17 @@ public class MainFragment_staff extends Fragment  {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-
-
         });
-
-
-
         return view;
     }
 
-
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("dd-MM-yyyy", cal).toString();
+        return date;
+    }
 
 
     @Override
@@ -123,7 +124,6 @@ public class MainFragment_staff extends Fragment  {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     adapter.filter(newText);
-//                    adapter.getFilter().filter(newText);
                     return true;
                 }
             };
@@ -137,13 +137,13 @@ public class MainFragment_staff extends Fragment  {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search_staff:
-//                Toast.makeText(getActivity(),"1",Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_filter_staff:
-//                Toast.makeText(getActivity(),"2",Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder category = new AlertDialog.Builder(getActivity());
                 category.setTitle("Select Category");
-                String[] cat = {"All","American","Malaysia","Indonesia"};
+
+
+                String[] cat = {"All","Western","Pasta","Rice","Sandwiches","Soup","Pancake","Dinner","Breakfast","Dessert","Pizza","Other"};
                 category.setItems(cat, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -151,22 +151,42 @@ public class MainFragment_staff extends Fragment  {
                         dialog.dismiss();
                         switch (which){
                             case 0:
-                                getCat = "all";
-                                //                                Toast.makeText(getActivity(),"All",Toast.LENGTH_SHORT).show();
+                                getCat = "All";
                                 break;
                             case 1:
-                                getCat = "video";
-//                                Toast.makeText(getActivity(),"American",Toast.LENGTH_SHORT).show();
+                                getCat = "Western";
                                 break;
                             case 2:
-                                getCat = "hk";
-//                                Toast.makeText(getActivity(),"Malaysia",Toast.LENGTH_SHORT).show();
+                                getCat="Pasta";
                                 break;
                             case 3:
-//                                Toast.makeText(getActivity(),"Indonesia",Toast.LENGTH_SHORT).show();
+                                getCat = "Rice";
+                                break;
+                            case 4:
+                                getCat="Sandwiches";
+                                break;
+                            case 5:
+                                getCat="Soup";
+                                break;
+                            case 6:
+                                getCat="Pancake";
+                                break;
+                            case 7:
+                                getCat="Dinner";
+                                break;
+                            case 8:
+                                getCat="Breakfast";
+                                break;
+                            case 9:
+                                getCat="Dessert";
+                                break;
+                            case 10:
+                                getCat="Pizza";
+                                break;
+                            case 11:
+                                getCat="Other";
                                 break;
                         }
-//                        Toast.makeText(getActivity(),getCat,Toast.LENGTH_SHORT).show();
                         adapter.category(getCat);
                     }
                 });

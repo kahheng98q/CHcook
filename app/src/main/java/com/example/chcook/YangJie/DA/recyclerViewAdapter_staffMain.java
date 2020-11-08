@@ -23,6 +23,7 @@ import com.example.chcook.YangJie.MainFragment_staff;
 import com.example.chcook.YangJie.ShowBanVideo;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -44,9 +45,10 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.desc.setText(ori.get(position).getDesc());
-        holder.name.setText(ori.get(position).getName());
-//        holder.name.setText(ori.get(position));
+        holder.desc.setText("Desc : "+ori.get(position).getDesc());
+        holder.name.setText("Video Name : "+ori.get(position).getName());
+        holder.date.setText("Upload Date : "+ori.get(position).getDate());
+        holder.cate.setText("Category : "+ori.get(position).getCategory());
         Glide.with(mContext)
                 .asBitmap()
                 .load(Uri.parse(ori.get(position).getImage()))
@@ -58,15 +60,8 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
                 intent.putExtra("videoId",ori.get(position).getVideoID());
                 intent.putExtra("position",Vposition);
                 intent.putExtra("page","staffMain");
-//                intent.putExtra("position",VPosition);
-//                intent.putExtra("description",VDesc);
-//                intent.putExtra("videoName",VName);
-//                intent.putExtra("date",VDate);
-//                intent.putExtra("type",VType);
-//
+
                 mContext.startActivity(intent);
-
-
             }
         });
     }
@@ -111,7 +106,7 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
-        TextView name,desc,date;
+        TextView name,desc,date,cate;
         RelativeLayout parentLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,6 +114,7 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
             name = itemView.findViewById(R.id.staffMainVideoName);
             desc = itemView.findViewById(R.id.staffMainVideoDesc);
             date = itemView.findViewById(R.id.staffMainDate);
+            cate = itemView.findViewById(R.id.txtCategoryMain);
             parentLayout = itemView.findViewById(R.id.staffMain_parentLayout);
         }
     }
@@ -128,18 +124,15 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
     public recyclerViewAdapter_staffMain(Context mContext,ArrayList<Videos> videos,String position) {
         this.ori = videos;
         this.Vposition = position;
-//        arrayList = new ArrayList<>(videos);
         arrayList = new ArrayList<>();
         this.arrayList.addAll(videos);
         this.mContext = mContext;
-//        this.page = page;
     }
 
     public void filter(String characterText) {
         String input = characterText.toLowerCase(Locale.getDefault());
         ori.clear();
         if (input.length() == 0) {
-//            Toast.makeText(mContext,"empty",Toast.LENGTH_SHORT).show();
             ori.addAll(arrayList);
         } else {
             ori.clear();
@@ -159,7 +152,7 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
         } else {
             ori.clear();
             for (Videos item: arrayList) {
-                if (item.getName().toLowerCase(Locale.getDefault()).contains(characterText)) {
+                if (item.getCategory().contains(characterText)) {
                     ori.add(item);
                 }
             }

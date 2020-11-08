@@ -92,7 +92,6 @@ public class Fragment_addStaff extends Fragment implements View.OnClickListener 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 profilePicStaff.setImageBitmap(bitmap);
-//                Toast.makeText(getActivity(), imageUri.getLastPathSegment(), Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -137,18 +136,13 @@ public class Fragment_addStaff extends Fragment implements View.OnClickListener 
                                 final String sEmail = Email.getText().toString();
                                 final String sPass = Pass.getText().toString();
                                 final String sStatus = "Working";
-                                final Boolean IsAdmin = false;
+                                final String Position = "Staff";
                                 fAuth.createUserWithEmailAndPassword(sEmail, sPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                     @Override
                                     public void onSuccess(AuthResult authResult) {
                                         final String id = authResult.getUser().getUid();
-//                                        Toast.makeText(getActivity(), "new staff account created", Toast.LENGTH_SHORT).show();
                                         final FirebaseUser user = fAuth.getCurrentUser();
                                         reference = fBase.getReference("Staff").child(user.getUid());
-//                                        Staff  st = new Staff(sEmail,sName,sPass,IsAdmin,sStatus);
-//                                        updateUserInfo(sName,imageUri,fAuth.getCurrentUser());
-
-
                                         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("staff_photos");
                                         final StorageReference imageFilePath = mStorage.child(imageUri.getLastPathSegment());
                                         imageFilePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -176,11 +170,11 @@ public class Fragment_addStaff extends Fragment implements View.OnClickListener 
                                                                                     if(task.isSuccessful()){
                                                                                         Map<String, Object> staffInfo = new HashMap<>();
                                                                                         staffInfo.put("StaffEmail", sEmail);
-                                                                                        staffInfo.put("StaffName", sName);
+                                                                                        staffInfo.put("Name", sName);
 //                                                                                        staffInfo.put("StaffPassword", sPass);
-                                                                                        staffInfo.put("StaffStatus", sStatus);
-                                                                                        staffInfo.put("IsAdmin", IsAdmin);
-                                                                                        staffInfo.put("ProfileImage",ff);
+                                                                                        staffInfo.put("Status", sStatus);
+                                                                                        staffInfo.put("StaffType", Position);
+                                                                                        staffInfo.put("Image",ff);
                                                                                         staffInfo.put("StaffId",id);
                                                                                         reference.setValue(staffInfo);
                                                                                         Toast.makeText(v.getContext(),"Register successfully, please check mailbox for verification",Toast.LENGTH_SHORT).show();

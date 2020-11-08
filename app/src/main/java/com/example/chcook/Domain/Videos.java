@@ -56,6 +56,9 @@ public class Videos {
         this.banned =banned;
         this.date = date;
         this.desc=desc;
+        this.videoID = videoID;
+        this.image = image;
+        this.view=view;
     }
 
 

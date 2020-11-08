@@ -82,10 +82,10 @@ public class StaffLogin extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
-                                        String status = dataSnapshot.child("StaffStatus").getValue(String.class);
+                                        String status = dataSnapshot.child("Status").getValue(String.class);
                                         if (status.equals("Working")) {
                                             if (fAuth.getCurrentUser().isEmailVerified()) {
-                                                Boolean pos = dataSnapshot.child("IsAdmin").getValue(Boolean.class);
+                                                String pos = dataSnapshot.child("StaffType").getValue(String.class);
                                                 pg.setVisibility(v.GONE);
                                                 pgb.setVisibility(v.GONE);
                                                 Toast.makeText(StaffLogin.this, "Welcome", Toast.LENGTH_SHORT).show();
@@ -154,6 +154,28 @@ public class StaffLogin extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(StaffLogin.this);
+        builder.setTitle("User Login Page");
+        builder.setMessage("Are you sure want to back to user login page?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private Boolean check(EditText textField) {

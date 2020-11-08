@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -67,12 +68,13 @@ public class Fragment_VideoUploadReport extends Fragment {
     private Spinner ySpinner, mSpinner;
     private ProgressBar pg;
     private Boolean gotData=false;
+    private TextView sign;
     private ArrayList<Videos> videoUpload = new ArrayList<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_videouploadreport, container, false);
-
+        sign = view.findViewById(R.id.txtSign);
         report = view.findViewById(R.id.btnVideoUploadReport);
         ySpinner = view.findViewById(R.id.vYSpinner);
         mSpinner = view.findViewById(R.id.vMSpinner);
@@ -97,6 +99,7 @@ public class Fragment_VideoUploadReport extends Fragment {
                             public void onClick(final View v) {
                                 videoUpload.clear();
                                 report.setText("Loading...");
+                                sign.setVisibility(View.VISIBLE);
                                 ySpinner.setVisibility(View.INVISIBLE);
                                 mSpinner.setVisibility(View.INVISIBLE);
                                 report.setEnabled(false);
@@ -158,6 +161,7 @@ public class Fragment_VideoUploadReport extends Fragment {
                                         ySpinner.setVisibility(View.VISIBLE);
                                         mSpinner.setVisibility(View.VISIBLE);
                                         report.setText("Create Report");
+                                        sign.setVisibility(View.INVISIBLE);
                                         report.setEnabled(true);
                                     }
                                 }, 10000);

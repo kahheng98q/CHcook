@@ -33,8 +33,7 @@ public class ShowBanUser extends AppCompatActivity {
     private CircleImageView userImg;
     private TextView username,email,status,reason,redirect,date,tt;
     private Button btnback,btnBan;
-    private String videoId,userId,reportId,IsAdmin,Vtype,VReason,Vdate;
-    private Boolean admin;
+    private String videoId,userId,reportId,position,Vtype,VReason,Vdate,Vposition;
     private int tag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +55,8 @@ public class ShowBanUser extends AppCompatActivity {
             videoId = extras.getString("videoId");
             userId = extras.getString("userId");
             reportId = extras.getString("reportId");
-            IsAdmin = extras.getString("position");
-            admin = Boolean.parseBoolean(IsAdmin);
+            position = extras.getString("position");
+
 //            Toast.makeText(this, IsAdmin, Toast.LENGTH_SHORT).show();
         }
         DatabaseReference databaseReferenceU = FirebaseDatabase.getInstance().getReference("Users");
@@ -85,17 +84,16 @@ public class ShowBanUser extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String ban = "";
-                if(dataSnapshot.hasChild("Banned")){
-                   ban =  dataSnapshot.child("Banned").getValue(String.class);
+                if(dataSnapshot.hasChild("Status")){
+                   ban =  dataSnapshot.child("Status").getValue(String.class);
                 }else {
-                    ban = "no";
+                    ban = "Approval";
                 }
-                if(ban.equals("yes")){
+                if(ban.equals("Banned")){
                     String stattus = "Banned";
                     status.setText("Status : "+stattus);
                     btnBan.setTag(1);
                     btnBan.setText("unban");
-//                    status.setTextColor(Color.parseColor("#FF0000"));
                 }else{
                     String stattus = "Approval";
                     btnBan.setTag(2);
@@ -103,8 +101,6 @@ public class ShowBanUser extends AppCompatActivity {
                     status.setText("Status : "+stattus);
                 }
                 tag = (Integer) btnBan.getTag();
-
-//                status.setText("User Status :"+dataSnapshot.child("Banned").getValue(String.class));
                 email.setText("Email : "+dataSnapshot.child("Email").getValue(String.class));
                 username.setText("UserName : "+dataSnapshot.child("Name").getValue(String.class));
                 String img = dataSnapshot.child("Image").getValue(String.class);
@@ -139,15 +135,15 @@ public class ShowBanUser extends AppCompatActivity {
                         Query query = FirebaseDatabase.getInstance().getReference("Users").child(extras.getString("userId"));
                         HashMap hashMap = new HashMap();
                         if (tag == 1) {
-                            hashMap.put("Banned", "no");
+                            hashMap.put("Status", "Approval");
                         } else {
-                            hashMap.put("Banned", "yes");
+                            hashMap.put("Status", "Banned");
                         }
 
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
-                                admin = Boolean.parseBoolean(IsAdmin);
+                                Vposition = position;
                                 Toast.makeText(ShowBanUser.this, "Success", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -175,7 +171,7 @@ public class ShowBanUser extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getApplicationContext(), StaffMainPage.class);
                         intent.putExtra("page", "banUser");
-                        intent.putExtra("position",admin);
+                        intent.putExtra("position",position);
                         startActivity(intent);
                     }
                 });
@@ -201,7 +197,7 @@ public class ShowBanUser extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getApplicationContext(), ShowBanVideo.class);
                         intent.putExtra("videoId",videoId);
-                        intent.putExtra("position",IsAdmin);
+                        intent.putExtra("position",position);
                         intent.putExtra("description",VReason);
                         intent.putExtra("type",Vtype);
                         intent.putExtra("page","banUser");

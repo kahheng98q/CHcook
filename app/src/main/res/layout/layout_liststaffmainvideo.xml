@@ -30,9 +30,18 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:text="date"
-        android:layout_toRightOf="@+id/staffMainVideoName"
+        android:layout_below="@+id/staffMainVideoDesc"
+        android:layout_toRightOf="@+id/staffMainImgVideo"
         android:id="@+id/staffMainDate"/>
 
+    <TextView
+        android:id="@+id/txtCategoryMain"
+        android:layout_below="@+id/staffMainDate"
+        android:layout_toRightOf="@+id/staffMainImgVideo"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
 
 
 </RelativeLayout>

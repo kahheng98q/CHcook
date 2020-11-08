@@ -59,7 +59,7 @@
             <menu>
                 <item
                     android:id="@+id/nav_report_income"
-                    android:icon="@drawable/rate_24dp"
+                    android:icon="@drawable/ic_equalizer_black_24dp"
                     android:title="Income Report"></item>
                 <item
                     android:id="@+id/nav_report_video"

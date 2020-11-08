@@ -50,7 +50,6 @@ public class Fragment_banUser extends Fragment {
                     String Reporter = report.child("UserName").getValue(String.class);
                     String videoType = report.child("Type").getValue(String.class);
                     String videoId = report.child("Video").getValue(String.class);
-// public Report(String reportId,String date, String reason, String videoId,String reportType) {
                     reportedUserArrayList.add(new Report(report.getKey(),latestDate,Reason,Reporter,videoId,videoType));
                     adapter.notifyDataSetChanged();
                 }

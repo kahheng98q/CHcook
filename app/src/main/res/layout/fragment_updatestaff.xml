@@ -13,8 +13,8 @@
         android:layout_marginTop="52dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/UpdateImg"
+        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UpdateImg" />
 
     <de.hdodenhof.circleimageview.CircleImageView

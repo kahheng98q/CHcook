@@ -39,6 +39,7 @@ public class Fragment_updatePrice extends Fragment {
     private TextView cPrice,editor,date;
     private Spinner spinnerPrice;
     private Button btnUp;
+    private String priceId = "";
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_updateprice, container, false);
         final FirebaseUser currentStaff = FirebaseAuth.getInstance().getCurrentUser();
@@ -58,15 +59,13 @@ public class Fragment_updatePrice extends Fragment {
             @Override
             public void onClick(View v) {
                 spinnerPrice.getSelectedItem().toString();
-
-
                 AlertDialog.Builder builderR = new AlertDialog.Builder(getActivity());
                 builderR.setTitle("Update Price");
                 builderR.setMessage("Are you sure want to update?");
                 builderR.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Query query = FirebaseDatabase.getInstance().getReference("ManagePrice");
+                        Query query = FirebaseDatabase.getInstance().getReference("ManagePrice").child(priceId);
 
                         HashMap hashMap = new HashMap();
                         hashMap.put("Price", spinnerPrice.getSelectedItem().toString());
@@ -105,16 +104,21 @@ public class Fragment_updatePrice extends Fragment {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String emailEditor = dataSnapshot.child("Editor").getValue(String.class);
-                String getPrice = dataSnapshot.child("Price").getValue(String.class);
-                Long getDate = dataSnapshot.child("EditTime").getValue(Long.class);
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot price: dataSnapshot.getChildren()){
+                        String emailEditor = price.child("Editor").getValue(String.class);
+                        String getPrice = price.child("Price").getValue(String.class);
+                        Long getDate = price.child("EditTime").getValue(Long.class);
+                        priceId=price.getKey();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String latestDate = df.format(getDate);
 
-                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                String latestDate = df.format(getDate);
+                        date.setText("Last Edit Time : "+latestDate);
+                        editor.setText("Last Editor : "+emailEditor);
+                        cPrice.setText("Current Price : RM "+getPrice);
+                    }
+                }
 
-                date.setText("Last Edit Time : "+latestDate);
-                editor.setText("Last Editor : "+emailEditor);
-                cPrice.setText("Current Price : RM "+getPrice);
             }
 
             @Override
