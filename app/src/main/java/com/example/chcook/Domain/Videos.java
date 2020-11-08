@@ -105,6 +105,9 @@ public class Videos {
     }
 
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public void setView(String view) {
         this.view = view;

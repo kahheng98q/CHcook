@@ -46,7 +46,7 @@ public class Pay extends AppCompatActivity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
         startService(intent);
 
-        cardForm = findViewById(R.id.card_form);
+//        cardForm = findViewById(R.id.card_form);
         btnPay = findViewById(R.id.btnPay);
 
         btnPay.setOnClickListener(new View.OnClickListener() {
