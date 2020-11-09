@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.StaffLoginAndManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.chcook.KahHeng.EndUser.GUI.UserAuthentication.Login;
 import com.example.chcook.R;
 
+import com.example.chcook.YangJie.GUI.StaffMainPage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -58,7 +59,7 @@ public class StaffLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(),ForgetPassword.class);
+                Intent intent = new Intent(v.getContext(), ForgetPassword.class);
                 startActivity(intent);
 
             }

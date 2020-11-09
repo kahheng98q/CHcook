@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.Banning;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chcook.YangJie.DA.*;
+import com.example.chcook.YangJie.Adapter.*;
 import com.example.chcook.Domain.Report;
-import com.example.chcook.Domain.User;
 import com.example.chcook.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

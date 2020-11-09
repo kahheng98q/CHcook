@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.Payment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,16 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.chcook.Domain.Payment;
 //import com.example.chcook.KahHeng.EndUser.Pay;
 import com.example.chcook.R;
+import com.example.chcook.YangJie.GUI.StaffMainPage;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;

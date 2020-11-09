@@ -21,12 +21,12 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".YangJie.showIncomeStatus"></activity>
-        <activity android:name=".YangJie.ForgetPassword" />
-        <activity android:name=".YangJie.ShowBanUser" />
-        <activity android:name=".YangJie.ShowBanVideo" />
-        <activity android:name=".YangJie.StaffLogin" />
-        <activity android:name=".YangJie.StaffMainPage" />
+        <activity android:name=".YangJie.GUI.Payment.showIncomeStatus"></activity>
+        <activity android:name=".YangJie.GUI.StaffLoginAndManagement.ForgetPassword" />
+        <activity android:name=".YangJie.GUI.Banning.ShowBanUser" />
+        <activity android:name=".YangJie.GUI.Banning.ShowBanVideo" />
+        <activity android:name=".YangJie.GUI.StaffLoginAndManagement.StaffLogin" />
+        <activity android:name=".YangJie.GUI.StaffMainPage" />
         <activity android:name=".KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInfo" />
         <activity android:name=".KahHeng.EndUser.GUI.PremiumFeatures.Pay" />
         <activity android:name=".KahHeng.EndUser.GUI.MainPage"

@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.StaffLoginAndManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,18 +14,8 @@ import android.widget.Toast;
 
 import com.example.chcook.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.itextpdf.text.Font;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ForgetPassword extends AppCompatActivity {
     private EditText email;
@@ -47,7 +37,7 @@ public class ForgetPassword extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ForgetPassword.this,StaffLogin.class);
+                Intent intent = new Intent(ForgetPassword.this, StaffLogin.class);
                 startActivity(intent);
             }
         });

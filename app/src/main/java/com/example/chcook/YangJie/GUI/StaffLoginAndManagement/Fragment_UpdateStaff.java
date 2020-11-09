@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.StaffLoginAndManagement;
 
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -34,29 +34,29 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Fragment_deleteStaff extends Fragment {
+public class Fragment_UpdateStaff extends Fragment {
     private Spinner spinner,reason;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayList<String> idList = new ArrayList<>();
     private CircleImageView checkStaffImage;
-    private TextView email,name,status,Id;
-    private Button btnDismiss;
+    private TextView email,name,status,StaffId;
+    private Button btnUpd;
     private ProgressBar pg;
     private HashMap<String,String> staff = new HashMap<String,String>();
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_deletestaff, container, false);
-        spinner = view.findViewById(R.id.spinnerStaffName);
-        reason = view.findViewById(R.id.spinnerReason);
-        checkStaffImage = view.findViewById(R.id.checkStaffImage);
-        email = view.findViewById(R.id.checkEmail);
-        name = view.findViewById(R.id.checkStaffName);
-        Id = view.findViewById(R.id.txtId);
-        status = view.findViewById(R.id.checkStaffStatus);
-        btnDismiss = view.findViewById(R.id.btnDismiss);
-        pg = view.findViewById(R.id.progressBarDelete);
+        View view = inflater.inflate(R.layout.fragment_updatestaff, container, false);
+        spinner = view.findViewById(R.id.spinnerUpdateName);
+        reason = view.findViewById(R.id.spinnerUpdateReason);
+        checkStaffImage = view.findViewById(R.id.UpdateImg);
+        email = view.findViewById(R.id.UpdEmail);
+        name = view.findViewById(R.id.UpdName);
+        StaffId = view.findViewById(R.id.txtUpdId);
+        status = view.findViewById(R.id.UpdaStatus);
+        btnUpd = view.findViewById(R.id.btnUpdate);
+        pg = view.findViewById(R.id.progressBarUdp);
 
-        String[] arraySpinner = new String[] {"Resign", "Retired"};
+        String[] arraySpinner = new String[] {"Admin"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), R.layout.style_spinner, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -67,13 +67,13 @@ public class Fragment_deleteStaff extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 pg.setVisibility(view.VISIBLE);
-               String username = arrayList.get(position);
-               String key = idList.get(position);
-               name.setText("Name : "+username);
-               Query query = FirebaseDatabase.getInstance().getReference("Staff")
-                       .orderByChild("StaffId")
-                       .equalTo(key);
-               query.addListenerForSingleValueEvent(valueEventListener);
+                String username = arrayList.get(position);
+                String uid = idList.get(position);
+                name.setText("Name :"+username);
+                Query query = FirebaseDatabase.getInstance().getReference("Staff")
+                        .orderByChild("StaffId")
+                        .equalTo(uid);
+                query.addListenerForSingleValueEvent(valueEventListener);
             }
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
@@ -81,16 +81,16 @@ public class Fragment_deleteStaff extends Fragment {
                     if (dataSnapshot.exists()){
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                             pg.setVisibility(View.GONE);
-                                String semail = snapshot.child("StaffEmail").getValue(String.class);
-                                String sstatus = snapshot.child("Status").getValue(String.class);
-                                String sImage = snapshot.child("Image").getValue(String.class);
-                                String uid = snapshot.child("StaffId").getValue(String.class);
-                                email.setText("Email : "+semail);
-                                status.setText("Status : "+sstatus);
-                                Glide.with(getActivity())
-                                        .load(Uri.parse(sImage))
-                                        .into(checkStaffImage);
-                                Id.setText(uid);
+                            String semail = snapshot.child("StaffEmail").getValue(String.class);
+                            String sstatus = snapshot.child("Status").getValue(String.class);
+                            String sImage = snapshot.child("Image").getValue(String.class);
+                            String sid = snapshot.child("StaffId").getValue(String.class);
+                            email.setText("Email : "+semail);
+                            status.setText("Status : "+sstatus);
+                            Glide.with(getActivity())
+                                    .load(Uri.parse(sImage))
+                                    .into(checkStaffImage);
+                            StaffId.setText(sid);
 
                         }
                     }
@@ -107,7 +107,7 @@ public class Fragment_deleteStaff extends Fragment {
 
             }
         });
-        btnDismiss.setOnClickListener(new View.OnClickListener() {
+        btnUpd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builderR = new AlertDialog.Builder(getActivity());
@@ -117,10 +117,10 @@ public class Fragment_deleteStaff extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Query query = FirebaseDatabase.getInstance().getReference("Staff")
-                                .child(Id.getText().toString());
+                                .child(StaffId.getText().toString());
 
                         HashMap hashMap = new HashMap();
-                        hashMap.put("Status",reason.getSelectedItem().toString());
+                        hashMap.put("StaffType","Admin");
                         query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
@@ -159,7 +159,7 @@ public class Fragment_deleteStaff extends Fragment {
 
                 }
                 if(getActivity()!=null) {
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.style_spinner, arrayList);
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.stylle_spinner, arrayList);
                     spinner.setAdapter(arrayAdapter);
                 }
             }

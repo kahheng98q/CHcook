@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.StaffLoginAndManagement;
 
 import android.app.Activity;
 import android.content.DialogInterface;
