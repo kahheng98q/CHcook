@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     android:background="#1b1b1b"
-    tools:context=".YangJie.StaffLogin">
+    tools:context=".YangJie.GUI.StaffLoginAndManagement.StaffLogin">
 
     <ImageView
         android:id="@+id/imageView2"

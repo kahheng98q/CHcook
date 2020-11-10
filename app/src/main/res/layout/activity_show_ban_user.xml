@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".YangJie.ShowBanUser">
+    tools:context=".YangJie.GUI.Banning.ShowBanUser">
 
     <TextView
         android:id="@+id/BanUserName"

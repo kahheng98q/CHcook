@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".YangJie.showIncomeStatus">
+    tools:context=".YangJie.GUI.Payment.showIncomeStatus">
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/IncomePieChart"

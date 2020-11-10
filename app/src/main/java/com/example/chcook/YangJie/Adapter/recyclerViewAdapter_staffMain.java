@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie.DA;
+package com.example.chcook.YangJie.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,12 +6,9 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,13 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
-import com.example.chcook.YangJie.MainFragment_staff;
-import com.example.chcook.YangJie.ShowBanVideo;
+import com.example.chcook.YangJie.GUI.Banning.ShowBanVideo;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 
 

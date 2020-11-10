@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,6 +20,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chcook.R;
+import com.example.chcook.YangJie.GUI.Banning.Fragment_banUser;
+import com.example.chcook.YangJie.GUI.Banning.Fragment_banvideo;
+import com.example.chcook.YangJie.GUI.Payment.Fragment_ShowIncome;
+import com.example.chcook.YangJie.GUI.Payment.Fragment_updatePrice;
+import com.example.chcook.YangJie.GUI.ReportGenerate.Fragment_Banning_Report;
+import com.example.chcook.YangJie.GUI.ReportGenerate.Fragment_IncomeReport;
+import com.example.chcook.YangJie.GUI.ReportGenerate.Fragment_VideoUploadReport;
+import com.example.chcook.YangJie.GUI.StaffLoginAndManagement.Fragment_UpdateStaff;
+import com.example.chcook.YangJie.GUI.StaffLoginAndManagement.Fragment_addStaff;
+import com.example.chcook.YangJie.GUI.StaffLoginAndManagement.Fragment_deleteStaff;
+import com.example.chcook.YangJie.GUI.StaffLoginAndManagement.Fragment_staffownprofile;
+import com.example.chcook.YangJie.GUI.StaffLoginAndManagement.StaffLogin;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -135,7 +147,7 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     FirebaseAuth.getInstance().signOut();
-                    Intent intent =new Intent(getApplicationContext(),StaffLogin.class);
+                    Intent intent =new Intent(getApplicationContext(), StaffLogin.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(),"Logout success",Toast.LENGTH_SHORT).show();
                 }

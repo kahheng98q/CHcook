@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

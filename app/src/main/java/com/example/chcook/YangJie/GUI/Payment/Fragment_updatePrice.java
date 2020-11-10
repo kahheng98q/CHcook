@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.Payment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,9 +29,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 public class Fragment_updatePrice extends Fragment {
@@ -65,13 +62,13 @@ public class Fragment_updatePrice extends Fragment {
                 builderR.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Query query = FirebaseDatabase.getInstance().getReference("ManagePrice").child(priceId);
+                        Query query = FirebaseDatabase.getInstance().getReference("ManagePrice");
 
                         HashMap hashMap = new HashMap();
                         hashMap.put("Price", spinnerPrice.getSelectedItem().toString());
                         hashMap.put("Editor", currentStaff.getDisplayName().toString());
                         hashMap.put("EditTime", ServerValue.TIMESTAMP);
-                        query.getRef().updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
+                        query.getRef().push().setValue(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
                                 Toast.makeText(getActivity(), "updated", Toast.LENGTH_SHORT).show();
@@ -104,19 +101,24 @@ public class Fragment_updatePrice extends Fragment {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Long largestDate=0L;
+                String emailEditor="",getPrice="";
                 if(dataSnapshot.exists()){
                     for(DataSnapshot price: dataSnapshot.getChildren()){
-                        String emailEditor = price.child("Editor").getValue(String.class);
-                        String getPrice = price.child("Price").getValue(String.class);
-                        Long getDate = price.child("EditTime").getValue(Long.class);
-                        priceId=price.getKey();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        String latestDate = df.format(getDate);
 
-                        date.setText("Last Edit Time : "+latestDate);
-                        editor.setText("Last Editor : "+emailEditor);
-                        cPrice.setText("Current Price : RM "+getPrice);
+                        Long getDate = price.child("EditTime").getValue(Long.class);
+                        if(getDate>largestDate){
+                            largestDate=getDate;
+                            emailEditor = price.child("Editor").getValue(String.class);
+                            getPrice = price.child("Price").getValue(String.class);
+                        }
                     }
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    String latestDate = df.format(largestDate);
+
+                    date.setText("Last Edit Time : "+latestDate);
+                    editor.setText("Last Editor : "+emailEditor);
+                    cPrice.setText("Current Price : RM "+getPrice);
                 }
 
             }

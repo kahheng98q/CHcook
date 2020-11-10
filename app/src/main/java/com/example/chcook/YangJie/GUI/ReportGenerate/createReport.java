@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.ReportGenerate;
 
 import androidx.appcompat.app.AppCompatActivity;
 

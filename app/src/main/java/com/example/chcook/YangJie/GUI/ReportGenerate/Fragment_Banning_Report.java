@@ -1,4 +1,4 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.ReportGenerate;
 
 import android.Manifest;
 import android.content.Context;
@@ -25,11 +25,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.chcook.Domain.Payment;
 import com.example.chcook.Domain.User;
 import com.example.chcook.Domain.Videos;
 import com.example.chcook.R;
-import com.example.chcook.YangJie.DA.PdfDocumentAdapter;
+import com.example.chcook.YangJie.Adapter.Common;
+import com.example.chcook.YangJie.Adapter.PdfDocumentAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

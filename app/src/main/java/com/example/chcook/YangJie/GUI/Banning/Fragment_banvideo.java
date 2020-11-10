@@ -1,10 +1,9 @@
-package com.example.chcook.YangJie;
+package com.example.chcook.YangJie.GUI.Banning;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.chcook.YangJie.DA.recyclerViewAdapter_banVideo;
+import com.example.chcook.YangJie.Adapter.recyclerViewAdapter_banVideo;
 import com.example.chcook.Domain.Report;
 import com.example.chcook.R;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
