@@ -2,18 +2,25 @@ package com.example.chcook.Domain;
 
 public class Videos {
 
-    private String videoID;
-    private String name;
-    private String desc;
-    private String view;
-    private String video;
-    private String date;
-    private String image;
-    private String banned;
-    private String category;
-    private User user;
+    private String videoID="";
+    private String name="";
+    private String desc="";
+    private String view="";
+    private String video="";
+    private String date="";
+    private String image="";
+    private String banned="";
+    private String category="";
+    private User user=new User();
+    private String duration="";
 
+    public String getDuration() {
+        return duration;
+    }
 
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
     public Videos() {
     }

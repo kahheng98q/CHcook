@@ -96,11 +96,7 @@ public class VideoManagement extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (! tab.getText().toString().toUpperCase().equals("VIDEO")) {
-//                    fragmentManager = ((FragmentActivity)getContext()).getSupportFragmentManager();
-//                    fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.myNavHostFragment, new VideoManagement());
-//                    fragmentTransaction.addToBackStack(null).commit();
-                    fragmentManager = ((FragmentActivity)getContext()).getSupportFragmentManager();
+                    fragmentManager = ((FragmentActivity)getActivity()).getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.myNavHostFragment, new RecipeManagementUI());
                     fragmentTransaction.addToBackStack(null).commit();
@@ -180,7 +176,7 @@ public class VideoManagement extends Fragment {
                 fragmentManager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }
         } else if (resultCode == RESULT_OK && requestCode == 10005 && data != null) {
             uri = data.getData();
@@ -196,7 +192,7 @@ public class VideoManagement extends Fragment {
             fragmentManager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-            fragmentTransaction.commit();
+            fragmentTransaction.addToBackStack(null).commit();
         }
     }
 }

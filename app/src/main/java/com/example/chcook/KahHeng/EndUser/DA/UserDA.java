@@ -61,10 +61,20 @@ public class UserDA {
                     String image = dataSnapshot.child("Image").getValue(String.class);
                     String name = dataSnapshot.child("Name").getValue(String.class);
                     String pass = dataSnapshot.child("Password").getValue(String.class);
-                    String status = dataSnapshot.child("Banned").getValue(String.class);
+//                    String status = dataSnapshot.child("Banned").getValue(String.class);
 
-                    user = new User(status, email, image, type, name, pass);
-                    userCallback.onCallback(user);
+                    if ( dataSnapshot.child("Status").child("Status").getValue()!=null) {
+                        String status=dataSnapshot.child("Status").child("Status").getValue(String.class);
+                            user = new User(status, email, image, type, name, pass);
+                            userCallback.onCallback(user);
+
+                    }else {
+                        user = new User("", email, image, type, name, pass);
+                        userCallback.onCallback(user);
+                    }
+//
+//                    user = new User(status, email, image, type, name, pass);
+//                    userCallback.onCallback(user);
                 } else {
                     CreateUserInGoogleLogin();
                     userCallback.onCallback(user);

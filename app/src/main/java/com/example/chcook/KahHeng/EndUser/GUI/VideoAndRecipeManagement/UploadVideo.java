@@ -3,11 +3,15 @@ package com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement;
 
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +23,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -27,6 +32,15 @@ import android.widget.VideoView;
 
 import com.example.chcook.KahHeng.EndUser.GUI.Home;
 import com.example.chcook.R;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +54,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -53,11 +68,17 @@ public class UploadVideo extends Fragment {
     private View view;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private VideoView vv;
-    private MediaController mc;
+//    private VideoView vv;
+//    private MediaController mc;
+
+    private PlayerView playerView = null;
+    private SimpleExoPlayer simpleExoPlayer = null;
+    private ImageView fullScreenButton=null;
+    private  Boolean fullscreen=false;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private Spinner spinner=null;
+    private long realDurationMillis;
     //    private StorageReference videoRef;
     private EditText nametxt;
     private EditText desctxt;
@@ -76,7 +97,7 @@ public class UploadVideo extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_upload_video, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         spinner = view.findViewById(R.id.spinnerReview);
 //        select = view.findViewById(R.id.button);
         nametxt = view.findViewById(R.id.name);
@@ -92,25 +113,25 @@ public class UploadVideo extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
-
-        vv = view.findViewById(R.id.videoImage);
-        vv.setVideoURI(Uri.parse(videouri));
-        vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.start();
-                mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
-                    @Override
-                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-                        mc = new MediaController(getActivity());
-                        vv.setMediaController(mc);
-                        mc.setAnchorView(vv);
-                        mp.start();
-                    }
-                });
-            }
-        });
-        vv.start();
+        playVideo(videouri);
+//        vv = view.findViewById(R.id.videoImage);
+//        vv.setVideoURI(Uri.parse(videouri));
+//        vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.start();
+//                mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+//                    @Override
+//                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+//                        mc = new MediaController(getActivity());
+//                        vv.setMediaController(mc);
+//                        mc.setAnchorView(vv);
+//                        mp.start();
+//                    }
+//                });
+//            }
+//        });
+//        vv.start();
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +140,82 @@ public class UploadVideo extends Fragment {
         });
         return view;
     }
+    private void playVideo(String uri) {
+        playerView = view.findViewById(R.id.videoImage);
+        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext());
+        fullScreenButton=playerView.findViewById(R.id.exo_fullscreen_icon);
+
+        playerView.setPlayer(simpleExoPlayer);
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
+                Util.getUserAgent(getContext(), "Cookish"));
+
+
+        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(uri));
+        simpleExoPlayer.prepare(videoSource);
+        simpleExoPlayer.setPlayWhenReady(true);
+        simpleExoPlayer.addListener(new Player.EventListener() {
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+//                if (Player.STATE_BUFFERING == playbackState) {
+//                    progressBar.setVisibility(View.VISIBLE);
+//                } else {
+//                    progressBar.setVisibility(View.GONE);
+//                }
+//                long realDurationMillis = simpleExoPlayer.getDuration();
+//                String time=String.format("%02d:%02d:%02d",
+//                        TimeUnit.MILLISECONDS.toHours(realDurationMillis),
+//                        TimeUnit.MILLISECONDS.toMinutes(realDurationMillis) -
+//                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(realDurationMillis)), // The change is in this line
+//                        TimeUnit.MILLISECONDS.toSeconds(realDurationMillis) -
+//                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(realDurationMillis)));
+                realDurationMillis = simpleExoPlayer.getDuration();
+//                Toast.makeText(getActivity(),convert(realDurationMillis)
+//                        , Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        fullScreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(fullscreen) {
+                    fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.exo_controls_fullscreen_enter));
+                    getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                    if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
+                        ((AppCompatActivity)getActivity()). getSupportActionBar().show();
+                    }
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+                    params.width = params.MATCH_PARENT;
+                    params.height = (int) ( 200 *getContext().getResources().getDisplayMetrics().density);
+                    playerView.setLayoutParams(params);
+                    fullscreen = false;
+                }else{
+                    fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.exo_controls_fullscreen_exit));
+                    getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+                            |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                    if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
+                        ((AppCompatActivity)getActivity()). getSupportActionBar().hide();
+                    }
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+                    params.width = params.MATCH_PARENT;
+                    params.height = params.MATCH_PARENT;
+                    playerView.setLayoutParams(params);
+                    fullscreen = true;
+                }
+            }
+        });
+    }
+//    public String convert(long miliSeconds)
+//    {
+//        int hrs = (int) TimeUnit.MILLISECONDS.toHours(miliSeconds) % 24;
+//        int min = (int) TimeUnit.MILLISECONDS.toMinutes(miliSeconds) % 60;
+//        int sec = (int) TimeUnit.MILLISECONDS.toSeconds(miliSeconds) % 60;
+//        return String.format("%02d:%02d:%02d", hrs, min, sec);
+//    }
+
 
     private String getFileExtension(){
         ContentResolver contentResolver=getContext().getContentResolver();
@@ -162,12 +259,13 @@ public class UploadVideo extends Fragment {
                                     addid.put(videoid, "true");
 //                                    videoid
                                     Map<String, Object> addURL = new HashMap<>();
+                                    addURL.put("Duration",realDurationMillis);
                                     addURL.put("URL", downloadUrl);
                                     addURL.put("name",name);
                                     addURL.put("description",desc);
                                     addURL.put("Category",category);
                                     addURL.put("view",0);
-//                                    addURL.put("Banned","no");
+
                                     addURL.put("Uploaddate",getCurrentTimeStamp());
 //                                    addURL.put("id",videoid);
                                     ref.updateChildren(addid);

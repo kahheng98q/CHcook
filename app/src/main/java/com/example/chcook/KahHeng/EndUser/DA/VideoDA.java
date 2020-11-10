@@ -1,5 +1,6 @@
 package com.example.chcook.KahHeng.EndUser.DA;
 
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class VideoDA {
     private FirebaseAuth firebaseAuth;
@@ -201,14 +203,32 @@ public class VideoDA {
                     userDA.setUserBasedOnVideo(new UserDA.UserCallback() {
                         @Override
                         public User onCallback(User user) {
+                            Videos tmpVideo=new Videos();
                             String name = dataSnapshot.child("name").getValue(String.class);
                             String url = dataSnapshot.child("URL").getValue(String.class);
                             String desc = dataSnapshot.child("description").getValue(String.class);
                             Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
                             Long formatedDate = Long.valueOf(date);
-//                            Log.d("test", "message text:AAAAAAAAAAAAAAAA");
-                            videos.add(new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user));
-                            videoCallback.onCallback(videos);
+                            tmpVideo=new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user);
+
+//                            Log.d("test", "message text:CCCCCCCCCCCCCCCCCCCC" + dataSnapshot.child("Status").child("Status").getValue());
+//                            String status=dataSnapshot.child("Status").child("Status").getValue(String.class);
+                            if ( dataSnapshot.child("Duration").getValue()!=null){
+                                Long duration = dataSnapshot.child("Duration").getValue(Long.class);
+                                tmpVideo.setDuration(convert(duration));
+                            }
+
+                            if ( dataSnapshot.child("Status").child("Status").getValue()!=null) {
+                                String status=dataSnapshot.child("Status").child("Status").getValue(String.class);
+                                if (!status.toUpperCase().equals("BANNED")){
+                                    videos.add(tmpVideo);
+                                    videoCallback.onCallback(videos);
+                                }
+                            }else {
+//                                videos.add(new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user));
+                                videos.add(tmpVideo);
+                                videoCallback.onCallback(videos);
+                            }
                             return user;
                         }
                     });
@@ -249,6 +269,37 @@ public class VideoDA {
     private long getCurrentTimeStamp() {
         long timestamp = System.currentTimeMillis() / 1000;
         return timestamp;
+    }
+//    public void filterBannedVideo(final VideoCallback videoCallback) {
+//        DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("video");
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                        setVideokey(child.getKey());
+//                        getAllVideos(videoCallback);
+//                    }
+//                } else {
+//                    videoCallback.onCallback(new ArrayList<Videos>());
+//                }
+//
+//            }
+//
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+    public String convert(long miliSeconds)
+    {
+        int hrs = (int) TimeUnit.MILLISECONDS.toHours(miliSeconds) % 24;
+        int min = (int) TimeUnit.MILLISECONDS.toMinutes(miliSeconds) % 60;
+        int sec = (int) TimeUnit.MILLISECONDS.toSeconds(miliSeconds) % 60;
+        return String.format("%02d:%02d:%02d", hrs, min, sec);
     }
 
     public void editVideoNameNDesc(String name, String desc,String category) {

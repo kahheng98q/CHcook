@@ -88,6 +88,11 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 navImageView = header.findViewById(R.id.profile);
 
                 user = getuser;
+                if(user.getStatus().toUpperCase().equals("BANNED")){
+//                    if()
+                    Toast.makeText(MainPage.this, "Your have been banned.", Toast.LENGTH_SHORT).show();
+                    Logout();
+                }
                 Glide.with(getApplicationContext())
                         .asBitmap()
                         .load(user.getImage())
@@ -144,11 +149,6 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 
                 UserProfile fragobj =new UserProfile();
                 fragobj.setArguments(bundle);
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new PlayVideo());
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new ShowCookingStep());
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new PremiumRecipeAdapter());
                 fragmentTransaction.replace(R.id.myNavHostFragment,fragobj);
                 fragmentTransaction.addToBackStack(null).commit();
                 progressBar.setVisibility(View.GONE);
@@ -196,7 +196,6 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 fragmentTransaction.addToBackStack(null).commit();
                 progressBar.setVisibility(View.GONE);
                 break;
-
 
             case R.id.Logout:
                 Logout();
