@@ -28,7 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import wseemann.media.FFmpegMediaMetadataRetriever;
+
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.RViewHolder> {
     private ArrayList<Videos> videos;

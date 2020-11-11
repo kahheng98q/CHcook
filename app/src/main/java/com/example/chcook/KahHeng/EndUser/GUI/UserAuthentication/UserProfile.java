@@ -1,6 +1,7 @@
 package com.example.chcook.KahHeng.EndUser.GUI.UserAuthentication;
 
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +10,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +24,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.User;
+import com.example.chcook.Domain.Videos;
+import com.example.chcook.KahHeng.EndUser.Adapter.UserVideoReviewAdapter;
+import com.example.chcook.KahHeng.EndUser.Adapter.VideoAdapter;
 import com.example.chcook.KahHeng.EndUser.DA.UserDA;
+import com.example.chcook.KahHeng.EndUser.DA.VideoDA;
 import com.example.chcook.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +39,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,7 +61,11 @@ public class UserProfile extends Fragment {
     private String uri;
     private CircleImageView imageView;
     private TextView txtName;
+    private Button btnCancel=null;
     private UserDA userDA =new UserDA();
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     public UserProfile() {
         // Required empty public constructor
@@ -62,6 +76,7 @@ public class UserProfile extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        setVideoReviewDialog();
         final UserDA userDA = new UserDA();
         txtName = view.findViewById(R.id.editTxtUpdateUserName);
         TextView txtEmail = view.findViewById(R.id.txtUpdateProfileEmail);
@@ -74,25 +89,35 @@ public class UserProfile extends Fragment {
         final TextView navtxtuUsername = header.findViewById(R.id.username);
         navImageView = header.findViewById(R.id.profile);
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            name = bundle.getString("Name");
-            email = bundle.getString("Email");
-            uri = bundle.getString("ImageUri");
+        userDA.retrieveUserInfo(new UserDA.UserCallback() {
+            @Override
+            public User onCallback(User getuser) {
 
-            Glide.with(getContext())
-                    .asBitmap()
-                    .load(uri)
-                    .into(imageView);
-            txtName.setText(name);
-            txtEmail.setText(email);
-        }
+                Glide.with(getContext())
+                        .asBitmap()
+                        .load(getuser.getImage())
+                        .into(imageView);
+                txtName.setText(getuser.getName());
+                txtEmail.setText(getuser.getEmail());
+//                Toast.makeText(MainPage.this, user.getImage(), Toast.LENGTH_SHORT).show();
+                return getuser;
+            }
+        });
+        Bundle bundle = this.getArguments();
+//        if (bundle != null) {
+//            name = bundle.getString("Name");
+//            email = bundle.getString("Email");
+//            uri = bundle.getString("ImageUri");
+//
+//
+//        }
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImageUserImage();
+//                user.setImage();
             }
         });
 
@@ -100,7 +125,7 @@ public class UserProfile extends Fragment {
             @Override
             public void onClick(View v) {
 //                user.setImage();
-//                user.setName();
+                user.setName(txtName.getText().toString());
                 userDA.UpdateUser(user);
                 Glide.with(getContext())
                         .asBitmap()
@@ -194,6 +219,37 @@ public class UserProfile extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Please Select Video and fill in the information", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void setVideoReviewDialog() {
+
+        final AlertDialog dialogReport;
+        final AlertDialog.Builder dialogBuilderReport = new AlertDialog.Builder(getContext());
+        final View popReport = getLayoutInflater().inflate(R.layout.pop_window_display_user_review, null);
+        btnCancel = popReport.findViewById(R.id.btnCancel);
+        recyclerView = popReport.findViewById(R.id.recycleviewReview);
+        dialogBuilderReport.setView(popReport);
+        dialogReport = dialogBuilderReport.create();
+        dialogReport.show();
+        VideoDA videoDA=new VideoDA();
+        videoDA.getUploadedVideo(videos -> {
+//            recyclerView.setHasFixedSize(true);
+            adapter = new UserVideoReviewAdapter(popReport.getContext(), videos);
+            layoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+//            Log.d("test", videos.get(0).getName());
+            adapter.notifyDataSetChanged();
+//                progressBar.setVisibility(View.GONE);
+//                return videos;
+            return videos;
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogReport.dismiss();
+            }
+        });
     }
 
 }

@@ -200,37 +200,32 @@ public class VideoDA {
                 if (dataSnapshot.exists()) {
                     String id = dataSnapshot.getKey();
                     userDA.setVideokey(id);
-                    userDA.setUserBasedOnVideo(new UserDA.UserCallback() {
-                        @Override
-                        public User onCallback(User user) {
-                            Videos tmpVideo=new Videos();
-                            String name = dataSnapshot.child("name").getValue(String.class);
-                            String url = dataSnapshot.child("URL").getValue(String.class);
-                            String desc = dataSnapshot.child("description").getValue(String.class);
-                            Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
-                            Long formatedDate = Long.valueOf(date);
-                            tmpVideo=new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user);
+                    userDA.setUserBasedOnVideo(user -> {
+                        Videos tmpVideo=new Videos();
+                        String name = dataSnapshot.child("name").getValue(String.class);
+                        String url = dataSnapshot.child("URL").getValue(String.class);
+                        String desc = dataSnapshot.child("description").getValue(String.class);
+                        Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
+                        Long formatedDate = Long.valueOf(date);
+                        tmpVideo=new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user);
 
-//                            Log.d("test", "message text:CCCCCCCCCCCCCCCCCCCC" + dataSnapshot.child("Status").child("Status").getValue());
-//                            String status=dataSnapshot.child("Status").child("Status").getValue(String.class);
-                            if ( dataSnapshot.child("Duration").getValue()!=null){
-                                Long duration = dataSnapshot.child("Duration").getValue(Long.class);
-                                tmpVideo.setDuration(convert(duration));
-                            }
+                        if ( dataSnapshot.child("Duration").getValue()!=null){
+                            Long duration = dataSnapshot.child("Duration").getValue(Long.class);
+                            tmpVideo.setDuration(convert(duration));
+                        }
 
-                            if ( dataSnapshot.child("Status").child("Status").getValue()!=null) {
-                                String status=dataSnapshot.child("Status").child("Status").getValue(String.class);
-                                if (!status.toUpperCase().equals("BANNED")){
-                                    videos.add(tmpVideo);
-                                    videoCallback.onCallback(videos);
-                                }
-                            }else {
-//                                videos.add(new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user));
+                        if ( dataSnapshot.child("Status").child("Status").getValue()!=null) {
+                            String status=dataSnapshot.child("Status").child("Status").getValue(String.class);
+                            if (!status.toUpperCase().equals("BANNED")){
                                 videos.add(tmpVideo);
                                 videoCallback.onCallback(videos);
                             }
-                            return user;
+                        }else {
+//                                videos.add(new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user));
+                            videos.add(tmpVideo);
+                            videoCallback.onCallback(videos);
                         }
+                        return user;
                     });
 
                 }

@@ -2,6 +2,7 @@ package com.example.chcook.KahHeng.EndUser.GUI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -139,6 +141,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         progressBar.setVisibility(View.VISIBLE);
         switch (item.getItemId()) {
             case R.id.profile:
+
                 Bundle bundle = new Bundle();
                 bundle.putString("Email", user.getEmail());
                 bundle.putString("Name", user.getName());
@@ -204,5 +207,39 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 
         return false;
     }
+
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm =getSupportFragmentManager();
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }  if (fm.getBackStackEntryCount() > 0) {
+//            Log.i("MainActivity", "popping backstack");
+            fm.popBackStack();
+        }else {
+            AlertDialog.Builder builderR = new AlertDialog.Builder(this);
+            builderR.setTitle("Quit");
+            builderR.setMessage("Are you sure want to quit?");
+            builderR.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Logout();
+                    Toast.makeText(getApplicationContext(),"Logout success",Toast.LENGTH_SHORT).show();
+                }
+            });
+            builderR.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialogR = builderR.create();
+            dialogR.show();
+        }
+
+    }
+
 
 }

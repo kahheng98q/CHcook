@@ -32,6 +32,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class Login extends AppCompatActivity {
     public static final int Google_Sign_In_Code = 10005;
+    public static final String Google_Token_Id ="1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com";
     SignInButton signInButton;
     GoogleSignInOptions gso;
     GoogleSignInClient signInClient;
@@ -50,7 +51,7 @@ public class Login extends AppCompatActivity {
         StaffLoginPage = findViewById(R.id.staffPageBtn);
 
         gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com")
+                .requestIdToken(Google_Token_Id)
                 .requestEmail()
                 .build();
 
@@ -138,7 +139,7 @@ public class Login extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(this,"Connected.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this,"Connected.", Toast.LENGTH_SHORT).show();
             } catch (ApiException e) {
                 e.printStackTrace();
             }

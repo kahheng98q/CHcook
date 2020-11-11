@@ -317,4 +317,5 @@ public class StaffMainPage extends AppCompatActivity implements NavigationView.O
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

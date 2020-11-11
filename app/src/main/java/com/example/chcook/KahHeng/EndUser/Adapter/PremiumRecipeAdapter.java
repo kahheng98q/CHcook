@@ -9,13 +9,12 @@ import androidx.annotation.NonNull;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,20 +38,21 @@ public class PremiumRecipeAdapter extends RecyclerView.Adapter<PremiumRecipeAdap
     }
     public static class RViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
-        private TextView textView1;
-        private TextView textView2;
-        private LinearLayout videoInfoLayout;
-        private ImageButton btnMore;
+        private TextView txtTitle;
+        private TextView txtDesc;
+        private ConstraintLayout recipeLayout;
+//        private ImageButton btnMore;
 
 
         public RViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.profilePic);
-            textView1 = itemView.findViewById(R.id.textViewName);
-            textView2 = itemView.findViewById(R.id.textViewAddress);
-            btnMore = itemView.findViewById(R.id.btnMultiFunc);
-            btnMore.setVisibility(View.GONE);
-            videoInfoLayout = itemView.findViewById(R.id.videoinfoLayout);
+            imageView = itemView.findViewById(R.id.imageViewRecipePremium);
+            txtTitle = itemView.findViewById(R.id.txtRecipeTitlePremium);
+            txtDesc = itemView.findViewById(R.id.txtView);
+
+//            btnMore = itemView.findViewById(R.id.btnMultiFunc);
+//            btnMore.setVisibility(View.GONE);
+            recipeLayout = itemView.findViewById(R.id.recipeInfoLayout);
         }
 
     }
@@ -66,7 +66,7 @@ public class PremiumRecipeAdapter extends RecyclerView.Adapter<PremiumRecipeAdap
     @NonNull
     @Override
     public PremiumRecipeAdapter.RViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewcontent, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_premium_cardview, parent, false);
         RViewHolder vh = new RViewHolder(v);
         return vh;
     }
@@ -82,9 +82,9 @@ public class PremiumRecipeAdapter extends RecyclerView.Adapter<PremiumRecipeAdap
                     .into(holder.imageView);
         }
 
-        holder.textView1.setText(recipe.getTitle());
-        holder.textView2.setText(recipe.getUploadDate());
-        holder.videoInfoLayout.setOnClickListener(new View.OnClickListener() {
+        holder.txtTitle.setText(recipe.getTitle());
+        holder.txtDesc.setText(recipe.getDescription());
+        holder.recipeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager;

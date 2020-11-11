@@ -194,7 +194,7 @@ public class UserDA {
         Map<String, Object> addemail = new HashMap<>();
 
         addemail.put("Name", user.getName());
-        addemail.put("Image", user.getImage());
+//        addemail.put("Image", user.getImage());
         ref.updateChildren(addemail);
     }
 
