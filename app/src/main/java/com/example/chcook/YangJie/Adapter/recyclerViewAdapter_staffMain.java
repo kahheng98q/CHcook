@@ -130,7 +130,7 @@ public class recyclerViewAdapter_staffMain extends RecyclerView.Adapter<recycler
         } else {
             ori.clear();
             for (Videos item: arrayList) {
-                if (item.getName().toLowerCase(Locale.getDefault()).contains(characterText)) {
+                if (item.getName().toLowerCase(Locale.getDefault()).contains(input)) {
                     ori.add(item);
                 }
             }
