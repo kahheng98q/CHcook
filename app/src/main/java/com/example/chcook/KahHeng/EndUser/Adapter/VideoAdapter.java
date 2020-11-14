@@ -3,6 +3,7 @@ package com.example.chcook.KahHeng.EndUser.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,7 +84,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RViewHolder>
 //        Toast.makeText(context, videos.get(1).getVideoID(), Toast.LENGTH_SHORT).show();
         holder.textView1.setText(video.getName());
         holder.textView2.setText(video.getDate());
+//        Log.d("test3",  video.getVideoID());
+//        Log.d("test3",  video.getName());
         holder.videoInfoLayout.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 //                Toast.makeText(context, videos.get(0).getVideoID(), Toast.LENGTH_SHORT).show();
@@ -92,6 +96,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RViewHolder>
 
                 Bundle bundle = new Bundle();
                 bundle.putString("key", video.getVideoID());
+
                 //set Fragmentclass Arguments
                 PlayVideo fragobj = new PlayVideo();
                 fragobj.setArguments(bundle);

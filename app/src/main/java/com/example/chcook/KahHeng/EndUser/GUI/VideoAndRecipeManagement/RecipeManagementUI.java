@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toolbar;
 
 import com.example.chcook.Domain.Recipes;
 import com.example.chcook.KahHeng.EndUser.Adapter.RecipeAdapter;
@@ -41,7 +42,7 @@ public class RecipeManagementUI extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
-    private Uri Imageuri;
+    private Uri uri;
     private ProgressBar progressBar;
     private TabLayout tabLayout=null;
     private FragmentManager fragmentManager;
@@ -62,7 +63,7 @@ public class RecipeManagementUI extends Fragment {
         recyclerView = view.findViewById(R.id.recycleview);
         progressBar=view.findViewById(R.id.progressBarRecipeManage);
 
-
+        getActivity().setTitle("Recipe Management");
         recipeDA.getUploadedRecipe(new RecipeDA.RecipesCallback() {
             @Override
             public ArrayList<Recipes> onCallback(ArrayList<Recipes> recipes) {
@@ -138,11 +139,7 @@ public class RecipeManagementUI extends Fragment {
                 selectImageRecipe();
                 break;
             case R.id.video:
-//
-//                fragmentManager = getActivity().getSupportFragmentManager();
-//                fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.myNavHostFragment, new UploadVideo());
-//                fragmentTransaction.commit();
+                selectVideo();
 
                 break;
         }
@@ -155,6 +152,12 @@ public class RecipeManagementUI extends Fragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select a Image"), 10002);
     }
+    private void selectVideo() {
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select a Video"), 10005);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -163,12 +166,12 @@ public class RecipeManagementUI extends Fragment {
             if (resultCode == RESULT_OK && requestCode == 10002 && data != null) {
 //                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
 
-                Imageuri = data.getData();
+                uri = data.getData();
                 FragmentManager fragmentManager;
                 FragmentTransaction fragmentTransaction;
 
                 Bundle bundle = new Bundle();
-                bundle.putString("key", Imageuri.toString());
+                bundle.putString("key", uri.toString());
                 //set Fragmentclass Arguments
                 UploadRecipe fragobj = new UploadRecipe();
                 fragobj.setArguments(bundle);
@@ -177,6 +180,21 @@ public class RecipeManagementUI extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
                 fragmentTransaction.commit();
+            }else if (resultCode == RESULT_OK && requestCode == 10005 && data != null) {
+                uri = data.getData();
+                FragmentManager fragmentManager;
+                FragmentTransaction fragmentTransaction;
+
+                Bundle bundle = new Bundle();
+                bundle.putString("key", uri.toString());
+                //set Fragmentclass Arguments
+                UploadVideo fragobj = new UploadVideo();
+                fragobj.setArguments(bundle);
+
+                fragmentManager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
+                fragmentTransaction.addToBackStack(null).commit();
             }
 
         }

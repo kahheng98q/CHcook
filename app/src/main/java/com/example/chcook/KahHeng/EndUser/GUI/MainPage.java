@@ -141,22 +141,20 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
         progressBar.setVisibility(View.VISIBLE);
         switch (item.getItemId()) {
             case R.id.profile:
-
-                Bundle bundle = new Bundle();
-                bundle.putString("Email", user.getEmail());
-                bundle.putString("Name", user.getName());
-                bundle.putString("ImageUri",user.getImage());
-
+                toolbar.setTitle("User Profile");
+//                Bundle bundle = new Bundle();
+//                bundle.putString("Email", user.getEmail());
+//                bundle.putString("Name", user.getName());
+//                bundle.putString("ImageUri",user.getImage());
+//
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-
-                UserProfile fragobj =new UserProfile();
-                fragobj.setArguments(bundle);
-                fragmentTransaction.replace(R.id.myNavHostFragment,fragobj);
+                fragmentTransaction.replace(R.id.myNavHostFragment,new UserProfile());
                 fragmentTransaction.addToBackStack(null).commit();
                 progressBar.setVisibility(View.GONE);
                 break;
             case R.id.home:
+                toolbar.setTitle("Home");
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
@@ -164,6 +162,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 progressBar.setVisibility(View.GONE);
                 break;
             case R.id.myVideos:
+                toolbar.setTitle("Video Management");
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 progressBar.setVisibility(View.GONE);
@@ -171,11 +170,13 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 fragmentTransaction.addToBackStack(null).commit();
                 break;
             case R.id.premium:
+
                 String type=user.getType();
                 if (user.getType() == null || !type.equals("Premium")) {
                     startActivity(new Intent(getApplicationContext(), Pay.class));
 //                    Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
                 } else {
+                    toolbar.setTitle("Recipe");
                     fragmentManager = getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.myNavHostFragment, new DisplayRecipes());
@@ -185,6 +186,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 break;
 
             case R.id.history:
+                toolbar.setTitle("History");
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, new HistoryUI());
@@ -193,6 +195,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
                 break;
 
             case R.id.favorite:
+                toolbar.setTitle("Favorite List");
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, new AddToFavorite());

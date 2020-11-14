@@ -64,7 +64,7 @@ public class UserVideoReviewAdapter  extends RecyclerView.Adapter<UserVideoRevie
 //        Toast.makeText(context, video.getUser().getName(), Toast.LENGTH_SHORT).show();
         holder.txtName.setText(video.getName());
 
-        holder.txtView.setText(video.getView());
+        holder.txtView.setText(video.getView()+" Views");
     }
 
     @Override

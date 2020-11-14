@@ -103,7 +103,7 @@ public class UserProfile extends Fragment {
                 return getuser;
             }
         });
-        Bundle bundle = this.getArguments();
+//        Bundle bundle = this.getArguments();
 //        if (bundle != null) {
 //            name = bundle.getString("Name");
 //            email = bundle.getString("Email");

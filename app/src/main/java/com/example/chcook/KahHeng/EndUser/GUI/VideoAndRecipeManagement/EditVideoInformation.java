@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class EditVideoInformation extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_edit_video_information, container, false);
+        getActivity().setTitle("Edit Video Information");
         imageView = view.findViewById(R.id.editvideoImage);
         nametxt = view.findViewById(R.id.editNameTxt);
         desctxt = view.findViewById(R.id.editDescText);
@@ -58,6 +60,7 @@ public class EditVideoInformation extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             key = bundle.getString("key");
+            Log.d("test2", key);
             videoDA.setVideokey(key);
             videoDA.getVideoInform(new VideoDA.Callvideo() {
                 @Override

@@ -158,23 +158,32 @@ public class VideoDA {
                     String url = "";
                     String name = "";
                     Long time = 0L;
-                    if (dataSnapshot.exists()) {
-
+                    String view="";
+                    Videos video =new Videos();
+                    video.setVideoID(dataSnapshot.getKey());
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             if (child.getKey().equals("URL")) {
                                 url = child.getValue().toString();
+                                video.setVideo(url);
                             }
                             if (child.getKey().equals("name")) {
                                 name = child.getValue().toString();
+                                video.setName(name);
                             }
                             if (child.getKey().equals("Uploaddate")) {
                                 time = Long.valueOf(child.getValue().toString());
+                                video.setDate(getDate(time));
 
                             }
+                            if (child.getKey().equals("view")) {
+                                view = child.getValue().toString();
+                                video.setView(view);
+                            }
                         }
-                        videos.add(new Videos(dataSnapshot.getKey(), name, url, getDate(time)));
+                        videos.add(video);
+//                        videos.add(new Videos(dataSnapshot.getKey(), name, url, getDate(time)));
                         videoCallback.onCallback(videos);
-                    }
+
 
                 }
 

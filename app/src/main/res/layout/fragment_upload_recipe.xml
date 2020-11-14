@@ -54,13 +54,16 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="Upload"
+            android:background="@drawable/custom_button"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/desc" />
+            app:layout_constraintTop_toBottomOf="@+id/editTxtRecipeDesc" />
 
         <ImageView
             android:id="@+id/imageViewRecipe"
@@ -69,7 +72,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <ProgressBar
             android:id="@+id/progressBarUploadRecipe"

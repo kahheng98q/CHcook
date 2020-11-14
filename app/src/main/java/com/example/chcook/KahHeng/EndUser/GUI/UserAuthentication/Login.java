@@ -32,7 +32,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class Login extends AppCompatActivity {
     public static final int Google_Sign_In_Code = 10005;
-    public static final String Google_Token_Id ="1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com";
+    public static final String Google_Token_Id = "1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com";
     SignInButton signInButton;
     GoogleSignInOptions gso;
     GoogleSignInClient signInClient;
@@ -40,43 +40,38 @@ public class Login extends AppCompatActivity {
     private FloatingActionButton StaffLoginPage;
 
 
-//    GoogleSignInAccount signInAccount;
+    //    GoogleSignInAccount signInAccount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        signInButton=findViewById(R.id.sign_in_button);
+        signInButton = findViewById(R.id.sign_in_button);
 
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         StaffLoginPage = findViewById(R.id.staffPageBtn);
 
-        gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Google_Token_Id)
                 .requestEmail()
                 .build();
 
-        signInClient= GoogleSignIn.getClient(this,gso);
-
-        GoogleSignInAccount signInAccount=GoogleSignIn.getLastSignedInAccount(this);
-        if(signInAccount!=null|| firebaseAuth.getCurrentUser()!=null){
-            Toast.makeText(this,"User is logged in .", Toast.LENGTH_SHORT).show();
-
-            startActivity(new Intent(this, MainPage.class));
-        }
+        signInClient = GoogleSignIn.getClient(this, gso);
+        clearUser();
+//        GoogleSignInAccount signInAccount=GoogleSignIn.getLastSignedInAccount(this);
+//        if(signInAccount!=null|| firebaseAuth.getCurrentUser()!=null){
+//            Toast.makeText(this,"User is logged in .", Toast.LENGTH_SHORT).show();
+//
+//            startActivity(new Intent(this, MainPage.class));
+//        }
 
         signInButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-//                                                if(this.signInAccount==null){
+                                                Intent sign = signInClient.getSignInIntent();
+                                                startActivityForResult(sign, Google_Sign_In_Code);
 
-//                                                }
-//                                                checkEmail();
-                                                Intent sign= signInClient.getSignInIntent();
-                                                startActivityForResult(sign,Google_Sign_In_Code);
-
-    }
-}
-
+                                            }
+                                        }
         );
         StaffLoginPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,14 +99,20 @@ public class Login extends AppCompatActivity {
 
     }
 
+    public void clearUser() {
+        FirebaseAuth.getInstance().signOut();
+        GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build())
+                .signOut();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==Google_Sign_In_Code){
-            final Task<GoogleSignInAccount> signInTask=GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount signInAcc=signInTask.getResult(ApiException.class);
-                AuthCredential authCredential= GoogleAuthProvider.getCredential(signInAcc.getIdToken(),null);
+        if (requestCode == Google_Sign_In_Code) {
+            final Task<GoogleSignInAccount> signInTask = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount signInAcc = signInTask.getResult(ApiException.class);
+                AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAcc.getIdToken(), null);
 
                 firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -130,7 +131,7 @@ public class Login extends AppCompatActivity {
 //                        Toast.makeText(getApplicationContext(),"User is logged in has .", Toast.LENGTH_SHORT).show();
 //                        FirebaseUser user=firebaseAuth.getCurrentUser();
 //                        updateUI(user);
-                        startActivity(new Intent(getApplicationContext(),MainPage.class));
+                        startActivity(new Intent(getApplicationContext(), MainPage.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -146,24 +147,11 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public  void updateUI(FirebaseUser user){
-        GoogleSignInAccount acct=GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if(acct!=null){
-            Toast.makeText(this,"SSSSSSSSSSSs.", Toast.LENGTH_SHORT).show();
+    public void updateUI(FirebaseUser user) {
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            Toast.makeText(this, "SSSSSSSSSSSs.", Toast.LENGTH_SHORT).show();
         }
     }
-//    public void checkEmail(){
-////        firebaseAuth.fetchSignInMethodsForEmail(firebaseAuth.getCurrentUser().getEmail())
-////        .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-////
-////            @Override
-////            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-////                boolean check =!task.getResult().getSignInMethods().isEmpty();
-////                if (!check){
-////                    Toast.makeText(getApplicationContext(),"Empty.", Toast.LENGTH_SHORT).show();
-////                }
-////
-////            }
-////        });
-//    }
+
 }

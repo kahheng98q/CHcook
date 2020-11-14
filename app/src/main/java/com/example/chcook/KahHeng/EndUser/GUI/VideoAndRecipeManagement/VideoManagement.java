@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -75,6 +76,8 @@ public class VideoManagement extends Fragment {
             @Override
             public ArrayList<Videos> onCallback(ArrayList<Videos> videos) {
                 recyclerView.setHasFixedSize(true);
+//                Log.d("test4",  videos.get(0).getName());
+//                videos
                 adapter = new VideoAdapter(getContext(), videos);
                 layoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(layoutManager);
