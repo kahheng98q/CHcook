@@ -39,7 +39,7 @@ public class ShowBanVideo extends AppCompatActivity {
     private VideoView video;
     private String vid,desc,type,date,position,page,Vposition;
     private Button ban, back;
-    private TextView rType,rDesc,rDate,title;
+    private TextView rType,rDesc,rDate,title,name;
     private int tag;
     private ProgressBar pg;
 
@@ -49,6 +49,7 @@ public class ShowBanVideo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_ban_video);
         video = findViewById(R.id.banVideo);
+        name=findViewById(R.id.banVideoName);
         title = findViewById(R.id.txtBanVideoTitle);
         rType = findViewById(R.id.banVideotype);
         rDesc = findViewById(R.id.banVideoDesc);
@@ -194,6 +195,7 @@ public class ShowBanVideo extends AppCompatActivity {
 
                 }else {
                     title.setText("Report Details");
+                    name.setText("Video Name : " + videoName);
                     if(desc==null){
                         rDesc.setText("Description : " );
                     }else{
