@@ -26,12 +26,14 @@ import com.example.chcook.R;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.RViewHolder> {
     private ArrayList<Videos> videos;
+    private ArrayList<Videos> SVideos;
     private Context context;
 
     public static class RViewHolder extends RecyclerView.ViewHolder {
@@ -58,6 +60,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.RViewHolder> {
 
     public HomeAdapter(Context context, ArrayList<Videos> vd) {
         this.context = context;
+        SVideos=new ArrayList<>();
+        this.SVideos.addAll(vd);
         this.videos = vd;
     }
 
@@ -116,6 +120,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.RViewHolder> {
 
             }
         });
+    }
+    public void filter(String characterText) {
+        String input = characterText.toLowerCase(Locale.getDefault());
+        videos.clear();
+        if (input.length() == 0) {
+            videos.addAll(SVideos);
+        } else {
+            videos.clear();
+            for (Videos item: SVideos) {
+                if (item.getName().toLowerCase(Locale.getDefault()).contains(input)) {
+                    videos.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override

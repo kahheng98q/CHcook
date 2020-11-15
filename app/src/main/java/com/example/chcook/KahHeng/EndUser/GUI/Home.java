@@ -35,7 +35,8 @@ import java.util.Locale;
  */
 public class Home extends Fragment {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+//    RecyclerView.Adapter
+    private HomeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
     private FirebaseAuth firebaseAuth;
@@ -56,6 +57,7 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_home, container, false);
         database = FirebaseDatabase.getInstance();
+
         videos =new ArrayList<>();
         progressBar=view.findViewById(R.id.progressBarHome);
         progressBar.setVisibility(View.VISIBLE);
@@ -103,8 +105,9 @@ public class Home extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                adapter.filter(newText);
 //                Log.i("onQueryTextChange", newText);
-
+//                homeAdapter.filter(newText);
                 return false;
             }
         });
@@ -117,4 +120,5 @@ public class Home extends Fragment {
         String date = df.format("dd-MM-yyyy HH:mm", cal).toString();
         return date;
     }
+
 }
