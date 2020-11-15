@@ -63,12 +63,12 @@ public class UserDA {
                     String pass = dataSnapshot.child("Password").getValue(String.class);
 //                    String status = dataSnapshot.child("Banned").getValue(String.class);
 
-                    if ( dataSnapshot.child("Status").child("Status").getValue()!=null) {
-                        String status=dataSnapshot.child("Status").child("Status").getValue(String.class);
-                            user = new User(status, email, image, type, name, pass);
-                            userCallback.onCallback(user);
+                    if (dataSnapshot.child("Status").child("Status").getValue() != null) {
+                        String status = dataSnapshot.child("Status").child("Status").getValue(String.class);
+                        user = new User(status, email, image, type, name, pass);
+                        userCallback.onCallback(user);
 
-                    }else {
+                    } else {
                         user = new User("", email, image, type, name, pass);
                         userCallback.onCallback(user);
                     }
@@ -76,7 +76,8 @@ public class UserDA {
 //                    user = new User(status, email, image, type, name, pass);
 //                    userCallback.onCallback(user);
                 } else {
-                    CreateUserInGoogleLogin();
+                    user = CreateUserInGoogleLogin();
+//                    user = new User("", email, image, type, name, pass);
                     userCallback.onCallback(user);
                 }
 
@@ -89,7 +90,7 @@ public class UserDA {
         });
     }
 
-    public void setUserBasedOnVideo(final UserCallback userCallback){
+    public void setUserBasedOnVideo(final UserCallback userCallback) {
         DatabaseReference ref = database.getReference().child("Users");
         ref.orderByChild("video").addChildEventListener(new ChildEventListener() {
             @Override
@@ -104,7 +105,7 @@ public class UserDA {
 //                              Log.d("test", "message text:"+key);
                             if (userVideoKey.equals(videokey)) {
                                 Log.d("test", "message text:" + dataSnapshot.getKey());
-                                setUserInfo( userCallback,dataSnapshot.getKey());
+                                setUserInfo(userCallback, dataSnapshot.getKey());
                                 break;
                             }
                         }
@@ -137,18 +138,18 @@ public class UserDA {
         });
     }
 
-    private void setUserInfo(final UserCallback userCallback,final String key) {
+    private void setUserInfo(final UserCallback userCallback, final String key) {
         DatabaseReference userRef = database.getReference().child("Users").child(key);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    User user=new User();
+                    User user = new User();
                     String url = "";
                     String name = "";
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         if (child.getKey().equals("Image")) {
-                            url=child.getValue().toString();
+                            url = child.getValue().toString();
                             user.setImage(url);
 //                            Glide.with(getContext())
 //                                    .asBitmap()
@@ -172,6 +173,7 @@ public class UserDA {
             }
         });
     }
+
     private User CreateUserInGoogleLogin() {
         User user = new User();
         String uid = firebaseAuth.getCurrentUser().getUid();
@@ -185,7 +187,7 @@ public class UserDA {
         addemail.put("Name", name);
         addemail.put("Image", image);
         ref.updateChildren(addemail);
-        return new User(null, currentemail, image, null, name, null);
+        return new User("", currentemail, image, null, name, null);
     }
 
     public void UpdateUser(User user) {
@@ -211,7 +213,7 @@ public class UserDA {
         String uid = firebaseAuth.getCurrentUser().getUid();
         DatabaseReference ref = database.getReference("Users").child(uid);
         Map<String, Object> addemail = new HashMap<>();
-        addemail.put("Image",ImageUri);
+        addemail.put("Image", ImageUri);
         ref.updateChildren(addemail);
     }
 

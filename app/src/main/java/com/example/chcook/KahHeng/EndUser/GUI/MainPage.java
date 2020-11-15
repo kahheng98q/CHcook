@@ -94,6 +94,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 //                    if()
                     Toast.makeText(MainPage.this, "Your have been banned.", Toast.LENGTH_SHORT).show();
                     Logout();
+
                 }
                 Glide.with(getApplicationContext())
                         .asBitmap()
