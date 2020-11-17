@@ -427,7 +427,6 @@ public class PlayVideo extends Fragment{
 
     @Override
     public void onDetach() {
-        Toast.makeText(getContext(), "VCCCCCCCCCCCCCCCCCCCCCC", Toast.LENGTH_SHORT).show();
         super.onDetach();
         simpleExoPlayer.release();
     }
