@@ -111,6 +111,7 @@ public class Fragment_staffownprofile extends Fragment implements View.OnClickLi
                                                 public void onComplete(@NonNull Task<Void> task) {
 
                                                     if (task.isSuccessful()) {
+
                                                         Toast.makeText(getActivity(), "changed", Toast.LENGTH_SHORT).show();
                                                     } else {
                                                         pass_new.setError("password length must more than 5");

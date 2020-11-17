@@ -136,6 +136,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.RViewHolder> {
         }
         notifyDataSetChanged();
     }
+    public void category(String characterText) {
+        String input = characterText.toLowerCase(Locale.getDefault());
+        videos.clear();
+        if (input.equals("all")) {
+            videos.addAll(SVideos);
+        } else {
+            videos.clear();
+            for (Videos item: SVideos) {
+                if (item.getCategory().contains(characterText)) {
+                    videos.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {

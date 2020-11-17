@@ -29,8 +29,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
-public class showIncomeStatus extends AppCompatActivity implements View.OnClickListener {
+public class    showIncomeStatus extends AppCompatActivity implements View.OnClickListener {
 
     private String position;
     @Override
@@ -59,15 +61,14 @@ public class showIncomeStatus extends AppCompatActivity implements View.OnClickL
 
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot income : dataSnapshot.getChildren()) {
-                        Long dd = income.child("PayDate").getValue(Long.class);
-                        SimpleDateFormat df = new SimpleDateFormat("yyyy");
-                        String latestDate = df.format(dd);
-                        if (latestDate.equals(finalYear)) {
-                            Long dateMonth = income.child("PayDate").getValue(Long.class);
-                            SimpleDateFormat dM = new SimpleDateFormat("MM");
-                            Integer price = income.child("Price").getValue(Integer.class);
-                            String month = dM.format(dd);
-                            switch (month) {
+                        Long dd = income.child("Date").getValue(Long.class);
+                        if (getDate(dd).equals(finalYear)) {
+                            Long dateMonth = income.child("Date").getValue(Long.class);
+//                            SimpleDateFormat dM = new SimpleDateFormat("MM");
+                            String p = income.child("Price").getValue(String.class);
+                            Integer price = Integer.parseInt(p);
+//                            String month = dM.format(dd);
+                            switch (getMonth(dd)) {
                                 case "01":
                                     tM1 = tM1 + price;
                                     M1 = true;
@@ -205,5 +206,19 @@ public class showIncomeStatus extends AppCompatActivity implements View.OnClickL
         });
         AlertDialog dialogR = builderR.create();
         dialogR.show();
+    }
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("yyyy", cal).toString();
+        return date;
+    }
+    private String getMonth(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("MM", cal).toString();
+        return date;
     }
 }

@@ -104,6 +104,7 @@ public class Fragment_Banning_Report extends Fragment {
                             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                             @Override
                             public void onClick(final View v) {
+                                gotData=false;
                                 videoArray.clear();
                                 userArray.clear();
 //                                Toast.makeText(getActivity(),"1",Toast.LENGTH_SHORT).show();
@@ -128,22 +129,23 @@ public class Fragment_Banning_Report extends Fragment {
 
                                                         Long dd = user.child("Status").child("Date").getValue(Long.class);
                                                         SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
+                                                        String status = user.child("Status").child("Status").getValue(String.class);
                                                         String latestDate = df.format(dd);
 
 
                                                         if (latestDate.equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
-                                                            gotData = true;
+                                                            if(status.equals("Banned")) {
+                                                                gotData = true;
 
-                                                            Long dato = user.child("Status").child("Date").getValue(Long.class);
-                                                            SimpleDateFormat dff = new SimpleDateFormat("dd-MM-yyyy");
-                                                            String getDate = dff.format(dato);
-                                                            String reason = user.child("Status").child("Reason").getValue(String.class);
-                                                            String userEmail = user.child("Email").getValue(String.class);
-                                                            String userName = user.child("Name").getValue(String.class);
-                                                            userArray.add(new User(getDate, userEmail, userName, reason));
+                                                                Long dato = user.child("Status").child("Date").getValue(Long.class);
+                                                                SimpleDateFormat dff = new SimpleDateFormat("dd-MM-yyyy");
+                                                                String getDate = dff.format(dato);
+                                                                String reason = user.child("Status").child("Reason").getValue(String.class);
+                                                                String userEmail = user.child("Email").getValue(String.class);
+                                                                String userName = user.child("Name").getValue(String.class);
+                                                                userArray.add(new User(getDate, userEmail, userName, reason));
+                                                            }
 
-                                                        } else {
-                                                            Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
                                                         }
 
                                                     }
@@ -166,16 +168,19 @@ public class Fragment_Banning_Report extends Fragment {
                                                         Long dd = v.child("Status").child("Date").getValue(Long.class);
                                                         SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
                                                         String latestDate = df.format(dd);
+                                                        String status = v.child("Status").child("Status").getValue(String.class);
 
                                                         if (latestDate.equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
-                                                            gotData = true;
-                                                            Long dato = v.child("Status").child("Date").getValue(Long.class);
-                                                            SimpleDateFormat vf = new SimpleDateFormat("dd-MM-yyyy");
-                                                            String getVideoDate = vf.format(dato);
-                                                            String reason = v.child("Status").child("Reason").getValue(String.class);
-                                                            String vCategory = v.child("Category").getValue(String.class);
-                                                            String vName = v.child("name").getValue(String.class);
-                                                            videoArray.add(new Videos(vCategory, vName, reason, getVideoDate));
+                                                            if(status.equals("Banned")) {
+                                                                gotData = true;
+                                                                Long dato = v.child("Status").child("Date").getValue(Long.class);
+                                                                SimpleDateFormat vf = new SimpleDateFormat("dd-MM-yyyy");
+                                                                String getVideoDate = vf.format(dato);
+                                                                String reason = v.child("Status").child("Reason").getValue(String.class);
+                                                                String vCategory = v.child("Category").getValue(String.class);
+                                                                String vName = v.child("name").getValue(String.class);
+                                                                videoArray.add(new Videos(vCategory, vName, reason, getVideoDate));
+                                                            }
                                                         }
                                                     }
                                                 }

@@ -61,6 +61,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Fragment_IncomeReport extends Fragment {
     private Button report;
@@ -99,6 +100,7 @@ public class Fragment_IncomeReport extends Fragment {
                             @Override
                             public void onClick(final View v) {
                                 payments.clear();
+                                gotData=false;
                                 report.setText("Loading...");
                                 sign.setVisibility(View.VISIBLE);
                                 ySpinner.setVisibility(View.INVISIBLE);
@@ -110,32 +112,28 @@ public class Fragment_IncomeReport extends Fragment {
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
                                             for (final DataSnapshot income : dataSnapshot.getChildren()) {
-                                                Long dd = income.child("PayDate").getValue(Long.class);
+                                                Long dd = income.child("Date").getValue(Long.class);
                                                 SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
                                                 String latestDate = df.format(dd);
 
-                                                if (latestDate.equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
+                                                if (getYearMonth(dd).equals(mSpinner.getSelectedItem().toString() + "-" + ySpinner.getSelectedItem().toString())) {
                                                     gotData=true;
-                                                    Long dato = income.child("PayDate").getValue(Long.class);
+                                                    final Long dato = income.child("Date").getValue(Long.class);
                                                     SimpleDateFormat ddf = new SimpleDateFormat("dd-MM-yyyy");
                                                     final String getLastDate = ddf.format(dato);
-                                                    final Integer price = income.child("Price").getValue(Integer.class);
-                                                    String userId = income.child("UserId").getValue(String.class);
-
-
-
-
+                                                    final String p = income.child("Price").getValue(String.class);
+                                                    final Integer price = Integer.parseInt(p);
+                                                    String userId = income.child("UserID").getValue(String.class);
 
                                                         DatabaseReference query = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-//
+
                                                         query.addValueEventListener(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(@NonNull DataSnapshot ds) {
 
                                                                 String userName = ds.child("Name").getValue(String.class);
                                                                 String userEmail = ds.child("Email").getValue(String.class);
-//                                                payments.add(new Payment("111",22,"333","444"));
-                                                                payments.add(new Payment(getLastDate, price, userName, userEmail));
+                                                                payments.add(new Payment(getDate(dato), price, userName, userEmail));
 
                                                             }
 
@@ -150,7 +148,6 @@ public class Fragment_IncomeReport extends Fragment {
                                             }
                                             pg.setVisibility(View.INVISIBLE);
                                         }
-//                pg.setVisibility(View.INVISIBLE);
                                     }
 
                                     @Override
@@ -412,5 +409,19 @@ public class Fragment_IncomeReport extends Fragment {
         Paragraph paragraph = new Paragraph(chunk);
         paragraph.setAlignment(alignCenter);
         document.add(paragraph);
+    }
+    private String getYearMonth(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("MM-yyyy", cal).toString();
+        return date;
+    }
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("dd-MM-yyyy", cal).toString();
+        return date;
     }
 }

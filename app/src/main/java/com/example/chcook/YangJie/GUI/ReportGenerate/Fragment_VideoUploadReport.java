@@ -97,6 +97,7 @@ public class Fragment_VideoUploadReport extends Fragment {
                             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                             @Override
                             public void onClick(final View v) {
+                                gotData=false;
                                 videoUpload.clear();
                                 report.setText("Loading...");
                                 sign.setVisibility(View.VISIBLE);
@@ -289,7 +290,7 @@ public class Fragment_VideoUploadReport extends Fragment {
             Integer total=0;
             //Item
             for (int i = 0; i < videoUpload.size(); i++) {
-                String item = String.format("%10s%20s%35s%40s",videoUpload.get(i).getDate(),videoUpload.get(i).getName(),videoUpload.get(i).getCategory(),videoUpload.get(i).getDesc());
+                String item = String.format("%10s%20s%40s%40s",videoUpload.get(i).getDate(),videoUpload.get(i).getName(),videoUpload.get(i).getCategory(),videoUpload.get(i).getDesc());
                 addNewItem(document, item, Element.ALIGN_LEFT, wordFont);
 
 

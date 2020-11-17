@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class Fragment_ShowIncome extends Fragment {
     private Spinner year;
@@ -80,13 +82,9 @@ public class Fragment_ShowIncome extends Fragment {
                         if(dataSnapshot.exists()) {
 //                            Integer abc = 0;
                             for (DataSnapshot income : dataSnapshot.getChildren()) {
-                                Long dd = income.child("PayDate").getValue(Long.class);
-                                SimpleDateFormat df = new SimpleDateFormat("yyyy");
-//                                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                                String latestDate = df.format(dd);
-//                                String testDate = df.format("1577874945000");
-//                                Toast.makeText(getActivity(),latestDate,Toast.LENGTH_SHORT).show();
-                                if(latestDate.equals(year.getSelectedItem().toString())){
+                                Long dd = income.child("Date").getValue(Long.class);
+
+                                if(getDate(dd).equals(year.getSelectedItem().toString())){
                                     gotRecord=true;
                                     Intent intent = new Intent(getActivity(), showIncomeStatus.class);
                                     intent.putExtra("year",year.getSelectedItem().toString());
@@ -111,5 +109,12 @@ public class Fragment_ShowIncome extends Fragment {
             }
         });
         return view;
+    }
+    private String getDate(Long timeStamp) {
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.setTimeInMillis(timeStamp * 1000);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        String date = df.format("yyyy", cal).toString();
+        return date;
     }
 }

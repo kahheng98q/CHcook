@@ -1,8 +1,11 @@
 package com.example.chcook.KahHeng.EndUser.GUI;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +42,8 @@ public class Home extends Fragment {
     private HomeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
+    private SearchView.OnQueryTextListener queryTextListener;
+    private SearchView searchView = null;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private ArrayList<Videos> videos;
@@ -119,6 +124,73 @@ public class Home extends Fragment {
         android.text.format.DateFormat df = new android.text.format.DateFormat();
         String date = df.format("dd-MM-yyyy HH:mm", cal).toString();
         return date;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_bar_search:
+                return true;
+            case R.id.app_bar_filter:
+                AlertDialog.Builder category = new AlertDialog.Builder(getActivity());
+                category.setTitle("Select Category");
+
+
+                String[] cat = {"All","Western","Pasta","Rice","Sandwiches","Soup","Pancake","Dinner","Breakfast","Dessert","Pizza","Other"};
+                category.setItems(cat, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String getCat="";
+                        dialog.dismiss();
+                        switch (which){
+                            case 0:
+                                getCat = "All";
+                                break;
+                            case 1:
+                                getCat = "Western";
+                                break;
+                            case 2:
+                                getCat="Pasta";
+                                break;
+                            case 3:
+                                getCat = "Rice";
+                                break;
+                            case 4:
+                                getCat="Sandwiches";
+                                break;
+                            case 5:
+                                getCat="Soup";
+                                break;
+                            case 6:
+                                getCat="Pancake";
+                                break;
+                            case 7:
+                                getCat="Dinner";
+                                break;
+                            case 8:
+                                getCat="Breakfast";
+                                break;
+                            case 9:
+                                getCat="Dessert";
+                                break;
+                            case 10:
+                                getCat="Pizza";
+                                break;
+                            case 11:
+                                getCat="Other";
+                                break;
+                        }
+                        adapter.category(getCat);
+                    }
+                });
+                category.show();
+
+                return true;
+            default:
+                break;
+
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
     }
 
 }
