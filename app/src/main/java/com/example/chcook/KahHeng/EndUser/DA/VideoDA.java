@@ -212,14 +212,22 @@ public class VideoDA {
                 if (dataSnapshot.exists()) {
                     String id = dataSnapshot.getKey();
                     userDA.setVideokey(id);
+
                     userDA.setUserBasedOnVideo(user -> {
                         Videos tmpVideo=new Videos();
                         String name = dataSnapshot.child("name").getValue(String.class);
                         String url = dataSnapshot.child("URL").getValue(String.class);
                         String desc = dataSnapshot.child("description").getValue(String.class);
+                        String cate = dataSnapshot.child("Category").getValue(String.class);
                         Long date = dataSnapshot.child("Uploaddate").getValue(Long.class);
                         Long formatedDate = Long.valueOf(date);
-                        tmpVideo=new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user);
+                        tmpVideo.setVideoID(dataSnapshot.getKey());
+                        tmpVideo.setCategory(cate);
+                        tmpVideo.setName(name);
+                        tmpVideo.setDate(getDate(formatedDate));
+                        tmpVideo.setVideo(url);
+                        tmpVideo.setUser(user);
+//                        tmpVideo=new Videos(dataSnapshot.getKey(), name, null, getDate(formatedDate),url,user);
 
                         if ( dataSnapshot.child("Duration").getValue()!=null){
                             Long duration = dataSnapshot.child("Duration").getValue(Long.class);
