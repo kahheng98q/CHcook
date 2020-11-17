@@ -46,7 +46,6 @@ public class EditCookingStep extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             key = bundle.getString("key");
-            key = bundle.getString("key");
             uri = bundle.getString("uri");
             desc = bundle.getString("desc");
             Glide.with(getContext())

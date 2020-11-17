@@ -63,7 +63,7 @@ import java.util.concurrent.TimeUnit;
 public class UploadVideo extends Fragment {
     private String videouri=null;
     private StorageReference videoRef;
-    private Button up;
+    private Button btnUpload;
 //    private Button select;
     private View view;
     private FragmentManager fragmentManager;
@@ -102,7 +102,8 @@ public class UploadVideo extends Fragment {
 //        select = view.findViewById(R.id.button);
         nametxt = view.findViewById(R.id.name);
         desctxt = view.findViewById(R.id.desc);
-        up = view.findViewById(R.id.button2);
+        btnUpload = view.findViewById(R.id.button2);
+        btnUpload.setEnabled(true);
         desctxt.setEnabled(true);
         nametxt.setEnabled(true);
         Bundle bundle = this.getArguments();
@@ -114,25 +115,8 @@ public class UploadVideo extends Fragment {
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
         playVideo(videouri);
-//        vv = view.findViewById(R.id.videoImage);
-//        vv.setVideoURI(Uri.parse(videouri));
-//        vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mp) {
-//                mp.start();
-//                mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
-//                    @Override
-//                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-//                        mc = new MediaController(getActivity());
-//                        vv.setMediaController(mc);
-//                        mc.setAnchorView(vv);
-//                        mp.start();
-//                    }
-//                });
-//            }
-//        });
-//        vv.start();
-        up.setOnClickListener(new View.OnClickListener() {
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 upload();
@@ -223,6 +207,7 @@ public class UploadVideo extends Fragment {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(Uri.parse(videouri)));
     }
     private void upload() {
+        Toast.makeText(getActivity(), "Please wait few minutes for uploading", Toast.LENGTH_SHORT).show();
         final String desc=desctxt.getText().toString();
         final String name=nametxt.getText().toString();
         final String category=spinner.getSelectedItem().toString();
@@ -236,7 +221,10 @@ public class UploadVideo extends Fragment {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Network connection has problem", Toast.LENGTH_SHORT).show();
+                    btnUpload.setEnabled(true);
+                    desctxt.setEnabled(true);
+                    nametxt.setEnabled(true);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -280,7 +268,7 @@ public class UploadVideo extends Fragment {
                     Toast.makeText(getActivity(), "Upload Successful", Toast.LENGTH_SHORT).show();
                     fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new VideoManagement());
                     fragmentTransaction.addToBackStack(null).commit();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -289,6 +277,7 @@ public class UploadVideo extends Fragment {
                     updateProgress(taskSnapshot);
                     desctxt.setEnabled(false);
                     nametxt.setEnabled(false);
+                    btnUpload.setEnabled(false);
                 }
             });
         } else {

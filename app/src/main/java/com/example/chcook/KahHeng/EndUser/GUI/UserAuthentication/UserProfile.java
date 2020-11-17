@@ -125,6 +125,8 @@ public class UserProfile extends Fragment {
             @Override
             public void onClick(View v) {
 //                user.setImage();
+                Toast.makeText(getActivity(), "Edit successfully", Toast.LENGTH_SHORT).show();
+                user.setName(txtName.getText().toString());
                 user.setName(txtName.getText().toString());
                 userDA.UpdateUser(user);
                 Glide.with(getContext())
@@ -155,6 +157,7 @@ public class UserProfile extends Fragment {
 //                Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
 
                 Imageuri = data.getData();
+                Toast.makeText(getActivity(), "Please wait for few second to upload the image", Toast.LENGTH_SHORT).show();
                 upload();
                 //set Fragmentclass Arguments
 
@@ -170,6 +173,7 @@ public class UserProfile extends Fragment {
     }
 
     private void upload() {
+
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String uid = firebaseAuth.getCurrentUser().getUid();
@@ -180,7 +184,9 @@ public class UserProfile extends Fragment {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+//                    Log.d("test", e.getMessage());
+//                    Toast.makeText(getActivity(), "Fail To change profile Image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Network connection has problem", Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

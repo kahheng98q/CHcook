@@ -74,11 +74,14 @@ public class UploadRecipe extends Fragment {
         }
         editTextRecipeDesc = view.findViewById(R.id.editTxtRecipeDesc);
         editTextRecipeName = view.findViewById(R.id.editTxtRecipeName);
+        editTextRecipeName.setEnabled(true);
+        editTextRecipeDesc.setEnabled(true);
         btnUploadRecipe=view.findViewById(R.id.btnUploadRecipe);
 
         btnUploadRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Please wait few second for uploading", Toast.LENGTH_SHORT).show();
                 upload();
             }
         });
@@ -111,7 +114,9 @@ public class UploadRecipe extends Fragment {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Network connection has problem", Toast.LENGTH_SHORT).show();
+                    editTextRecipeName.setEnabled(true);
+                    editTextRecipeDesc.setEnabled(true);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -135,15 +140,16 @@ public class UploadRecipe extends Fragment {
                     Toast.makeText(getActivity(), "Upload Successful", Toast.LENGTH_SHORT).show();
                     fragmentManager =getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new RecipeManagementUI());
                     fragmentTransaction.addToBackStack(null).commit();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                     updateProgress(taskSnapshot);
-//                    desctxt.setEnabled(false);
-//                    nametxt.setEnabled(false);
+                    editTextRecipeName.setEnabled(false);
+                    editTextRecipeDesc.setEnabled(false);
+                    btnUploadRecipe.setEnabled(false);
                 }
             });
         } else {

@@ -73,10 +73,13 @@ public class UploadCookingStep extends Fragment {
         }
         editTextStepDesc = view.findViewById(R.id.editTxtStepDesc);
         btnUploadStep=view.findViewById(R.id.btnUploadStep);
+        editTextStepDesc.setEnabled(true);
 
+        btnUploadStep.setEnabled(true);
         btnUploadStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "Please wait few second for uploading", Toast.LENGTH_SHORT).show();
                 upload();
             }
         });
@@ -109,7 +112,9 @@ public class UploadCookingStep extends Fragment {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Network connection has problem", Toast.LENGTH_SHORT).show();
+                    editTextStepDesc.setEnabled(true);
+                    btnUploadStep.setEnabled(true);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -134,15 +139,15 @@ public class UploadCookingStep extends Fragment {
                     Toast.makeText(getActivity(), "Upload Successful", Toast.LENGTH_SHORT).show();
                     fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new RecipeManagementUI());
                     fragmentTransaction.addToBackStack(null).commit();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                     updateProgress(taskSnapshot);
-//                    desctxt.setEnabled(false);
-//                    nametxt.setEnabled(false);
+                    btnUploadStep.setEnabled(false);
+                    editTextStepDesc.setEnabled(false);
                 }
             });
         } else {

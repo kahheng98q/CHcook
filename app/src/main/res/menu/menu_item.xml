@@ -4,24 +4,32 @@
     >
     <item
         android:id="@+id/profile"
-        android:title="Profile"/>
+        android:icon="@drawable/personal_acc_24dp"
+        android:title="Manage My Account"/>
     <item
         android:id="@+id/home"
+        android:icon="@drawable/ic_home_black_24dp"
         android:title="Home"/>
     <item
+        android:icon="@drawable/ic_history_black_24dp"
         android:id="@+id/history"
         android:title="History"/>
     <item
         android:id="@+id/myVideos"
-        android:title="Your Videos"/>
+        android:icon="@drawable/ban_video_24dp"
+        android:title="My Videos and Recipe"/>
     <item
         android:id="@+id/favorite"
-        android:title="Favorite"/>
+        android:icon="@drawable/ic_favorite_black_24dp"
+
+        android:title="Favorite List"/>
     <item
         android:id="@+id/premium"
-        android:title="Cooking Step"/>
+        android:icon="@drawable/view_24dp"
+        android:title="Premium Recipe"/>
     <item
         android:id="@+id/Logout"
-        android:title="Logout"
+        android:icon="@drawable/log_out_24dp"
+        android:title="Log Out"
         />
 </menu>

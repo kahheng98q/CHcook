@@ -1,6 +1,7 @@
 package com.example.chcook.KahHeng.EndUser.Adapter;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
@@ -130,6 +131,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RViewHolde
                                 return true;
 
                             case R.id.itemVEdit:
+                                Log.d("test5",""+position);
                                 FragmentManager fragmentManager;
                                 FragmentTransaction fragmentTransaction;
                                 Bundle bundle = new Bundle();

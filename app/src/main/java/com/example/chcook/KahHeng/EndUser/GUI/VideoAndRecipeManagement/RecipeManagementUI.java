@@ -179,7 +179,7 @@ public class RecipeManagementUI extends Fragment {
                 fragmentManager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }else if (resultCode == RESULT_OK && requestCode == 10005 && data != null) {
                 uri = data.getData();
                 FragmentManager fragmentManager;

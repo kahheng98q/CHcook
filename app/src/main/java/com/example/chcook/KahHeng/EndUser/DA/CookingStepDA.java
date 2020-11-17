@@ -118,7 +118,7 @@ public class CookingStepDA {
                             desc = child.getValue().toString();
                         }
                     }
-                    cookingSteps.add(new CookingSteps(stepKey, url, desc,new Recipes(recipeKey)));
+                    cookingSteps.add(new CookingSteps(dataSnapshot.getKey(), url, desc,new Recipes(recipeKey)));
                     stepsCallback.onCallback(cookingSteps);
 
                 }else {

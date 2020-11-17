@@ -430,14 +430,9 @@ public class PlayVideo extends Fragment{
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        simpleExoPlayer.release();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
+        Toast.makeText(getContext(), "Network connection has problem", Toast.LENGTH_SHORT).show();
         simpleExoPlayer.release();
     }
 }

@@ -2,6 +2,7 @@ package com.example.chcook.KahHeng.EndUser.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,8 +79,9 @@ import java.util.ArrayList;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull CookingStepAdapter.RViewHolder holder, final int position) {
             final CookingSteps cookingStep = cookingSteps.get(position);
+            Log.d("test5",""+position);
             if (!cookingStep.getImageUrl().equals("")) {
                 Glide.with(context)
                         .asBitmap()
@@ -89,40 +91,21 @@ import java.util.ArrayList;
             }
 
             holder.txtDescStep.setText(cookingStep.getDescription());
-//            holder.textView2.setText(favorite.getFavoriteDate());
-//            holder.videoInfoLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    FragmentManager fragmentManager;
-//                    FragmentTransaction fragmentTransaction;
-//
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("key", favorite.getVideos().getVideoID());
-//                    //set Fragmentclass Arguments
-//                    PlayVideo fragobj = new PlayVideo();
-//                    fragobj.setArguments(bundle);
-//
-//                    fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-//                    fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.myNavHostFragment, fragobj);
-//                    fragmentTransaction.commit();
-//                }
-//            });
-
             holder.btnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                Toast.makeText(context, "Removed Video in Histories", Toast.LENGTH_SHORT).show();
                     PopupMenu popupMenu = new PopupMenu(context, v);
-
+                    Log.d("test5",""+position);
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
 
                             switch (item.getItemId()) {
+
                                 case R.id.itemVDelete:
-//                                    favoriteDA.setFavoriteKey(cookingSteps.get(position).getStepId());
-//                                    favoriteDA.deleteFav();
+//                                    Log.d("test5",""+position);
+//                                    Log.d("test5",""+cookingSteps.get(position).getDescription());
                                     cookingStepDA.setRecipeKey(cookingSteps.get(position).getRecipes().getRecipeId());
                                     cookingStepDA.setStepKey(cookingSteps.get(position).getStepId());
                                     cookingStepDA.deleteStep();
@@ -132,12 +115,15 @@ import java.util.ArrayList;
                                     notifyDataSetChanged();
                                     return true;
                                 case R.id.itemVEdit:
+//                                    Log.d("test5",""+position);
+//                                    Log.d("test5",""+cookingSteps.get(position).getDescription());
+//                                    Log.d("test5",""+cookingSteps.get(position).getStepId());
                                     FragmentManager fragmentManager;
                                     FragmentTransaction fragmentTransaction;
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("key",cookingStep.getStepId());
-                                    bundle.putString("desc", cookingStep.getDescription());
-                                    bundle.putString("uri",cookingStep.getImageUrl());
+                                    bundle.putString("key",cookingSteps.get(position).getStepId());
+                                    bundle.putString("desc", cookingSteps.get(position).getDescription());
+                                    bundle.putString("uri",cookingSteps.get(position).getImageUrl());
                                     //set Fragmentclass Arguments
                                     EditCookingStep fragobj = new EditCookingStep();
                                     fragobj.setArguments(bundle);

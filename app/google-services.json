@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "1075307792110",
-    "firebase_url": "https://chcook-30453.firebaseio.com",
-    "project_id": "chcook-30453",
-    "storage_bucket": "chcook-30453.appspot.com"
+    "project_number": "327769834591",
+    "firebase_url": "https://cookish-b2802.firebaseio.com",
+    "project_id": "cookish-b2802",
+    "storage_bucket": "cookish-b2802.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1075307792110:android:44054b8852a9d7411795ff",
+        "mobilesdk_app_id": "1:327769834591:android:72e3df6169269aa0b407ea",
         "android_client_info": {
           "package_name": "com.example.chcook"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1075307792110-hk1q97o5e8n2t4p6avtk6sca1nfg697b.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.chcook",
-            "certificate_hash": "b4256f1077161ecfc00e78f19735e898dc934089"
-          }
-        },
-        {
-          "client_id": "1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com",
+          "client_id": "327769834591-a4254is4v6i9co8060atdhvicga0544u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBdUrhK77L6Ac6aPoX8Idmo1RmKAMKaCWU"
+          "current_key": "AIzaSyBLexQeoK27gr3igb7iB9D6VmCX8ZsPDzY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com",
+              "client_id": "327769834591-a4254is4v6i9co8060atdhvicga0544u.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
