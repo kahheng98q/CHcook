@@ -86,7 +86,7 @@ public class Pay extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirmation != null) {
-                    Toast.makeText(this, "Your have becomce Premium User", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Your have become Premium User", Toast.LENGTH_SHORT).show();
                     setPaymentRecord(price);
                     UserDA userDA=new UserDA();
                     userDA.addPremiumStatus();
