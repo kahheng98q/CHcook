@@ -315,4 +315,10 @@ public class UploadVideo extends Fragment {
         progressBar.setProgress((int) progress);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        simpleExoPlayer.stop();
+    }
+
 }

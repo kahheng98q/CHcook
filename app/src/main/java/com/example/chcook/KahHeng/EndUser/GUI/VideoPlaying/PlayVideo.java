@@ -115,6 +115,7 @@ public class PlayVideo extends Fragment{
     private SimpleExoPlayer simpleExoPlayer = null;
     private ImageView fullScreenButton=null;
     private  Boolean fullscreen=false;
+    boolean isVisible = false;
     public PlayVideo () {
         // Required empty public constructor
     }
@@ -309,6 +310,9 @@ public class PlayVideo extends Fragment{
                 }
             }
         });
+//        if(!isVisible)
+//            simpleExoPlayer.stop();
+
     }
 
 
@@ -414,26 +418,16 @@ public class PlayVideo extends Fragment{
     }
 
 
+
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        Toast.makeText(getContext(), "VCCCCCCCCCCCCCCCCCCCCCC", Toast.LENGTH_SHORT).show();
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (this.isVisible()) {
-
-            if (!isVisibleToUser) {
-                Toast.makeText(getContext(), "GGGGGGGGGGGGGGGGG", Toast.LENGTH_SHORT).show();
-                simpleExoPlayer.stop();
-//                playerView.stop();
-            }
-            else {
-            }
-        }
+    public void onStop() {
+        super.onStop();
+        simpleExoPlayer.stop();
     }
-
 
     @Override
     public void onDetach() {
+        Toast.makeText(getContext(), "VCCCCCCCCCCCCCCCCCCCCCC", Toast.LENGTH_SHORT).show();
         super.onDetach();
         simpleExoPlayer.release();
     }
