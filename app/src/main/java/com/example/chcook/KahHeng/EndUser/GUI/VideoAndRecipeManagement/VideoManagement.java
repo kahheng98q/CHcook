@@ -75,12 +75,14 @@ public class VideoManagement extends Fragment {
         videoDA.getUploadedVideo(new VideoDA.VideoCallback() {
             @Override
             public ArrayList<Videos> onCallback(ArrayList<Videos> videos) {
+//                recyclerView.remove;
                 recyclerView.setHasFixedSize(true);
-//                Log.d("test4",  videos.get(0).getName());
+                Log.d("test4",  ""+videos.size());
 //                videos
                 adapter = new VideoAdapter(getContext(), videos);
                 layoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(layoutManager);
+
                 recyclerView.setAdapter(adapter);
 
                 adapter.notifyDataSetChanged();

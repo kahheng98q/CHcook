@@ -65,6 +65,7 @@ public class VideoDA {
 
     // get All User's Upload View
     public void getUploadedVideo(final VideoCallback videoCallback) {
+        videos=new ArrayList<>();
         DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("video");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -150,6 +151,7 @@ public class VideoDA {
     }
 
     public void getAllVideos(final VideoCallback videoCallback) {
+        videos=new ArrayList<>();
         DatabaseReference videoRef = database.getReference().child("Videos").child(videokey);
         videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -199,6 +201,7 @@ public class VideoDA {
     }
 
     public void getAllVidoaInHome(final VideoCallback videoCallback) {
+        videos=new ArrayList<>();
         DatabaseReference videoref = database.getReference("Videos");
         videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
             @Override

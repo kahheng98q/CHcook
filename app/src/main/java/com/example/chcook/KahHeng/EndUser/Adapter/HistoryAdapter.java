@@ -62,8 +62,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.RViewHol
 
     public HistoryAdapter(Context context, ArrayList<Histories> his) {
         this.context = context;
-        this.histories = his;
+        this.histories =reverselIndex( his);
+
 //        Log.d("test","GGGGGGGGGGGGGGGGGGGGGGGGG");
+    }
+
+    private ArrayList<Histories> reverselIndex(ArrayList<Histories> his) {
+        ArrayList<Histories> tmphis = new ArrayList<>();
+
+        for (int i = his.size(); i >0; i--) {
+            tmphis.add(his.get(i-1));
+        }
+        return tmphis;
     }
 
     @NonNull

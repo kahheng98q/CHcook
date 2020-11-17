@@ -31,6 +31,8 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Pay extends AppCompatActivity {
     private Button btnPay;
@@ -85,6 +87,7 @@ public class Pay extends AppCompatActivity {
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirmation != null) {
                     Toast.makeText(this, "Your have becomce Premium User", Toast.LENGTH_SHORT).show();
+                    setPaymentRecord(price);
                     UserDA userDA=new UserDA();
                     userDA.addPremiumStatus();
                     startActivity(new Intent(getApplicationContext(), MainPage.class));
@@ -138,5 +141,20 @@ public class Pay extends AppCompatActivity {
     public void connectFirebase() {
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+    }
+
+    public void setPaymentRecord(String price) {
+        String uid = firebaseAuth.getCurrentUser().getUid();
+
+        DatabaseReference ref = database.getReference("Payment").push();
+        Map<String, Object> addPay = new HashMap<>();
+        addPay.put("Date", getCurrentTimeStamp());
+        addPay.put("Price", price);
+        addPay.put("UserID",firebaseAuth.getUid());
+        ref.updateChildren(addPay);
+    }
+    private long getCurrentTimeStamp() {
+        long timestamp = System.currentTimeMillis() / 1000;
+        return timestamp;
     }
 }

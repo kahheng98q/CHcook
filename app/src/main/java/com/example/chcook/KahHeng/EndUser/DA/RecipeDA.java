@@ -72,6 +72,7 @@ public class RecipeDA {
     }
 
     public void getUploadedRecipe(final RecipesCallback recipesCallback) {
+        recipes = new ArrayList<>();
         DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("Recipe");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -143,6 +144,7 @@ public class RecipeDA {
     }
 
     public void getAllRecipesInPremium(final RecipesCallback recipesCallback) {
+        recipes = new ArrayList<>();
         DatabaseReference videoref = database.getReference("Recipes");
         videoref.orderByChild("Uploaddate").addChildEventListener(new ChildEventListener() {
             @Override

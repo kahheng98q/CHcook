@@ -298,6 +298,10 @@ public class UploadVideo extends Fragment {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 
     private long getCurrentTimeStamp() {
         long timestamp=System.currentTimeMillis()/1000;

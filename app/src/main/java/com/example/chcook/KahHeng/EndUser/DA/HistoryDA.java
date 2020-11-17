@@ -71,7 +71,7 @@ public class HistoryDA {
     }
 
     private void retrieveHistory(final HisCallback hisCallback) {
-
+        histories=new ArrayList<>();
         DatabaseReference ref = database.getReference("Users").child(firebaseAuth.getCurrentUser().getUid()).child("history");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

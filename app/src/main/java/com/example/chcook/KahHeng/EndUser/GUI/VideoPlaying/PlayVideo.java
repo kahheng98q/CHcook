@@ -161,7 +161,7 @@ public class PlayVideo extends Fragment{
                         @Override
                         public void onCallback(double ratingGiven) {
                             givenRate = ratingGiven;
-                            Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -411,6 +411,31 @@ public class PlayVideo extends Fragment{
 
             }
         });
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        Toast.makeText(getContext(), "VCCCCCCCCCCCCCCCCCCCCCC", Toast.LENGTH_SHORT).show();
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (this.isVisible()) {
+
+            if (!isVisibleToUser) {
+                Toast.makeText(getContext(), "GGGGGGGGGGGGGGGGG", Toast.LENGTH_SHORT).show();
+                simpleExoPlayer.stop();
+//                playerView.stop();
+            }
+            else {
+            }
+        }
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        simpleExoPlayer.release();
     }
 
     @Override
