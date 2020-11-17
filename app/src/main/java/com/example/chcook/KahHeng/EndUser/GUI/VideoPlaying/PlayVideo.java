@@ -244,7 +244,7 @@ public class PlayVideo extends Fragment{
                 if (givenRate >= 1) {
                     Toast.makeText(getContext(), "This video's rating has been given.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
                     setReview();
                 }
 
