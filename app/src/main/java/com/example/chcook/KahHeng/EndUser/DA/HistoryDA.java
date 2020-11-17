@@ -110,7 +110,7 @@ public class HistoryDA {
 //                    String date = "";
                     String id = "";
                     Long time = 0L;
-                    Log.d("test", "step");
+//                    Log.d("test", "step");
 
 //
                     for (DataSnapshot child : dataSnapshot.getChildren()) {

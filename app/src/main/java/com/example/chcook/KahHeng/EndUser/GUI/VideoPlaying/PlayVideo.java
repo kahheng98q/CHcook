@@ -157,11 +157,15 @@ public class PlayVideo extends Fragment{
                 @Override
                 public void onCallback(ArrayList<Ratings> retrievedRatings, double rating, int numofRate) {
                     ratings = retrievedRatings;
-                    txtRate.setText(String.format("%.1f", rating));
+//                    Log.d("test5", "message textAAAAAAA:" + ratings.size());
+//                    ratingDA.getavgRate(retrievedRatings);
+
+                    txtRate.setText(String.format("%.1f",  ratingDA.getavgRate(retrievedRatings)));
                     ratingDA.CheckRating(new RatingDA.onCheckRate() {
                         @Override
                         public void onCallback(double ratingGiven) {
                             givenRate = ratingGiven;
+
 //                            Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -412,7 +416,7 @@ public class PlayVideo extends Fragment{
                 String text = spinner.getSelectedItem().toString();
                 ratingDA.giveRating(text);
                 dialogReview.dismiss();
-
+                Toast.makeText(getContext(), "Thanks Your for providing review.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -57,6 +57,7 @@ public class RatingDA {
     public interface RatingCallback {
         void onCallback(ArrayList<Ratings> ratings, double rating, int numofRate);
     }
+
     public interface onCheckRate {
         void onCallback(double ratingGiven);
     }
@@ -114,10 +115,16 @@ public class RatingDA {
                         String id = dataSnapshot.getKey();
 
                         ratings.add(new Ratings(id, rating, getDate(time)));
+                        if (numOfRating != 0) {
+                            avg = rate / (double)numOfRating;
+                            Log.d("test5", "message rate:" + rate);
+                            Log.d("test5", "message num:" + numOfRating);
+                            Log.d("test5", "message avg:" + avg);
+                            ratingCallback.onCallback(ratings, avg, numOfRating);
+                        }
+
                     }
-                    if (numOfRating != 0) {
-                        avg = rate / numOfRating;
-                    }
+
 
                     ratingCallback.onCallback(ratings, avg, numOfRating);
                 }
@@ -133,45 +140,78 @@ public class RatingDA {
         ;
     }
 
+    public double getavgRate(ArrayList<Ratings> ratingList){
+        double rate = 0;
+        int numOfRating = ratingList.size();
+        double avg = 0;
+        for (Ratings tmprating : ratingList) {
+            rate = tmprating.getRating() + rate;
+
+        }
+        if (numOfRating != 0) {
+            avg = rate / (double)numOfRating;
+//            Log.d("test5", "message rate:" + rate);
+//            Log.d("test5", "message num:" + numOfRating);
+//            Log.d("test5", "message avg:" + avg);
+//            ratingCallback.onCallback(ratings, avg, numOfRating);
+        }
+        return avg;
+    }
+
     public void CheckRating(final onCheckRate onCheckRate) {
-        DatabaseReference ref = database.getReference().child("Users");
-        ref.orderByChild("Rating").addChildEventListener(new ChildEventListener() {
+        DatabaseReference ref = database.getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid()).child("Rating");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (child.getKey().equals("Rating")) {
-                        Map<String, Boolean> videoMap = (Map<String, Boolean>) child.getValue();
-//                        Log.d("test", "message text:"+child.getKey());
-                        for (String userVideoKey : videoMap.keySet()) {
-//                              Log.d("test", "message text:"+userVideoKey);
-
-                            for (Ratings rating : ratings){
-//                                Log.d("test", "message textAAAAAAA:"+"GGGGGGGGGGGGGGGGGGGGGGGGg");
-                                if (rating.getRateId().equals(userVideoKey)){
-                                    onCheckRate.onCallback(rating.getRating());
-                                }
-                            }
+                if (dataSnapshot.exists()) {
+//                    Log.d("test5", "message textAAAAAAA:" + ratings.size());
+                    if (ratings.size()>0){
+//                        Log.d("test5", "message textAAAAAAA:" + "GGGGGGGGGGGGGGGGGGGGGGGGg");
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            checkRate(child.getKey(), onCheckRate);
                         }
-
+                    }else {
+//                        Log.d("test5", "message textAAAAAAA:" + "GGGGGGGGGGGGGGGGGGGGGGGGg");
+                        onCheckRate.onCallback(0);
                     }
 
+
+                } else {
+                    onCheckRate.onCallback(0);
                 }
-//                dataSnapshot.getRef();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
 
+
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        });
 
+    }
+
+    private void checkRate(final String rateid, final onCheckRate onCheckRate) {
+        DatabaseReference Hisref = database.getReference("Rating").child(rateid);
+        Hisref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+//                    Log.d("test5", "message textAAAAAAA:" + "2");
+
+                    String id = dataSnapshot.getKey();
+
+                    for (Ratings rating : ratings) {
+//                        Log.d("test5", "message textAAAAAAA:" + "3");
+//                        Log.d("test5", "message textAAAAAAA:" + "GGGGGGGGGGGGGGGGGGGGGGGGg");
+                        if (rating.getRateId().equals(id)) {
+                            onCheckRate.onCallback(rating.getRating());
+                        }
+                    }
+                } else {
+                    onCheckRate.onCallback(0);
+                }
 
             }
 
@@ -180,9 +220,104 @@ public class RatingDA {
 
             }
         });
-    }
 
-    public void giveRating(String rating){
+    }
+//    public void CheckRating(final onCheckRate onCheckRate) {
+//        DatabaseReference ref = database.getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid());
+//        ref.orderByChild("Rating").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    if (child.getKey().equals("Rating")) {
+//                        Map<String, Boolean> videoMap = (Map<String, Boolean>) child.getValue();
+////                        Log.d("test", "message text:"+child.getKey());
+//                        for (String userVideoKey : videoMap.keySet()) {
+//                            Log.d("test5", "message text:"+userVideoKey);
+//
+////
+////                            for (Ratings rating : ratings){
+////                                Log.d("test5", "message textAAAAAAA:"+"GGGGGGGGGGGGGGGGGGGGGGGGg");
+////
+////                                if (rating.getRateId().equals(userVideoKey)){
+////                                    onCheckRate.onCallback(rating.getRating());
+////                                }
+////                            }
+//                        }
+//
+//                    }
+//
+//                }
+////                dataSnapshot.getRef();
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+//    private void getAllRate2(final RatingCallback ratingCallback) {
+//        DatabaseReference videoRef = database.getReference().child("Rating").child(ratingkey);
+//        videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    Long time = 0L;
+//                    double rate = 0;
+//                    double rating = 0;
+//                    int numOfRating = 0;
+//                    double avg = 0;
+//                    if (dataSnapshot.exists()) {
+//                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                            if (child.getKey().equals("Rating")) {
+//                                rating = Double.parseDouble(child.getValue().toString());
+//                                numOfRating = numOfRating + 1;
+//                            }
+//                            if (child.getKey().equals("Date")) {
+//                                time = Long.valueOf(child.getValue().toString());
+//                            }
+//                            rate = rating + rate;
+//
+//                        }
+//                        String id = dataSnapshot.getKey();
+//
+//                        ratings.add(new Ratings(id, rating, getDate(time)));
+//                    }
+//                    if (numOfRating != 0) {
+//                        avg = rate / numOfRating;
+//                    }
+//
+//                    ratingCallback.onCallback(ratings, avg, numOfRating);
+//                }
+//
+//            }
+//
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        })
+//        ;
+//    }
+
+    public void giveRating(String rating) {
         String uid = firebaseAuth.getCurrentUser().getUid();
 
         DatabaseReference ref = database.getReference("Users").child(uid).child("Rating");
