@@ -1,9 +1,7 @@
 package com.example.chcook.KahHeng.EndUser.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.Videos;
 
-import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInfo;
 import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInformation;
 import com.example.chcook.KahHeng.EndUser.GUI.VideoPlaying.PlayVideo;
 import com.example.chcook.R;

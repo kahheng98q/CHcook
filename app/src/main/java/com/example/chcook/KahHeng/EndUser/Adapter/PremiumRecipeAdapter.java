@@ -89,7 +89,7 @@ public class PremiumRecipeAdapter extends RecyclerView.Adapter<PremiumRecipeAdap
             public void onClick(View v) {
                 FragmentManager fragmentManager;
                 FragmentTransaction fragmentTransaction;
-                Toast.makeText(context, recipe.getRecipeId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, recipe.getRecipeId(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", recipe.getTitle());
                 bundle.putString("key", recipe.getRecipeId());

@@ -61,8 +61,8 @@ public class UserProfile extends Fragment {
     private String uri;
     private CircleImageView imageView;
     private TextView txtName;
-    private Button btnCancel=null;
-    private UserDA userDA =new UserDA();
+    private Button btnCancel = null;
+    private UserDA userDA = new UserDA();
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -125,16 +125,21 @@ public class UserProfile extends Fragment {
             @Override
             public void onClick(View v) {
 //                user.setImage();
-                Toast.makeText(getActivity(), "Edit successfully", Toast.LENGTH_SHORT).show();
-                user.setName(txtName.getText().toString());
-                user.setName(txtName.getText().toString());
-                userDA.UpdateUser(user);
-                Glide.with(getContext())
-                        .asBitmap()
-                        .load(user.getImage())
-                        .into(navImageView);
+                if (txtName.getText().toString().isEmpty() || txtName.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "Name cannot be null", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(), "Edit successfully", Toast.LENGTH_SHORT).show();
+                    user.setName(txtName.getText().toString());
+//                user.setName(txtName.getText().toString());
+                    userDA.UpdateUser(user);
+//                Glide.with(getContext())
+//                        .asBitmap()
+//                        .load(user.getImage())
+//                        .into(navImageView);
 
-                navtxtuUsername.setText(user.getName());
+                    navtxtuUsername.setText(user.getName());
+                }
+
             }
         });
 
@@ -226,6 +231,7 @@ public class UserProfile extends Fragment {
             Toast.makeText(getActivity(), "Please Select Video and fill in the information", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void setVideoReviewDialog() {
 
         final AlertDialog dialogReport;
@@ -236,7 +242,7 @@ public class UserProfile extends Fragment {
         dialogBuilderReport.setView(popReport);
         dialogReport = dialogBuilderReport.create();
         dialogReport.show();
-        VideoDA videoDA=new VideoDA();
+        VideoDA videoDA = new VideoDA();
         videoDA.getUploadedVideo(videos -> {
 //            recyclerView.setHasFixedSize(true);
             adapter = new UserVideoReviewAdapter(popReport.getContext(), videos);

@@ -194,9 +194,7 @@ public class UserDA {
         String uid = firebaseAuth.getCurrentUser().getUid();
         DatabaseReference ref = database.getReference("Users").child(uid);
         Map<String, Object> addemail = new HashMap<>();
-
         addemail.put("Name", user.getName());
-//        addemail.put("Image", user.getImage());
         ref.updateChildren(addemail);
     }
 

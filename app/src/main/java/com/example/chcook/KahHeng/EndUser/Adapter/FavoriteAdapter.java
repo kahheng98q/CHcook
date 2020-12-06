@@ -120,7 +120,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.RViewH
                             case R.id.itemFDelete:
                                 favoriteDA.setFavoriteKey(favorites.get(position).getFavoriteId());
                                 favoriteDA.deleteFav();
-                                Toast.makeText(context, "Removed Video in Favorite List", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Removed Video from Favorite List", Toast.LENGTH_SHORT).show();
                                 favorites.remove(position);
 
                                 notifyDataSetChanged();

@@ -32,9 +32,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class Login extends AppCompatActivity {
     public static final int Google_Sign_In_Code = 10005;
-    public static final String Google_Token_Id = "1075307792110-f5fntm9j4e8rjqq79bl51t91ll6vacor.apps.googleusercontent.com";
+    public static final String Google_Token_Id = "327769834591-a4254is4v6i9co8060atdhvicga0544u.apps.googleusercontent.com";
     SignInButton signInButton;
-    GoogleSignInOptions gso;
+    GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient signInClient;
     private FirebaseAuth firebaseAuth;
     private FloatingActionButton StaffLoginPage;
@@ -50,19 +50,13 @@ public class Login extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         StaffLoginPage = findViewById(R.id.staffPageBtn);
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Google_Token_Id)
                 .requestEmail()
                 .build();
 
-        signInClient = GoogleSignIn.getClient(this, gso);
+        signInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         clearUser();
-//        GoogleSignInAccount signInAccount=GoogleSignIn.getLastSignedInAccount(this);
-//        if(signInAccount!=null|| firebaseAuth.getCurrentUser()!=null){
-//            Toast.makeText(this,"User is logged in .", Toast.LENGTH_SHORT).show();
-//
-//            startActivity(new Intent(this, MainPage.class));
-//        }
 
         signInButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -73,6 +67,7 @@ public class Login extends AppCompatActivity {
                                             }
                                         }
         );
+
         StaffLoginPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,41 +112,20 @@ public class Login extends AppCompatActivity {
                 firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
-
-//                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                        DatabaseReference ref = database.getReference("Users");
-
-//                        DatabaseReference postsRef = ref.child(firebaseAuth.getCurrentUser().getUid());
-//                        postsRef.setValue(new User(null,firebaseAuth.getCurrentUser().getEmail(),null,null,null));
-
-                        //                       Log.d() ;
-//                        Log.d("tag","onCreate "+ref.orderByChild(firebaseAuth.getCurrentUser().getEmail()));
-//                        ref.push().setValue(new User(null, signInAcc.getEmail(), null, null, null));
-//                        Toast.makeText(getApplicationContext(),"User is logged in has .", Toast.LENGTH_SHORT).show();
-//                        FirebaseUser user=firebaseAuth.getCurrentUser();
-//                        updateUI(user);
                         startActivity(new Intent(getApplicationContext(), MainPage.class));
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
                 });
-
-//                Toast.makeText(this,"Connected.", Toast.LENGTH_SHORT).show();
             } catch (ApiException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void updateUI(FirebaseUser user) {
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if (acct != null) {
-            Toast.makeText(this, "SSSSSSSSSSSs.", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    public void updateUI(FirebaseUser user) {
+//        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+//        if (acct != null) {
+//            Toast.makeText(this, "SSSSSSSSSSSs.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
 }

@@ -34,7 +34,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Pay extends AppCompatActivity {
+public class PremiumPayment extends AppCompatActivity {
     private Button btnPay;
     private TextView txtPrice;
     private AlertDialog.Builder alertBuilder;
@@ -97,7 +97,8 @@ public class Pay extends AppCompatActivity {
     }
 
     private void makePayment(){
-        PayPalPayment payPalPayment=new PayPalPayment(new BigDecimal(String.valueOf(price)),"MYR","Make Pay For Premium",PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment=new PayPalPayment(new BigDecimal(String.valueOf(price)),
+                "MYR","Make PremiumPayment For Premium",PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent=new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
@@ -145,7 +146,6 @@ public class Pay extends AppCompatActivity {
 
     public void setPaymentRecord(String price) {
         String uid = firebaseAuth.getCurrentUser().getUid();
-
         DatabaseReference ref = database.getReference("Payment").push();
         Map<String, Object> addPay = new HashMap<>();
         addPay.put("Date", getCurrentTimeStamp());

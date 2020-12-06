@@ -27,12 +27,10 @@
         <activity android:name=".YangJie.GUI.Banning.ShowBanVideo" />
         <activity android:name=".YangJie.GUI.StaffLoginAndManagement.StaffLogin" />
         <activity android:name=".YangJie.GUI.StaffMainPage" />
-        <activity android:name=".KahHeng.EndUser.GUI.VideoAndRecipeManagement.EditVideoInfo" />
-        <activity android:name=".KahHeng.EndUser.GUI.PremiumFeatures.Pay" />
+        <activity android:name=".KahHeng.EndUser.GUI.PremiumFeatures.PremiumPayment" />
         <activity android:name=".KahHeng.EndUser.GUI.MainPage"
             android:configChanges="keyboardHidden|orientation|screenSize"
             />
-        <activity android:name=".KahHeng.EndUser.Registration" />
         <activity android:name=".KahHeng.EndUser.GUI.UserAuthentication.Login">
 
         </activity>

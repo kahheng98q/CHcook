@@ -268,7 +268,7 @@ public class UploadVideo extends Fragment {
                     Toast.makeText(getActivity(), "Upload Successful", Toast.LENGTH_SHORT).show();
                     fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.myNavHostFragment, new VideoManagement());
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
                     fragmentTransaction.addToBackStack(null).commit();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -281,7 +281,7 @@ public class UploadVideo extends Fragment {
                 }
             });
         } else {
-            Toast.makeText(getActivity(), "Please Select Video and fill in the information", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please fill in the information", Toast.LENGTH_SHORT).show();
         }
 
 

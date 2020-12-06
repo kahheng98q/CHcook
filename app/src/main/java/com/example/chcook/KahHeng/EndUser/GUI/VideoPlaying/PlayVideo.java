@@ -225,7 +225,7 @@ public class PlayVideo extends Fragment{
                     favoriteDA.setFavorite();
                     btnFav.setBackgroundResource(R.drawable.ic_star_bright_24dp);
                     fav = true;
-                    Toast.makeText(getContext(), "Add to favorite list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Added to favorite list", Toast.LENGTH_SHORT).show();
                 } else {
                     favoriteDA.deleteFav();
                     btnFav.setBackgroundResource(R.drawable.ic_star_grey_24dp);
@@ -245,6 +245,24 @@ public class PlayVideo extends Fragment{
         txtRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ratingDA.getAvgRating(new RatingDA.RatingCallback() {
+                    @Override
+                    public void onCallback(ArrayList<Ratings> retrievedRatings, double rating, int numofRate) {
+                        ratings = retrievedRatings;
+//                    Log.d("test5", "message textAAAAAAA:" + ratings.size());
+//                    ratingDA.getavgRate(retrievedRatings);
+
+                        txtRate.setText(String.format("%.1f",  ratingDA.getavgRate(retrievedRatings)));
+                        ratingDA.CheckRating(new RatingDA.onCheckRate() {
+                            @Override
+                            public void onCallback(double ratingGiven) {
+                                givenRate = ratingGiven;
+
+//                            Toast.makeText(getContext(), "" + givenRate, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
                 if (givenRate >= 1) {
                     Toast.makeText(getContext(), "This video's rating has been given.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -387,6 +405,7 @@ public class PlayVideo extends Fragment{
     }
 
     private void setReview() {
+
         final AlertDialog.Builder dialogBuilderReview = new AlertDialog.Builder(getContext());
         final AlertDialog dialogReview;
         final View popReport = getLayoutInflater().inflate(R.layout.pop_window_review, null);
@@ -432,7 +451,7 @@ public class PlayVideo extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(getContext(), "Network connection has problem", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Network connection has problem", Toast.LENGTH_SHORT).show();
         simpleExoPlayer.release();
     }
 }

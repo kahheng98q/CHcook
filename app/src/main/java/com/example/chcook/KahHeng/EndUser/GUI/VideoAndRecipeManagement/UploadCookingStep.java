@@ -139,7 +139,7 @@ public class UploadCookingStep extends Fragment {
                     Toast.makeText(getActivity(), "Upload Successful", Toast.LENGTH_SHORT).show();
                     fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.myNavHostFragment, new RecipeManagementUI());
+                    fragmentTransaction.replace(R.id.myNavHostFragment, new Home());
                     fragmentTransaction.addToBackStack(null).commit();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

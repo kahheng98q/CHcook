@@ -21,12 +21,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chcook.Domain.User;
+import com.example.chcook.KahHeng.EndUser.GUI.PremiumFeatures.PremiumPayment;
 import com.example.chcook.KahHeng.EndUser.GUI.VideoPlaying.AddToFavorite;
 import com.example.chcook.KahHeng.EndUser.DA.UserDA;
 import com.example.chcook.KahHeng.EndUser.GUI.PremiumFeatures.DisplayRecipes;
 import com.example.chcook.KahHeng.EndUser.GUI.UserAuthentication.Login;
 import com.example.chcook.KahHeng.EndUser.GUI.VideoPlaying.HistoryUI;
-import com.example.chcook.KahHeng.EndUser.GUI.PremiumFeatures.Pay;
 import com.example.chcook.KahHeng.EndUser.GUI.UserAuthentication.UserProfile;
 import com.example.chcook.KahHeng.EndUser.GUI.VideoAndRecipeManagement.VideoManagement;
 import com.example.chcook.R;
@@ -174,7 +174,7 @@ public class MainPage extends AppCompatActivity implements NavigationView.OnNavi
 
                 String type=user.getType();
                 if (user.getType() == null || !type.equals("Premium")) {
-                    startActivity(new Intent(getApplicationContext(), Pay.class));
+                    startActivity(new Intent(getApplicationContext(), PremiumPayment.class));
 //                    Toast.makeText(MainPage.this, "no", Toast.LENGTH_SHORT).show();
                 } else {
                     toolbar.setTitle("Recipe");

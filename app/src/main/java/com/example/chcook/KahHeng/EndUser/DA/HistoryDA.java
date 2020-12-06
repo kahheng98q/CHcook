@@ -104,15 +104,11 @@ public class HistoryDA {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-
                     Histories histories = new Histories();
                     histories.setHistoryId(key);
-//                    String date = "";
                     String id = "";
                     Long time = 0L;
-//                    Log.d("test", "step");
 
-//
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         if (child.getKey().equals("date")) {
                             time = Long.valueOf(child.getValue().toString());
@@ -124,13 +120,9 @@ public class HistoryDA {
                         }
                     }
                     getVideoInform(histories,hisCallback);
-
-//                        videos.add(new Videos(key,name, url, getDate(time)));
-//                    adapter.notifyDataSetChanged();
                 }
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
